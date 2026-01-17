@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BidStream</title>
+
+    <link rel="icon" type="image/png" href="./img/bidstream-favicon.png" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        body {
+            background-color: #f2efeb;
+            color: #274472;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .logo {
+            width: 60vw;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeIn 1.4s ease-in forwards;
+            animation-delay: 0.5s;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                width: 80vw;
+            }
+        }
+
+        .subtitle {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            opacity: 0;
+            padding: 0 1rem;
+            margin-left: auto; 
+            margin-right: auto;
+            animation: fadeIn 1.4s ease-in forwards;
+            animation-delay: 1.2s;
+        }
+
+        .coming-soon {
+            color: #ca3232;
+            margin-top: 0.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1.4s ease-in forwards;
+            animation-delay: 1.8s;
+        }
+
+        .social-icons {
+            margin-top: 1.2rem;
+            opacity: 0;
+            animation: fadeIn 1.4s ease-in forwards;
+            animation-delay: 2.2s;
+        }
+
+        .social-icons a {
+            color: #274472;
+            font-size: 2.2rem;
+            margin: 0 0.6rem;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #27447282;
+        }
+
+        .copyright {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #274472;
+            font-size: 0.9rem;
+            padding: 0 1rem;
+            max-width: 600px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1.4s ease-in forwards;
+            animation-delay: 2.6s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="./img/bidstream-logo.png" alt="BidStream Logo" class="logo" />
+
+    <div class="subtitle">The unbiased bidding & procurement engine for construction</div>
+
+    <div class="coming-soon">Coming Soon</div>
+
+    <div class="social-icons">
+        <a href="https://www.linkedin.com/company/bidstream-co" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/bidstream-dev" target="_blank"><i class="bi bi-github"></i></a>
+    </div>
+
+    <div class="copyright">© 2026 Formatrust, LLC d/b/a BidStream. All rights reserved.</div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
