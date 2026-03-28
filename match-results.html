@@ -3,599 +3,476 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BidStream Match Results</title>
-
+  <title>BidStream Matches</title>
   <link rel="icon" type="image/svg+xml" href="assets/bidstream-favicon.svg" />
   <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
   <style>
     :root {
-      --bs-offwhite: #f2efeb;
-      --bs-blue: #274472;
-      --bs-blue-soft: #5d7396;
-      --bs-red: #ca3232;
-      --bs-card-border: #dde4ed;
+      --bg: #ece8e2;
+      --panel: #ffffff;
+      --ink: #17283d;
+      --muted: #5d728b;
+      --line: #cfdae7;
+      --blue: #274472;
+      --green: #2b7a50;
+      --red: #8f4141;
     }
 
     body {
       margin: 0;
-      background: var(--bs-offwhite);
-      color: #1f2d3d;
+      background: var(--bg);
+      color: var(--ink);
       font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
     }
 
-    .app-shell {
-      max-width: 980px;
+    .shell {
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 22px 16px 46px;
+      padding: 22px 18px 44px;
     }
 
-    .app-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 14px;
+    .topbar, .project-head, .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(18, 39, 63, 0.04);
+    }
+
+    .topbar {
       padding: 12px 16px;
-      border: 1px solid #dde4ed;
-      border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 1px 2px rgba(39, 68, 114, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .wordmark {
-      height: 20px;
+      height: 24px;
       width: auto;
       display: block;
+    }
+
+    .back {
+      text-decoration: none;
+      color: #355a8f;
+      font-size: 0.83rem;
+      font-weight: 600;
+    }
+
+    .project-head {
+      padding: 16px;
       margin-bottom: 10px;
     }
 
-    .page-title {
-      color: var(--bs-blue);
-      font-size: 1.15rem;
+    .project-eyebrow {
+      margin: 0 0 3px;
+      color: #607188;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       font-weight: 700;
-      margin: 0 0 4px;
     }
 
-    .project-label {
+    .project-title {
       margin: 0;
-      color: #4f617a;
+      color: #1f3554;
+      font-size: 1.24rem;
+      font-weight: 700;
+    }
+
+    .project-sub {
+      margin: 5px 0 0;
+      color: #5d718a;
       font-size: 0.88rem;
     }
 
-    .back-link {
-      color: #395b8f;
-      font-size: 0.84rem;
-      text-decoration: none;
-      font-weight: 600;
-      white-space: nowrap;
-      margin-top: 2px;
-    }
-
-    .back-link:hover {
-      color: #2d4a73;
-      text-decoration: underline;
-    }
-
-    .card-clean {
-      background: #ffffff;
-      border: 1px solid var(--bs-card-border);
-      border-radius: 12px;
-      box-shadow: 0 1px 2px rgba(39, 68, 114, 0.04);
-      margin-bottom: 12px;
-    }
-
-    .card-clean .card-body {
-      padding: 14px 16px;
-    }
-
-    .workflow-nav {
+    .tabs {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
       margin-bottom: 12px;
     }
 
-    .workflow-link {
+    .tab {
       text-decoration: none;
-      border: 1px solid #d9e2ee;
-      background: #ffffff;
-      color: #496381;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      border: 1px solid #d2ddeb;
+      border-radius: 10px;
+      background: #f8fbff;
+      color: #335880;
+      font-size: 0.79rem;
+      font-weight: 700;
+      padding: 7px 10px;
     }
 
-    .workflow-link:hover {
-      color: #2d4a73;
-      border-color: #cdd9e9;
+    .tab.active {
+      background: #274472;
+      border-color: #274472;
+      color: #fff;
     }
 
-    .workflow-link.active {
-      background: #edf4ff;
-      border-color: #c8d9ef;
-      color: #274472;
-    }
+    .card { padding: 16px; margin-bottom: 10px; }
 
     .section-title {
-      color: var(--bs-blue);
-      font-size: 0.9rem;
+      margin: 0 0 10px;
+      color: #274472;
+      font-size: 0.96rem;
       font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .icon-mark {
-      width: 16px;
-      height: 16px;
-      opacity: 0.9;
-    }
-
-    .summary-grid {
+    .run-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
     }
 
-    .summary-item {
-      border: 1px solid #e3e9f2;
+    .run-item {
+      border: 1px solid #d9e2ee;
       border-radius: 10px;
-      background: #fcfdff;
-      padding: 8px 10px;
+      background: #f9fbfe;
+      padding: 8px 9px;
     }
 
-    .summary-label {
-      color: #6b778a;
-      font-size: 0.72rem;
+    .label {
+      margin: 0 0 2px;
+      color: #63768e;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 2px;
+      font-weight: 700;
     }
 
-    .summary-value {
+    .value {
       margin: 0;
       color: #274472;
+      font-size: 0.85rem;
       font-weight: 700;
-      font-size: 0.9rem;
     }
 
-    .note-line {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: #596b82;
-    }
-
-    .note-line strong {
-      color: #7f3434;
-    }
-
-    .controls-row {
+    .controls {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
       align-items: center;
     }
 
-    .sort-control {
-      max-width: 260px;
-      border-color: #d8e0ec;
-      font-size: 0.82rem;
+    .control {
+      border: 1px solid #d2ddeb;
+      border-radius: 9px;
+      background: #fff;
+      color: #2f4f76;
+      font-size: 0.8rem;
+      padding: 7px 10px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid #d7e0ed;
-      background: #f9fbfe;
-      color: #2b466f;
+      border: 1px solid #d6e0ed;
       border-radius: 999px;
-      font-size: 0.73rem;
-      font-weight: 600;
-      padding: 3px 9px;
-      margin-right: 6px;
-      margin-bottom: 4px;
-    }
-
-    .chip-muted {
-      background: #f6f7f9;
-      border-color: #e2e6ec;
-      color: #667488;
-    }
-
-    .chip-active {
-      background: #edf4ff;
-      border-color: #d0deef;
-    }
-
-    .candidate {
-      border: 1px solid #dbe5f2;
-      border-radius: 11px;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: #ffffff;
-    }
-
-    .candidate:last-child {
-      margin-bottom: 0;
-    }
-
-    .candidate-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .candidate-id {
-      margin: 0;
-      color: #22374f;
-      font-size: 0.92rem;
+      background: #f8fbff;
+      color: #335880;
+      font-size: 0.74rem;
       font-weight: 700;
-    }
-
-    .pill {
-      display: inline-block;
-      border: 1px solid #d8e1ef;
-      background: #eff4fb;
-      color: #2f4e78;
-      border-radius: 999px;
-      padding: 3px 8px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      margin-left: 6px;
-    }
-
-    .candidate-meta {
-      font-size: 0.8rem;
-      color: #51647b;
-      margin-top: 7px;
-    }
-
-    .visibility-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .visibility-label {
-      font-size: 0.75rem;
-      color: #5a6d84;
-      font-weight: 600;
-    }
-
-    .visibility-select {
-      max-width: 200px;
-      font-size: 0.76rem;
-      border-color: #d6deea;
-      padding-top: 2px;
-      padding-bottom: 2px;
-    }
-
-    .identity-summary {
-      margin-top: 7px;
-      border: 1px dashed #dbe5f2;
-      border-radius: 8px;
-      padding: 7px 9px;
-      font-size: 0.78rem;
-      color: #4f627a;
-      background: #fcfdff;
-    }
-
-    .identity-summary strong {
-      color: #2f486d;
-      font-weight: 700;
-    }
-
-    .candidate-actions {
-      margin-top: 9px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn-sm {
-      font-size: 0.75rem;
       padding: 4px 9px;
+    }
+
+    .chip.muted {
+      color: #5f738b;
+      background: #f3f6fa;
+      border-color: #dce4ee;
+    }
+
+    .table-wrap {
+      border: 1px solid #d5deea;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      background: #fff;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 10px 10px;
+      color: #607187;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e1e8f1;
+      background: #f8fbff;
+    }
+
+    tbody td {
+      padding: 10px 10px;
+      border-bottom: 1px solid #e9eef5;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+
+    .cand-id {
+      margin: 0 0 4px;
+      font-weight: 700;
+      font-size: 0.91rem;
+      color: #1f3554;
+    }
+
+    .meta {
+      margin: 0;
+      color: #5e728a;
+      font-size: 0.75rem;
+    }
+
+    .score {
+      font-size: 1.04rem;
+      font-weight: 700;
+      color: #1f3554;
+      line-height: 1.1;
+    }
+
+    .score-sub {
+      color: #5d728b;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    .bonus {
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .bonus.none { color: var(--red); }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 130px;
+    }
+
+    .btn-primary, .btn-outline-primary {
       border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 8px;
     }
 
     .btn-primary {
-      background: #274472;
-      border-color: #274472;
+      background: var(--blue);
+      border-color: var(--blue);
     }
 
     .btn-outline-primary {
-      color: #274472;
+      color: var(--blue);
       border-color: #cbd8ea;
       background: #fff;
     }
 
-    .detail-panel {
-      border: 1px solid #e2e8f2;
-      border-radius: 10px;
-      background: #fcfdff;
-      padding: 10px 12px;
-      margin-top: 8px;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px 14px;
-      font-size: 0.8rem;
-      color: #4f627a;
-    }
-
-    .shortlist-list {
+    .next {
+      margin-top: 10px;
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
+      justify-content: flex-end;
     }
 
-    .shortlist-item {
-      border: 1px solid #dbe4f1;
-      background: #f9fbff;
-      color: #2f4b70;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      padding: 4px 10px;
+    @media (max-width: 980px) {
+      .run-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .actions { min-width: 110px; }
     }
 
-    .shortlist-item.pending {
-      border-color: #e7d3d3;
-      color: #7a4343;
-      background: #fdf8f8;
-    }
-
-    @media (max-width: 820px) {
-      .summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .app-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .summary-grid {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 700px) {
+      .run-grid { grid-template-columns: 1fr; }
+      table { font-size: 0.8rem; }
+      thead { display: none; }
+      tbody tr { display: block; border-bottom: 1px solid #e1e8f1; }
+      tbody td { display: block; border-bottom: 0; padding: 8px 10px; }
+      .actions { flex-direction: row; }
     }
   </style>
 </head>
 <body>
-  <main class="app-shell">
-    <header class="app-header">
-      <div>
-        <img src="assets/bidstream-logo.svg" alt="BidStream" class="wordmark" />
-        <h1 class="page-title">Match Results</h1>
-        <p class="project-label">Project: Demo Project - Boiler Retrofit</p>
-      </div>
-      <a class="back-link" href="index.html"><i class="bi bi-arrow-left"></i> Back to Project Summary</a>
+  <main class="shell">
+    <header class="topbar">
+      <img src="assets/bidstream-logo.svg" alt="BidStream" class="wordmark" />
+      <a href="dashboard.html" class="back">All Projects</a>
     </header>
 
-    <nav class="workflow-nav" aria-label="Demo flow">
-      <a class="workflow-link" href="index.html">1. Project Summary</a>
-      <a class="workflow-link active" href="match-results.html">2. Match Results</a>
-      <a class="workflow-link" href="shortlist-review.html">3. Shortlist Review</a>
-      <a class="workflow-link" href="contract-milestones.html">4. Contract &amp; Milestones</a>
+    <section class="project-head">
+      <p class="project-eyebrow">Project Workspace</p>
+      <h1 class="project-title">Demo Project - Boiler Retrofit</h1>
+      <p class="project-sub">New York, NY · MEP package · Candidate evaluation</p>
+    </section>
+
+    <nav class="tabs" aria-label="Project modules">
+      <a class="tab" href="project-overview.html">Overview</a>
+      <a class="tab active" href="match-results.html">Matches</a>
+      <a class="tab" href="shortlist-review.html">Shortlist</a>
+      <a class="tab" href="contract-milestones.html">Contract &amp; Milestones</a>
     </nav>
 
-    <section class="card-clean">
-      <div class="card-body">
-        <div class="section-title">
-          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
-          Match Run Summary
+    <section class="card">
+      <h2 class="section-title">Match Run Snapshot</h2>
+      <div class="run-grid">
+        <div class="run-item">
+          <p class="label">Run Date</p>
+          <p class="value">2026-02-16 09:00</p>
         </div>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <div class="summary-label">Run Date</div>
-            <p class="summary-value">2026-02-16 09:00</p>
-          </div>
-          <div class="summary-item">
-            <div class="summary-label">Executed By</div>
-            <p class="summary-value">SYSTEM-MATCHING</p>
-          </div>
-          <div class="summary-item">
-            <div class="summary-label">Candidates</div>
-            <p class="summary-value">3</p>
-          </div>
-          <div class="summary-item">
-            <div class="summary-label">Scope Version</div>
-            <p class="summary-value">v1</p>
-          </div>
+        <div class="run-item">
+          <p class="label">Executed By</p>
+          <p class="value">BidStream Engine</p>
         </div>
-        <div class="note-line">
-          <strong>Compliance note:</strong> MWBE and Veteran-owned requirements are enabled for this project.
+        <div class="run-item">
+          <p class="label">Candidates</p>
+          <p class="value">3 Evaluated</p>
+        </div>
+        <div class="run-item">
+          <p class="label">Compliance</p>
+          <p class="value">MWBE + Veteran priority</p>
         </div>
       </div>
     </section>
 
-    <section class="card-clean">
-      <div class="card-body">
-        <div class="section-title">
-          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
-          Filter & Sort
-        </div>
-        <div class="controls-row">
-          <select class="form-select form-select-sm sort-control" aria-label="Sort candidates">
-            <option>Sort by Score (High to Low)</option>
-            <option>Sort by Trust (High to Low)</option>
-            <option>Sort by Certification Status</option>
+    <section class="card">
+      <h2 class="section-title">Filters &amp; Sorting</h2>
+      <div class="controls">
+        <div class="d-flex gap-2 flex-wrap">
+          <select class="control" aria-label="Sort">
+            <option>Sort by Match Score</option>
+            <option>Sort by Trust</option>
+            <option>Sort by Certification</option>
           </select>
-          <div>
-            <span class="chip chip-active">MWBE</span>
-            <span class="chip chip-active">Veteran-Owned</span>
-            <span class="chip chip-muted">DBE</span>
-          </div>
+          <select class="control" aria-label="View">
+            <option>View: All candidates</option>
+          </select>
+        </div>
+        <div class="chips">
+          <span class="chip">MWBE</span>
+          <span class="chip">Veteran-Owned</span>
+          <span class="chip muted">DBE</span>
         </div>
       </div>
     </section>
 
-    <section class="card-clean">
-      <div class="card-body">
-        <div class="section-title">
-          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
-          Candidate Comparison
-        </div>
-
-        <article class="candidate">
-          <div class="candidate-top">
-            <p class="candidate-id">ANON-0001</p>
-            <div>
-              <span class="pill">Trust 78</span>
-              <span class="pill">Match 96</span>
-            </div>
-          </div>
-          <div>
-            <span class="chip">MWBE</span>
-            <span class="chip chip-muted">Veteran-Owned</span>
-            <span class="chip chip-muted">DBE</span>
-            <span class="chip">Certification: active</span>
-          </div>
-          <div class="visibility-row">
-            <span class="visibility-label">Identity Visibility</span>
-            <select class="form-select form-select-sm visibility-select" aria-label="Identity visibility for ANON-0001">
-              <option selected>anonymous</option>
-              <option>preview</option>
-              <option>revealed</option>
-            </select>
-          </div>
-          <div class="identity-summary">
-            <strong>Visible now:</strong> Anonymous mode (anonymized candidate ID only).
-          </div>
-          <div class="candidate-meta">Diversity bonus +4 · Strong scope alignment and strong availability overlap.</div>
-          <div class="candidate-actions">
-            <button class="btn btn-primary btn-sm">Add to Shortlist</button>
-            <button class="btn btn-outline-primary btn-sm">Compare</button>
-          </div>
-        </article>
-
-        <article class="candidate">
-          <div class="candidate-top">
-            <p class="candidate-id">ANON-0002</p>
-            <div>
-              <span class="pill">Trust 65</span>
-              <span class="pill">Match 89</span>
-            </div>
-          </div>
-          <div>
-            <span class="chip chip-muted">MWBE</span>
-            <span class="chip">Veteran-Owned</span>
-            <span class="chip">DBE</span>
-            <span class="chip">Certification: active</span>
-          </div>
-          <div class="visibility-row">
-            <span class="visibility-label">Identity Visibility</span>
-            <select class="form-select form-select-sm visibility-select" aria-label="Identity visibility for ANON-0002">
-              <option>anonymous</option>
-              <option selected>preview</option>
-              <option>revealed</option>
-            </select>
-          </div>
-          <div class="identity-summary">
-            <strong>Visible now:</strong> Preview mode - Trade focus: Plumbing/HVAC, Region: NYC-MANH, Certifications: SDVOB + DBE.
-          </div>
-          <div class="candidate-meta">Diversity bonus +5 · Good scope alignment with moderate pricing alignment.</div>
-          <div class="candidate-actions">
-            <button class="btn btn-primary btn-sm">Add to Shortlist</button>
-            <button class="btn btn-outline-primary btn-sm">Compare</button>
-          </div>
-        </article>
-
-        <article class="candidate">
-          <div class="candidate-top">
-            <p class="candidate-id">ANON-0003</p>
-            <div>
-              <span class="pill">Trust 78</span>
-              <span class="pill">Match 84</span>
-            </div>
-          </div>
-          <div>
-            <span class="chip">MWBE</span>
-            <span class="chip chip-muted">Veteran-Owned</span>
-            <span class="chip chip-muted">DBE</span>
-            <span class="chip chip-muted">Certification: pending</span>
-          </div>
-          <div class="visibility-row">
-            <span class="visibility-label">Identity Visibility</span>
-            <select class="form-select form-select-sm visibility-select" aria-label="Identity visibility for ANON-0003">
-              <option>anonymous</option>
-              <option>preview</option>
-              <option selected>revealed</option>
-            </select>
-          </div>
-          <div class="identity-summary">
-            <strong>Visible now:</strong> Revealed mode - Example Subcontractor C (regional mechanical specialist).
-          </div>
-          <div class="candidate-meta">Diversity bonus +0 · Certification not active, so no diversity bonus was applied.</div>
-          <div class="candidate-actions">
-            <button class="btn btn-primary btn-sm">Add to Shortlist</button>
-            <button class="btn btn-outline-primary btn-sm">Compare</button>
-          </div>
-        </article>
-        <div class="mt-2">
-          <a href="shortlist-review.html" class="btn btn-outline-primary btn-sm">Next: Review Shortlist &amp; Selection</a>
-        </div>
+    <section class="card">
+      <h2 class="section-title">Candidate Comparison</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Score</th>
+              <th>Trust</th>
+              <th>Diversity &amp; Certification</th>
+              <th>Match Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p class="cand-id">ANON-0001</p>
+                <p class="meta">Visibility: anonymous</p>
+              </td>
+              <td>
+                <div class="score">96</div>
+                <div class="score-sub">Top-ranked</div>
+              </td>
+              <td>
+                <div class="score">78</div>
+                <div class="score-sub">Trust snapshot</div>
+              </td>
+              <td>
+                <div class="chips">
+                  <span class="chip">MWBE</span>
+                  <span class="chip muted">Veteran</span>
+                  <span class="chip">Cert: active</span>
+                </div>
+                <div class="bonus">+4 diversity bonus</div>
+              </td>
+              <td class="meta">Strong scope alignment and availability overlap.</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-primary">Add to shortlist</button>
+                  <button class="btn btn-outline-primary">Compare</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p class="cand-id">ANON-0002</p>
+                <p class="meta">Visibility: preview</p>
+              </td>
+              <td>
+                <div class="score">89</div>
+                <div class="score-sub">Strong contender</div>
+              </td>
+              <td>
+                <div class="score">65</div>
+                <div class="score-sub">Trust snapshot</div>
+              </td>
+              <td>
+                <div class="chips">
+                  <span class="chip muted">MWBE</span>
+                  <span class="chip">Veteran</span>
+                  <span class="chip">Cert: active</span>
+                </div>
+                <div class="bonus">+5 diversity bonus</div>
+              </td>
+              <td class="meta">Good technical fit with moderate pricing alignment.</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-primary">Add to shortlist</button>
+                  <button class="btn btn-outline-primary">Compare</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p class="cand-id">ANON-0003</p>
+                <p class="meta">Visibility: revealed</p>
+              </td>
+              <td>
+                <div class="score">84</div>
+                <div class="score-sub">In review</div>
+              </td>
+              <td>
+                <div class="score">78</div>
+                <div class="score-sub">Trust snapshot</div>
+              </td>
+              <td>
+                <div class="chips">
+                  <span class="chip">MWBE</span>
+                  <span class="chip muted">Veteran</span>
+                  <span class="chip muted">Cert: pending</span>
+                </div>
+                <div class="bonus none">No diversity bonus applied</div>
+              </td>
+              <td class="meta">Certification is pending, reducing compliance fit.</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-primary">Add to shortlist</button>
+                  <button class="btn btn-outline-primary">Compare</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
-
-    <section class="card-clean">
-      <div class="card-body">
-        <div class="section-title">
-          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
-          Candidate Detail (Expanded)
-        </div>
-        <div class="detail-panel">
-          <div class="detail-grid">
-            <div><strong>Candidate:</strong> ANON-0001</div>
-            <div><strong>Certification:</strong> active</div>
-            <div><strong>Scope Alignment:</strong> 0.82</div>
-            <div><strong>Availability Alignment:</strong> 0.78</div>
-            <div><strong>Pricing Alignment:</strong> 0.74</div>
-            <div><strong>Diversity Bonus:</strong> +4</div>
-            <div><strong>MWBE Flag Match:</strong> true</div>
-            <div><strong>Veteran Flag Match:</strong> false</div>
-            <div><strong>DBE Flag Match:</strong> false</div>
-            <div><strong>MWBE Bonus Applied:</strong> true</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card-clean">
-      <div class="card-body">
-        <div class="section-title">
-          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
-          Shortlist Status
-        </div>
-        <div class="shortlist-list">
-          <span class="shortlist-item">ANON-0001 · Shortlisted</span>
-          <span class="shortlist-item">ANON-0002 · Shortlisted (Backup)</span>
-          <span class="shortlist-item pending">ANON-0003 · Not yet shortlisted</span>
-        </div>
+      <div class="next">
+        <a href="shortlist-review.html" class="btn btn-outline-primary">Continue to Shortlist</a>
       </div>
     </section>
   </main>
-
-  <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
