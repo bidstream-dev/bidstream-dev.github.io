@@ -4,213 +4,385 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BidStream</title>
-  <link rel="icon" type="image/svg+xml" href="assets/bidstream-favicon.svg" />
+  <link rel="icon" type="image/png" href="assets/brand/bidstream-icon.png" />
   <link rel="stylesheet" href="css/bootstrap.min.css" />
-
   <style>
     :root {
-      --bg: #ece8e2;
-      --panel: #ffffff;
-      --ink: #16263a;
-      --muted: #5a6f88;
-      --line: #cfd9e5;
-      --blue: #274472;
-      --blue-ink: #1f3554;
+      --bg: #f5f9ff;
+      --ink: #10233f;
+      --muted: #536273;
+      --line: #d7e3f6;
+      --navy: #274472;
+      --navy-deep: #1b3456;
+      --red: #ca3232;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: radial-gradient(circle at 10% 0%, #f3efea 0%, #ece8e2 60%, #e8e4de 100%);
+      position: relative;
+      overflow-x: hidden;
+      background:
+        linear-gradient(
+          180deg,
+          #eaf2ff 0,
+          #eaf2ff 146px,
+          #f4f8ff 146px,
+          #f7fbff 100%
+        );
       color: var(--ink);
       font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    .shell {
-      max-width: 1080px;
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(2px);
+    }
+
+    body::before {
+      width: 620px;
+      height: 620px;
+      right: -210px;
+      top: 100px;
+      background: radial-gradient(circle, rgba(53, 96, 168, 0.2) 0%, rgba(53, 96, 168, 0) 72%);
+    }
+
+    body::after {
+      width: 520px;
+      height: 520px;
+      left: -210px;
+      bottom: -180px;
+      background: radial-gradient(circle, rgba(68, 154, 220, 0.16) 0%, rgba(68, 154, 220, 0) 72%);
+    }
+
+    .page {
+      max-width: 1260px;
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 28px 18px 56px;
+      padding: 30px 22px 56px;
+      display: flex;
+      flex-direction: column;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+      margin-bottom: 34px;
+      padding: 10px 0 18px;
+      background: transparent;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, #b6caea 0%, #c9daf2 54%, #b6caea 100%);
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
       gap: 12px;
-      padding: 14px 18px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--panel);
-      box-shadow: 0 2px 8px rgba(18, 39, 63, 0.05);
-      margin-bottom: 26px;
+      min-height: 44px;
     }
 
-    .wordmark {
-      height: 30px;
-      width: auto;
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      height: auto;
       display: block;
+      filter: drop-shadow(0 2px 8px rgba(16, 35, 63, 0.13));
     }
 
-    .status {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+    .brand-word {
+      margin: 0;
+      font-size: clamp(1.54rem, 2.3vw, 1.88rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.92;
     }
 
-    .hero {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: linear-gradient(160deg, #ffffff 0%, #f8fbff 100%);
-      padding: 44px 34px;
-      box-shadow: 0 2px 12px rgba(18, 39, 63, 0.06);
-      margin-bottom: 14px;
+    .brand-word .red {
+      color: #cf3636;
+    }
+
+    .brand-word .blue {
+      color: #26467a;
+    }
+
+    .top-link {
+      text-decoration: none;
+      color: #2d4f80;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      padding: 7px 12px;
+      border: 1px solid rgba(45, 79, 128, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(3px);
+    }
+
+    .top-link:hover {
+      color: #173966;
+      border-color: rgba(23, 57, 102, 0.3);
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 34px;
+      align-items: stretch;
+      margin-bottom: 34px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-grid::before {
+      content: "";
+      position: absolute;
+      inset: -26px -16px -22px -24px;
+      background:
+        linear-gradient(118deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.3) 48%, rgba(255, 255, 255, 0.16) 100%);
+      border: 1px solid rgba(145, 174, 222, 0.35);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(16, 35, 63, 0.09);
+      z-index: -1;
+    }
+
+    .hero-copy {
+      align-self: center;
     }
 
     .eyebrow {
-      margin: 0 0 10px;
-      color: #4f6a8e;
-      font-size: 0.78rem;
+      margin: 0 0 12px;
+      color: #3f5f8d;
+      font-size: 0.76rem;
       font-weight: 700;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
-    .title {
-      margin: 0 0 12px;
-      max-width: 760px;
-      font-size: 2.3rem;
-      line-height: 1.16;
-      color: var(--blue-ink);
+    .hero-copy h1 {
+      margin: 0 0 16px;
+      color: var(--ink);
+      font-size: clamp(2.35rem, 6.1vw, 4.55rem);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
       font-weight: 700;
-    }
-
-    .subtitle {
-      margin: 0 0 22px;
       max-width: 760px;
-      font-size: 1.04rem;
-      color: #4b617d;
-      line-height: 1.5;
     }
 
-    .btn-primary {
-      background: var(--blue);
-      border-color: var(--blue);
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 9px 16px;
-      box-shadow: 0 4px 12px rgba(39, 68, 114, 0.22);
+    .hero-copy p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.58;
+      max-width: 710px;
     }
 
-    .strip {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--panel);
-      padding: 14px 16px;
-      box-shadow: 0 2px 8px rgba(18, 39, 63, 0.04);
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
       margin-bottom: 14px;
     }
 
-    .strip-title {
-      margin: 0 0 8px;
-      color: #576c86;
-      font-size: 0.73rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .step {
-      border: 1px solid #d4deea;
-      border-radius: 10px;
-      background: #f9fbfe;
-      padding: 9px 10px;
-      font-size: 0.79rem;
-      font-weight: 600;
-      color: #2c4568;
-      text-align: center;
-    }
-
-    .value-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .value {
-      border: 1px solid var(--line);
+    .btn-enter {
+      display: inline-block;
+      padding: 12px 20px;
       border-radius: 12px;
-      background: var(--panel);
-      padding: 14px 14px;
-    }
-
-    .value h2 {
-      margin: 0 0 5px;
-      color: #274472;
-      font-size: 0.92rem;
+      background: var(--navy);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.95rem;
       font-weight: 700;
+      border: 1px solid var(--navy);
+      box-shadow: 0 10px 24px rgba(39, 68, 114, 0.24);
     }
 
-    .value p {
+    .btn-enter:hover {
+      filter: brightness(0.96);
+    }
+
+    .sub-link {
+      text-decoration: none;
+      color: #4b6587;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .hero-side {
+      background:
+        radial-gradient(circle at 92% -8%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 44%),
+        linear-gradient(170deg, #31558d 0%, #223f67 100%);
+      border: 1px solid #274472;
+      border-radius: 20px;
+      padding: 26px 24px;
+      color: #e9f1fb;
+      box-shadow: 0 14px 32px rgba(27, 52, 86, 0.24);
+      position: relative;
+      overflow: hidden;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .hero-side::after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .side-title {
       margin: 0;
-      color: #607188;
-      font-size: 0.82rem;
-      line-height: 1.42;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #b9cae1;
     }
 
-    @media (max-width: 860px) {
-      .title { font-size: 1.9rem; }
-      .steps, .value-row { grid-template-columns: 1fr; }
-      .hero { padding: 30px 22px; }
+    .side-copy {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.45;
+      font-weight: 600;
+      color: #f1f6fc;
+      max-width: 360px;
+    }
+
+    .side-accent {
+      margin-top: 4px;
+      color: #ff9f9f;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .workflow {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 15px 2px;
+      margin-bottom: 18px;
+      color: #3f5778;
+      font-size: 0.86rem;
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .workflow .sep {
+      color: #9aabbe;
+    }
+
+    .trust {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .page {
+        padding: 20px 16px 40px;
+      }
+
+      .topbar {
+        margin-bottom: 24px;
+      }
+
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-word {
+        font-size: clamp(1.24rem, 5.3vw, 1.5rem);
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .hero-grid::before {
+        inset: -12px -2px -10px -2px;
+        border-radius: 18px;
+      }
+
+      .hero-side {
+        min-height: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="shell">
+  <main class="page">
     <header class="topbar">
-      <img src="assets/bidstream-logo.svg" alt="BidStream" class="wordmark" />
-      <div class="status">Demo Experience</div>
+      <div class="brand-lockup">
+        <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
+        <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
+      </div>
+      <a href="dashboard.html" class="top-link">Open Demo</a>
     </header>
 
-    <section class="hero">
-      <p class="eyebrow">Construction Procurement Platform</p>
-      <h1 class="title">Find, evaluate, and contract the right subcontractors with confidence.</h1>
-      <p class="subtitle">BidStream gives general contractors a clear workspace for anonymous sourcing, evidence-backed selection, and auditable handoff to contract execution.</p>
-      <a href="dashboard.html" class="btn btn-primary">Enter Demo</a>
-    </section>
-
-    <section class="strip" aria-label="Workflow">
-      <p class="strip-title">Demo Workflow</p>
-      <div class="steps">
-        <div class="step">Scope Review</div>
-        <div class="step">Match Results</div>
-        <div class="step">Shortlist</div>
-        <div class="step">Contract &amp; Milestones</div>
+    <section class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Construction Procurement Platform</p>
+        <h1>Confident subcontractor selection, from scope to contract.</h1>
+        <p>BidStream gives construction teams a clear, guided workspace to compare candidates, choose finalists, and move into contract and milestone delivery without friction.</p>
+        <div class="actions">
+          <a href="dashboard.html" class="btn-enter">Enter Demo</a>
+          <a href="dashboard.html" class="sub-link">Browse Projects</a>
+        </div>
       </div>
+
+      <aside class="hero-side" aria-label="Demo snapshot">
+        <p class="side-title">Live Demo Path</p>
+        <p class="side-copy">From project kickoff to shortlist confirmation and milestone execution in one guided flow.</p>
+        <p class="side-accent">Match quality + trust + workflow clarity</p>
+      </aside>
     </section>
 
-    <section class="value-row">
-      <article class="value">
-        <h2>Faster Subcontractor Matching</h2>
-        <p>Prioritize fit quickly with transparent score and trust context.</p>
-      </article>
-      <article class="value">
-        <h2>Controlled Anonymous Sourcing</h2>
-        <p>Keep evaluation unbiased until reveal timing is appropriate.</p>
-      </article>
-      <article class="value">
-        <h2>Auditable Contract Workflow</h2>
-        <p>Carry decisions into execution with a clean operational trail.</p>
-      </article>
+    <section class="workflow" aria-label="Workflow preview">
+      <span>Scope Review</span><span class="sep">&gt;</span>
+      <span>Matches</span><span class="sep">&gt;</span>
+      <span>Shortlist</span><span class="sep">&gt;</span>
+      <span>Contract &amp; Milestones</span>
     </section>
+
+    <p class="trust">Faster subcontractor matching · Controlled anonymous sourcing · Auditable workflow</p>
   </main>
 </body>
 </html>
