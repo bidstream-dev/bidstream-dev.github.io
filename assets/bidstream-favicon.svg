@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BidStream icon">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#274472"/>
+  <path d="M18 19h18c8 0 13 4 13 10 0 4-2 7-6 8 5 1 8 5 8 10 0 8-6 13-16 13H18V19zm14 16c4 0 6-1 6-4s-2-4-6-4h-4v8h4zm2 17c5 0 7-2 7-5s-2-5-7-5h-6v10h6z" fill="#ffffff"/>
+</svg>

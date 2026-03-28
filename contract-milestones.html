@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BidStream Contract & Milestones</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/bidstream-favicon.svg" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    :root {
+      --bs-offwhite: #f2efeb;
+      --bs-blue: #274472;
+      --bs-blue-soft: #5d7396;
+      --bs-red: #ca3232;
+      --bs-card-border: #dde4ed;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bs-offwhite);
+      color: #1f2d3d;
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    .app-shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 46px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+      padding: 12px 16px;
+      border: 1px solid #dde4ed;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(39, 68, 114, 0.04);
+    }
+
+    .wordmark {
+      height: 20px;
+      width: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      color: var(--bs-blue);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .project-label {
+      margin: 0;
+      color: #4f617a;
+      font-size: 0.88rem;
+    }
+
+    .back-link {
+      color: #395b8f;
+      font-size: 0.84rem;
+      text-decoration: none;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .back-link:hover {
+      color: #2d4a73;
+      text-decoration: underline;
+    }
+
+    .card-clean {
+      background: #ffffff;
+      border: 1px solid var(--bs-card-border);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(39, 68, 114, 0.04);
+      margin-bottom: 12px;
+    }
+
+    .card-clean .card-body {
+      padding: 14px 16px;
+    }
+
+    .workflow-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .workflow-link {
+      text-decoration: none;
+      border: 1px solid #d9e2ee;
+      background: #ffffff;
+      color: #496381;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .workflow-link:hover {
+      color: #2d4a73;
+      border-color: #cdd9e9;
+    }
+
+    .workflow-link.active {
+      background: #edf4ff;
+      border-color: #c8d9ef;
+      color: #274472;
+    }
+
+    .section-title {
+      color: var(--bs-blue);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-mark {
+      width: 16px;
+      height: 16px;
+      opacity: 0.9;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .summary-item {
+      border: 1px solid #e3e9f2;
+      border-radius: 10px;
+      background: #fcfdff;
+      padding: 8px 10px;
+    }
+
+    .summary-label {
+      color: #6b778a;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .summary-value {
+      margin: 0;
+      color: #274472;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #d7e0ed;
+      background: #f9fbfe;
+      color: #2b466f;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .chip-muted {
+      background: #f6f7f9;
+      border-color: #e2e6ec;
+      color: #667488;
+    }
+
+    .chip-red {
+      border-color: #e8caca;
+      background: #fdf8f8;
+      color: #824040;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem;
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
+    .btn-primary {
+      background: #274472;
+      border-color: #274472;
+    }
+
+    .btn-outline-primary {
+      color: #274472;
+      border-color: #cbd8ea;
+      background: #fff;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .overview-item {
+      border: 1px solid #e3e9f2;
+      border-radius: 10px;
+      background: #fcfdff;
+      padding: 8px 10px;
+    }
+
+    .overview-label {
+      color: #6b778a;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .overview-value {
+      margin: 0;
+      color: #2b446a;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .milestone-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.84rem;
+    }
+
+    .milestone-table thead th {
+      color: #607187;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      padding: 8px 8px;
+      border-bottom: 1px solid #e7edf5;
+      background: #fbfcfe;
+    }
+
+    .milestone-table tbody td {
+      padding: 9px 8px;
+      border-bottom: 1px solid #eef2f8;
+      color: #2a3f59;
+      vertical-align: middle;
+    }
+
+    .milestone-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .evidence-item {
+      border: 1px solid #e2e9f3;
+      border-radius: 10px;
+      background: #fcfdff;
+      padding: 9px 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .step-flow {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .step-pill {
+      border: 1px solid #d7e0ed;
+      background: #f9fbfe;
+      color: #2b466f;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 10px;
+    }
+
+    .step-pill.done {
+      border-color: #d1e1f4;
+      background: #eef5ff;
+    }
+
+    .step-pill.pending {
+      border-color: #e7d2d2;
+      color: #7f4343;
+      background: #fdf8f8;
+    }
+
+    .timeline-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.82rem;
+      padding: 7px 0;
+      border-bottom: 1px solid #eef2f8;
+    }
+
+    .timeline-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .timeline-type {
+      font-weight: 600;
+      color: #2a456f;
+    }
+
+    .timeline-id {
+      color: #5b6f88;
+      font-size: 0.78rem;
+      word-break: break-all;
+    }
+
+    @media (max-width: 960px) {
+      .summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .summary-grid,
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+      .milestone-table {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <img src="assets/bidstream-logo.svg" alt="BidStream" class="wordmark" />
+        <h1 class="page-title">Contract &amp; Milestones</h1>
+        <p class="project-label">Project: Demo Project - Boiler Retrofit</p>
+      </div>
+      <a class="back-link" href="shortlist-review.html"><i class="bi bi-arrow-left"></i> Back to Shortlist Review</a>
+    </header>
+
+    <nav class="workflow-nav" aria-label="Demo flow">
+      <a class="workflow-link" href="index.html">1. Project Summary</a>
+      <a class="workflow-link" href="match-results.html">2. Match Results</a>
+      <a class="workflow-link" href="shortlist-review.html">3. Shortlist Review</a>
+      <a class="workflow-link active" href="contract-milestones.html">4. Contract &amp; Milestones</a>
+    </nav>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Contract Summary
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-label">Contract ID</div>
+            <p class="summary-value">CON-0001</p>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Finalist Ref</div>
+            <p class="summary-value">ANON-0001</p>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Identity Visibility</div>
+            <p class="summary-value">revealed</p>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Contract Status</div>
+            <p class="summary-value">Draft</p>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Audit Hash</div>
+            <p class="summary-value">c7d9...89ab</p>
+          </div>
+        </div>
+        <div class="mt-2">
+          <a href="index.html" class="btn btn-outline-primary btn-sm">Workflow Complete: Return to Project Summary</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Contract Overview
+        </div>
+        <div class="overview-grid">
+          <div class="overview-item">
+            <div class="overview-label">Scope / Package</div>
+            <p class="overview-value">MEP Boiler Retrofit · PKG-MEP-01</p>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">Effective Date</div>
+            <p class="overview-value">2026-02-17</p>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">Contract Amount</div>
+            <p class="overview-value">$210,000</p>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">Readiness</div>
+            <p class="overview-value">Ready for milestone execution</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Milestones Workspace
+        </div>
+        <table class="milestone-table">
+          <thead>
+            <tr>
+              <th>Milestone</th>
+              <th>Amount</th>
+              <th>Due / Timing</th>
+              <th>Status</th>
+              <th>Approval</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mobilization</td>
+              <td>$25,000</td>
+              <td>2026-02-20</td>
+              <td><span class="chip chip-muted">Pending</span></td>
+              <td><span class="chip chip-muted">Not reviewed</span></td>
+            </tr>
+            <tr>
+              <td>Rough-In Complete</td>
+              <td>$120,000</td>
+              <td>2026-03-10</td>
+              <td><span class="chip">Submitted</span></td>
+              <td><span class="chip chip-muted">Under review</span></td>
+            </tr>
+            <tr>
+              <td>Commissioning & Closeout</td>
+              <td>$65,000</td>
+              <td>2026-03-28</td>
+              <td><span class="chip chip-muted">Pending</span></td>
+              <td><span class="chip chip-muted">Not started</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Evidence / Verification
+        </div>
+        <div class="evidence-list">
+          <div class="evidence-item">
+            <span>Pressure test report · EV-0002</span>
+            <span class="chip">Submitted</span>
+          </div>
+          <div class="evidence-item">
+            <span>Site photo set · EV-0001</span>
+            <span class="chip">Verified</span>
+          </div>
+          <div class="evidence-item">
+            <span>Commissioning checklist · EV-0011</span>
+            <span class="chip chip-muted">Pending upload</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Approval / Payout Status
+        </div>
+        <div class="step-flow">
+          <span class="step-pill done">Submitted</span>
+          <span class="step-pill done">Reviewed</span>
+          <span class="step-pill">Approved</span>
+          <span class="step-pill pending">Payout Ready</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-clean">
+      <div class="card-body">
+        <div class="section-title">
+          <img src="assets/bidstream-favicon.svg" alt="" class="icon-mark" />
+          Audit / Ledger Events
+        </div>
+        <div class="timeline-row">
+          <span class="timeline-type">MILESTONE_CREATED</span>
+          <span class="timeline-id">M1 · 2026-02-16 11:45</span>
+        </div>
+        <div class="timeline-row">
+          <span class="timeline-type">CONTRACT_CREATED</span>
+          <span class="timeline-id">CON-0001 · 2026-02-16 11:10</span>
+        </div>
+        <div class="timeline-row">
+          <span class="timeline-type">SELECTION_CREATED</span>
+          <span class="timeline-id">SEL-0001 · 2026-02-16 10:52</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
