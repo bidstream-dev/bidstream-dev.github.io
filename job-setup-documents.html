@@ -172,31 +172,59 @@
       margin-top: 12px;
     }
 
-    .compliance-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .compliance-item {
+    .compliance-summary {
       border: 1px solid #d6e3f5;
       border-radius: 12px;
       background: #f8fbff;
-      padding: 10px 11px;
+      padding: 10px;
+      margin-top: 12px;
     }
 
-    .compliance-item h3 {
-      margin: 0 0 4px;
+    .compliance-head {
+      margin: 0 0 7px;
       color: #214066;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
-    .compliance-item p {
-      margin: 0;
+    .compliance-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .compliance-chip {
+      border: 1px solid #cfe0f8;
+      border-radius: 999px;
+      background: #f6faff;
+      color: #355981;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+
+    .compliance-details {
+      margin-top: 8px;
+    }
+
+    .compliance-details summary {
+      cursor: pointer;
+      color: #355981;
+      font-size: 0.74rem;
+      font-weight: 700;
+      list-style: none;
+    }
+
+    .compliance-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .compliance-details ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
       color: #58708e;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       line-height: 1.45;
     }
 
@@ -272,6 +300,81 @@
       margin-top: 12px;
     }
 
+    .upload-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .upload-toolbar .label {
+      margin: 0;
+      color: #355981;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .phase-select {
+      border: 1px solid #d0def1;
+      border-radius: 9px;
+      background: #fff;
+      color: #345983;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 7px 9px;
+    }
+
+    .inline-note {
+      margin: 0;
+      color: #66809d;
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
+    .upload-dropzone {
+      margin-top: 10px;
+      border: 1.5px dashed #b9cfee;
+      border-radius: 12px;
+      background: #f9fcff;
+      padding: 14px 12px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .upload-dropzone.drag-over {
+      border-color: #6f94c7;
+      background: #f1f7ff;
+    }
+
+    .drop-title {
+      margin: 0 0 4px;
+      color: #274472;
+      font-size: 0.83rem;
+      font-weight: 700;
+    }
+
+    .drop-copy {
+      margin: 0 0 8px;
+      color: #5e7895;
+      font-size: 0.76rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .drop-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .drop-note {
+      margin: 0;
+      color: #7890ad;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
     .rounds {
       display: flex;
       gap: 7px;
@@ -310,6 +413,25 @@
       display: grid;
       gap: 8px;
       margin-top: 10px;
+    }
+
+    .coverage-details,
+    .brief-details {
+      margin-top: 12px;
+    }
+
+    .coverage-details summary,
+    .brief-details summary {
+      cursor: pointer;
+      color: #355981;
+      font-size: 0.76rem;
+      font-weight: 700;
+      list-style: none;
+    }
+
+    .coverage-details summary::-webkit-details-marker,
+    .brief-details summary::-webkit-details-marker {
+      display: none;
     }
 
     .view-toggle {
@@ -472,7 +594,6 @@
       .shell { padding: 20px 16px 42px; }
       .layout { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
-      .compliance-grid { grid-template-columns: 1fr; }
       .panel-grid { grid-template-columns: 1fr; }
       .matrix-row { grid-template-columns: 1fr; align-items: flex-start; }
       .next { flex-direction: column; align-items: flex-start; }
@@ -522,23 +643,23 @@
             <p class="value">Mar 05, 2026</p>
           </div>
         </div>
-        <div class="compliance-grid" aria-label="Compliance requirements">
-          <article class="compliance-item">
-            <h3>MWBE Participation</h3>
-            <p>Minimum participation target: 25% of awarded subcontract value. Validation required at shortlist stage.</p>
-          </article>
-          <article class="compliance-item">
-            <h3>Veteran-Owned Participation</h3>
-            <p>Project goal enabled. BidStream flags qualified firms and tracks documented ownership evidence.</p>
-          </article>
-          <article class="compliance-item">
-            <h3>Insurance and Safety</h3>
-            <p>GL, umbrella, and workers compensation certificates must be current before contract handoff.</p>
-          </article>
-          <article class="compliance-item">
-            <h3>Submission Readiness</h3>
-            <p>Compliance attestations and certification snapshots are required in each active upload round.</p>
-          </article>
+        <div class="compliance-summary" aria-label="Compliance requirements">
+          <p class="compliance-head">Compliance quick view</p>
+          <div class="compliance-chips">
+            <span class="compliance-chip">MWBE 25% target</span>
+            <span class="compliance-chip">Veteran goal enabled</span>
+            <span class="compliance-chip">Insurance current</span>
+            <span class="compliance-chip">Round attestations required</span>
+          </div>
+          <details class="compliance-details">
+            <summary>View full compliance requirements</summary>
+            <ul>
+              <li>Minimum MWBE participation target is 25% of awarded subcontract value, validated at shortlist review.</li>
+              <li>Veteran-owned participation goal is enabled and tracked with documented ownership evidence.</li>
+              <li>GL, umbrella, and workers compensation certificates must stay current before contract handoff.</li>
+              <li>Compliance attestations and certification snapshots are required for each active upload round.</li>
+            </ul>
+          </details>
         </div>
       </article>
 
@@ -572,52 +693,70 @@
     </section>
 
     <section class="card">
-      <h2>Round-Based Document Deposit</h2>
-      <p>Uploads are grouped by design progression to support multiple rounds (30%, 60%, 90%, 99%, 100%). BidStream infers required divisions from uploaded content and only displays divisions detected for this specific job.</p>
-      <div class="rounds" aria-label="Upload rounds">
-        <span class="round-chip">30% Concept</span>
-        <span class="round-chip active">60% Design Development</span>
-        <span class="round-chip">90% Pre-Issue</span>
-        <span class="round-chip">99% IFC Pre-Final</span>
-        <span class="round-chip">100% Issued For Construction</span>
+      <div class="upload-toolbar" aria-label="Upload controls">
+        <p class="label">Document uploads</p>
+        <select class="phase-select" aria-label="Current upload phase">
+          <option selected>60% Design Development</option>
+          <option>30% Concept</option>
+          <option>90% Pre-Issue</option>
+          <option>99% IFC Pre-Final</option>
+          <option>100% Issued For Construction</option>
+        </select>
+        <p class="inline-note">Auto-sorted by latest upload</p>
       </div>
-      <p class="round-meta">Active round owner: GC Precon Team · Round due: Feb 22, 2026 · Current package lock: Open for uploads</p>
-      <div class="upload-list">
+      <div id="uploadDropzone" class="upload-dropzone" aria-label="Drag and drop upload area">
+        <p class="drop-title">Drop files here</p>
+        <p class="drop-copy">Drag and drop drawings or specs, or browse to upload.</p>
+        <div class="drop-actions">
+          <button id="browseFilesBtn" class="btn-outline" type="button">Browse files</button>
+          <p class="drop-note">Accepted demo types: PDF, DWG ZIP, DOCX, XLSX</p>
+        </div>
+        <input id="uploadFileInput" type="file" multiple hidden />
+      </div>
+      <div id="uploadList" class="upload-list">
         <div class="upload-item">
           <div>
             <p class="file-name">Division 01-02 General Requirements Narrative.pdf</p>
-            <p class="file-meta">Round 60% · Uploaded by GC Admin · 4.3 MB · Feb 15, 2026</p>
+            <p class="file-meta">Uploaded by GC Admin · 4.3 MB · Feb 15, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
             <p class="file-name">Architectural Floor Plans + RCP Set.pdf</p>
-            <p class="file-meta">Round 60% · Uploaded by Architect Team · 22.4 MB · Feb 15, 2026</p>
+            <p class="file-meta">Uploaded by Architect Team · 22.4 MB · Feb 15, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
             <p class="file-name">Civil Utility Tie-In + Site Routing.pdf</p>
-            <p class="file-meta">Round 60% · Uploaded by Civil Consultant · 6.1 MB · Feb 16, 2026</p>
+            <p class="file-meta">Uploaded by Civil Consultant · 6.1 MB · Feb 16, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
             <p class="file-name">Fire Protection Narrative + Sprinkler Basis.pdf</p>
-            <p class="file-meta">Round 60% · Uploaded by FP Engineer · 3.4 MB · Feb 16, 2026</p>
+            <p class="file-meta">Uploaded by FP Engineer · 3.4 MB · Feb 16, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
       </div>
-      <div class="view-toggle" role="group" aria-label="Division display mode">
-        <button type="button" id="requiredOnlyBtn" class="active">Show only required divisions (0)</button>
-        <button type="button" id="showAllBtn">Show all CSI divisions (0)</button>
+      <div class="actions" aria-label="Document actions">
+        <button class="btn-outline">Upload files</button>
+        <button class="btn-outline">Replace version</button>
+        <button class="btn-outline">Create next phase</button>
+        <button class="btn-primary">Generate ingestion brief</button>
       </div>
-      <p class="hint">Default view is project-specific only. Use all-divisions mode for admin/debug checks.</p>
-      <div class="matrix" aria-label="Division coverage by round">
+      <details class="coverage-details">
+        <summary>View detected scope coverage</summary>
+        <div class="view-toggle" role="group" aria-label="Division display mode">
+          <button type="button" id="requiredOnlyBtn" class="active">Show only required divisions (0)</button>
+          <button type="button" id="showAllBtn">Show all CSI divisions (0)</button>
+        </div>
+        <p class="hint">Default view is project-specific only. Use all-divisions mode for admin/debug checks.</p>
+        <div class="matrix" aria-label="Division coverage by round">
         <div class="matrix-row">
           <div>
             <p class="matrix-division">Division 01-02 General Requirements</p>
@@ -698,18 +837,12 @@
           <span class="badge">Coverage: Not required</span>
           <span class="badge">Hidden in default view</span>
         </div>
-      </div>
-      <div class="actions" aria-label="Document actions">
-        <button class="btn-outline">Upload Files to Current Round</button>
-        <button class="btn-outline">Create Next Round (90%)</button>
-        <button class="btn-outline">Replace Document Version</button>
-        <button class="btn-primary">Generate Ingestion Brief</button>
-      </div>
+        </div>
+      </details>
     </section>
 
     <section class="card">
-      <h2>Platform Ingestion Brief</h2>
-      <p>Generated after each upload cycle to summarize what BidStream parsed, mapped, and still needs before sourcing and bid analysis.</p>
+      <h2>Ingestion Brief</h2>
       <div class="panel-grid">
         <div class="mini-panel">
           <p class="label">Files Ingested</p>
@@ -724,14 +857,17 @@
           <p class="value">91%</p>
         </div>
       </div>
-      <ul class="brief-list">
-        <li><span class="emphasis">Scope extraction complete</span> for all currently detected divisions in the active upload round.</li>
-        <li><span class="emphasis">Bid package intent identified:</span> boiler retrofit with controls integration and commissioning closeout.</li>
-        <li><span class="emphasis">Detected gaps:</span> electrical feeder schedule, structural connection details, and hydraulic calcs are missing for round 60% completeness.</li>
-        <li><span class="emphasis">Compliance cues found:</span> MWBE and veteran participation goals are recognized from front-end instructions.</li>
-        <li><span class="emphasis">Display logic:</span> only detected required divisions are shown; non-applicable divisions are hidden from this page.</li>
-        <li><span class="emphasis">Suggested next upload:</span> post missing division files, then lock round and generate bidder-facing brief.</li>
-      </ul>
+      <details class="brief-details">
+        <summary>View analysis details and gaps</summary>
+        <ul class="brief-list">
+          <li><span class="emphasis">Scope extraction complete</span> for all currently detected divisions in the active upload phase.</li>
+          <li><span class="emphasis">Bid package intent identified:</span> boiler retrofit with controls integration and commissioning closeout.</li>
+          <li><span class="emphasis">Detected gaps:</span> electrical feeder schedule, structural connection details, and hydraulic calcs are still missing.</li>
+          <li><span class="emphasis">Compliance cues found:</span> MWBE and veteran participation goals are recognized from front-end instructions.</li>
+          <li><span class="emphasis">Display logic:</span> only detected required divisions are shown; non-applicable divisions are hidden from this page.</li>
+          <li><span class="emphasis">Suggested next upload:</span> post missing division files, then lock phase and generate bidder-facing brief.</li>
+        </ul>
+      </details>
       <div class="actions" aria-label="Brief actions">
         <button class="btn-outline">Download Brief PDF</button>
         <button class="btn-outline">Share Brief with Team</button>
@@ -749,30 +885,124 @@
       var matrix = document.querySelector(".matrix");
       var requiredOnlyBtn = document.getElementById("requiredOnlyBtn");
       var showAllBtn = document.getElementById("showAllBtn");
+      var uploadDropzone = document.getElementById("uploadDropzone");
+      var browseFilesBtn = document.getElementById("browseFilesBtn");
+      var uploadFileInput = document.getElementById("uploadFileInput");
+      var uploadList = document.getElementById("uploadList");
 
-      if (!matrix || !requiredOnlyBtn || !showAllBtn) {
-        return;
+      var formatFileSize = function (size) {
+        if (size == null || Number.isNaN(Number(size))) {
+          return "Unknown size";
+        }
+        var value = Number(size);
+        if (value >= 1024 * 1024) {
+          return (value / (1024 * 1024)).toFixed(1) + " MB";
+        }
+        if (value >= 1024) {
+          return Math.round(value / 1024) + " KB";
+        }
+        return value + " B";
+      };
+
+      var formatNow = function () {
+        return new Date().toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      };
+
+      var addFilesToList = function (files) {
+        if (!uploadList || !files || !files.length) return;
+
+        Array.prototype.slice.call(files).forEach(function (file) {
+          var row = document.createElement("div");
+          row.className = "upload-item";
+
+          var info = document.createElement("div");
+          var title = document.createElement("p");
+          title.className = "file-name";
+          title.textContent = file.name || "Untitled file";
+
+          var meta = document.createElement("p");
+          meta.className = "file-meta";
+          meta.textContent =
+            "Uploaded by PM Team · " + formatFileSize(file.size) + " · " + formatNow();
+
+          info.appendChild(title);
+          info.appendChild(meta);
+
+          var status = document.createElement("span");
+          status.className = "badge";
+          status.textContent = "Uploaded";
+
+          row.appendChild(info);
+          row.appendChild(status);
+
+          uploadList.insertBefore(row, uploadList.firstChild);
+        });
+      };
+
+      var handleDrop = function (event) {
+        event.preventDefault();
+        if (uploadDropzone) {
+          uploadDropzone.classList.remove("drag-over");
+        }
+        var files = event.dataTransfer && event.dataTransfer.files;
+        addFilesToList(files);
+      };
+
+      if (uploadDropzone) {
+        ["dragenter", "dragover"].forEach(function (eventName) {
+          uploadDropzone.addEventListener(eventName, function (event) {
+            event.preventDefault();
+            uploadDropzone.classList.add("drag-over");
+          });
+        });
+
+        ["dragleave", "drop"].forEach(function (eventName) {
+          uploadDropzone.addEventListener(eventName, function () {
+            uploadDropzone.classList.remove("drag-over");
+          });
+        });
+
+        uploadDropzone.addEventListener("drop", handleDrop);
       }
 
-      var allRows = matrix.querySelectorAll(".matrix-row");
-      var optionalRows = matrix.querySelectorAll(".matrix-row.optional");
-      var requiredCount = allRows.length - optionalRows.length;
-      var allCount = allRows.length;
+      if (browseFilesBtn && uploadFileInput) {
+        browseFilesBtn.addEventListener("click", function () {
+          uploadFileInput.click();
+        });
+      }
 
-      requiredOnlyBtn.textContent = "Show only required divisions (" + requiredCount + ")";
-      showAllBtn.textContent = "Show all CSI divisions (" + allCount + ")";
+      if (uploadFileInput) {
+        uploadFileInput.addEventListener("change", function () {
+          addFilesToList(uploadFileInput.files);
+          uploadFileInput.value = "";
+        });
+      }
 
-      requiredOnlyBtn.addEventListener("click", function () {
-        matrix.classList.remove("show-all");
-        requiredOnlyBtn.classList.add("active");
-        showAllBtn.classList.remove("active");
-      });
+      if (matrix && requiredOnlyBtn && showAllBtn) {
+        var allRows = matrix.querySelectorAll(".matrix-row");
+        var optionalRows = matrix.querySelectorAll(".matrix-row.optional");
+        var requiredCount = allRows.length - optionalRows.length;
+        var allCount = allRows.length;
 
-      showAllBtn.addEventListener("click", function () {
-        matrix.classList.add("show-all");
-        showAllBtn.classList.add("active");
-        requiredOnlyBtn.classList.remove("active");
-      });
+        requiredOnlyBtn.textContent = "Show only required divisions (" + requiredCount + ")";
+        showAllBtn.textContent = "Show all CSI divisions (" + allCount + ")";
+
+        requiredOnlyBtn.addEventListener("click", function () {
+          matrix.classList.remove("show-all");
+          requiredOnlyBtn.classList.add("active");
+          showAllBtn.classList.remove("active");
+        });
+
+        showAllBtn.addEventListener("click", function () {
+          matrix.classList.add("show-all");
+          showAllBtn.classList.add("active");
+          requiredOnlyBtn.classList.remove("active");
+        });
+      }
     })();
   </script>
 </body>
