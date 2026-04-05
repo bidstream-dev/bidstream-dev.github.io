@@ -380,6 +380,77 @@
       font-weight: 600;
     }
 
+    .upload-square {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 9px;
+    }
+
+    .quick-link {
+      border: 1px solid #d6e3f5;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 10px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .quick-link:hover {
+      border-color: #b7cdec;
+      background: #f2f7ff;
+    }
+
+    .quick-title {
+      margin: 0 0 2px;
+      color: #274472;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .quick-meta {
+      margin: 0;
+      color: #66809d;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    .money-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .money-card {
+      border: 1px solid #d6e3f5;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 9px;
+    }
+
+    .money-label {
+      margin: 0 0 3px;
+      color: #607794;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    .money-value {
+      margin: 0;
+      color: #214066;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
     .rounds {
       display: flex;
       gap: 7px;
@@ -599,6 +670,7 @@
       .shell { padding: 20px 16px 42px; }
       .layout { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
+      .money-row { grid-template-columns: 1fr; }
       .panel-grid { grid-template-columns: 1fr; }
       .matrix-row { grid-template-columns: 1fr; align-items: flex-start; }
       .next { flex-direction: column; align-items: flex-start; }
@@ -616,7 +688,7 @@
     </header>
 
     <h1>Job Setup &amp; Document Uploads</h1>
-    <p class="sub">Set up the job and upload core documents. BidStream ingests the files, detects needed divisions, and flags gaps.</p>
+    <p class="sub">Upload key project files, run ingestion, and move directly into matching and contract generation.</p>
 
     <nav class="tabs" aria-label="Workflow tabs">
       <a class="tab active" href="job-setup-documents.html">Job Setup &amp; Documents</a>
@@ -628,70 +700,48 @@
 
     <section class="layout">
       <article class="card">
-        <h2>Project Setup</h2>
-        <p>Project details are captured to drive package scope, compliance requirements, and candidate scoring context.</p>
-        <div class="form-grid">
-          <div class="field">
-            <p class="label">Project Name</p>
-            <p class="value">Boiler Retrofit - Midtown Campus</p>
+        <h2>Upload Workspace</h2>
+        <div class="upload-square">
+          <div id="uploadDropzone" class="upload-dropzone" aria-label="Drag and drop upload area">
+            <p class="drop-title">Drop files here</p>
+            <p class="drop-copy">Drag and drop drawings or specs, or browse to upload.</p>
+            <div class="drop-actions">
+              <button id="browseFilesBtn" class="btn-outline" type="button">Browse files</button>
+              <p class="drop-note">Accepted demo types: PDF, DWG ZIP, DOCX, XLSX</p>
+            </div>
+            <input id="uploadFileInput" type="file" multiple hidden />
           </div>
-          <div class="field">
-            <p class="label">Location</p>
-            <p class="value">New York, NY</p>
-          </div>
-          <div class="field">
-            <p class="label">Bid Package</p>
-            <p class="value">Mechanical Retrofit</p>
-          </div>
-          <div class="field">
-            <p class="label">Bid Due Date</p>
-            <p class="value">Mar 05, 2026</p>
-          </div>
-        </div>
-        <div class="compliance-summary" aria-label="Compliance requirements">
-          <p class="compliance-head">Compliance quick view</p>
-          <div class="compliance-chips">
-            <span class="compliance-chip">MWBE 25% target</span>
-            <span class="compliance-chip">Veteran goal enabled</span>
-            <span class="compliance-chip">Insurance current</span>
-            <span class="compliance-chip">Round attestations required</span>
-          </div>
-          <details class="compliance-details">
-            <summary>View full compliance requirements</summary>
-            <ul>
-              <li>Minimum MWBE participation target is 25% of awarded subcontract value, validated at shortlist review.</li>
-              <li>Veteran-owned participation goal is enabled and tracked with documented ownership evidence.</li>
-              <li>GL, umbrella, and workers compensation certificates must stay current before contract handoff.</li>
-              <li>Compliance attestations and certification snapshots are required for each active upload round.</li>
-            </ul>
-          </details>
         </div>
       </article>
 
       <article class="card">
-        <h2>Setup Checklist</h2>
-        <p>All required setup gates should be complete before advancing to match analysis.</p>
-        <div class="upload-list">
-          <div class="upload-item">
-            <div>
-              <p class="file-name">GC job profile created</p>
-              <p class="file-meta">Owner, package, and delivery method confirmed</p>
+        <h2>Next Actions</h2>
+        <div class="quick-actions">
+          <a class="quick-link" href="#ingestion-brief">
+            <p class="quick-title">1. Generate ingestion brief</p>
+            <p class="quick-meta">Extract scope, detect divisions, and flag missing files.</p>
+          </a>
+          <a class="quick-link" href="match-results.html">
+            <p class="quick-title">2. Run matching</p>
+            <p class="quick-meta">Score bidders by fit, trust, and overlap.</p>
+          </a>
+          <a class="quick-link" href="contract-milestones.html#contracts-list">
+            <p class="quick-title">3. Generate contracts and milestones</p>
+            <p class="quick-meta">Create contract records, assign subs, and track payouts.</p>
+          </a>
+          <div class="money-row" aria-label="Dollar snapshot">
+            <div class="money-card">
+              <p class="money-label">Estimated Package Value</p>
+              <p class="money-value">$1,800,000</p>
             </div>
-            <span class="badge">Complete</span>
-          </div>
-          <div class="upload-item">
-            <div>
-              <p class="file-name">Compliance requirements selected</p>
-              <p class="file-meta">MWBE / Veteran / DBE rules attached</p>
+            <div class="money-card">
+              <p class="money-label">Contracts Generated</p>
+              <p class="money-value">$453,000</p>
             </div>
-            <span class="badge">Complete</span>
-          </div>
-          <div class="upload-item">
-            <div>
-              <p class="file-name">Invite settings configured</p>
-              <p class="file-meta">Anonymous sourcing enabled for round one</p>
+            <div class="money-card">
+              <p class="money-label">Pending Approval</p>
+              <p class="money-value">$145,000</p>
             </div>
-            <span class="badge">Complete</span>
           </div>
         </div>
       </article>
@@ -708,15 +758,6 @@
           <option>100% Issued For Construction</option>
         </select>
         <p class="inline-note">Auto-sorted by latest upload</p>
-      </div>
-      <div id="uploadDropzone" class="upload-dropzone" aria-label="Drag and drop upload area">
-        <p class="drop-title">Drop files here</p>
-        <p class="drop-copy">Drag and drop drawings or specs, or browse to upload.</p>
-        <div class="drop-actions">
-          <button id="browseFilesBtn" class="btn-outline" type="button">Browse files</button>
-          <p class="drop-note">Accepted demo types: PDF, DWG ZIP, DOCX, XLSX</p>
-        </div>
-        <input id="uploadFileInput" type="file" multiple hidden />
       </div>
       <div id="uploadList" class="upload-list">
         <div class="upload-item">
@@ -846,7 +887,7 @@
       </details>
     </section>
 
-    <section class="card">
+    <section id="ingestion-brief" class="card">
       <h2>Ingestion Brief</h2>
       <div class="panel-grid">
         <div class="mini-panel">
@@ -876,7 +917,7 @@
       <div class="actions" aria-label="Brief actions">
         <button class="btn-outline">Download Brief PDF</button>
         <button class="btn-outline">Share Brief with Team</button>
-        <button class="btn-primary">Lock Round &amp; Proceed</button>
+        <button class="btn-primary">Lock Phase &amp; Proceed</button>
       </div>
     </section>
 
