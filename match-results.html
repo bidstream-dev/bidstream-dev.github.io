@@ -154,14 +154,15 @@
       font-weight: 700;
     }
 
-    .controls {
+    .scope-nav {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 14px;
     }
 
-    .control {
+    .scope-link {
+      text-decoration: none;
       border: 1px solid #d0def1;
       border-radius: 10px;
       background: #fff;
@@ -171,10 +172,30 @@
       padding: 8px 10px;
     }
 
+    .scope-link:hover {
+      background: #f5f9ff;
+      border-color: #c1d3eb;
+    }
+
     .list {
       display: grid;
       gap: 12px;
       margin-bottom: 16px;
+    }
+
+    .scope-section {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f9fcff;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .scope-title {
+      margin: 0 0 10px;
+      color: #1f3e67;
+      font-size: 0.95rem;
+      font-weight: 700;
     }
 
     .candidate {
@@ -184,9 +205,9 @@
       padding: 16px;
       box-shadow: 0 10px 24px rgba(18, 43, 74, 0.06);
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.95fr) auto;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 14px;
-      align-items: center;
+      align-items: start;
     }
 
     .cand-id {
@@ -266,9 +287,36 @@
 
     .actions {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      flex-wrap: wrap;
       gap: 8px;
-      align-items: flex-end;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .qualifications {
+      margin: 0;
+    }
+
+    .qualifications summary {
+      cursor: pointer;
+      color: #355981;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      list-style: none;
+    }
+
+    .qualifications summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .qualifications ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #58708e;
+      font-size: 0.8rem;
+      line-height: 1.45;
     }
 
     .btn-primary,
@@ -300,6 +348,66 @@
       justify-content: flex-end;
     }
 
+    .live-panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .live-label {
+      color: #3a5a84;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .live-input {
+      border: 1px solid #d0def1;
+      border-radius: 8px;
+      background: #fff;
+      color: #274472;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 7px 9px;
+      min-width: 180px;
+    }
+
+    .live-status {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.76rem;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .scoring-blurb {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 11px 12px;
+      margin-bottom: 12px;
+    }
+
+    .scoring-blurb h2 {
+      margin: 0 0 6px;
+      color: #1f3e67;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .scoring-blurb p {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
     @media (max-width: 980px) {
       .shell { padding: 20px 16px 42px; }
       .candidate {
@@ -324,9 +432,10 @@
     </header>
 
     <h1>Match Results</h1>
-    <p class="sub">Compare candidate fit, trust, and diversity alignment. Move top performers into shortlist with one clear action path.</p>
+    <p class="sub">Review anonymous bidders by CSI division package, compare fit and trust, then expand each profile to inspect qualifications before shortlisting.</p>
 
     <nav class="tabs" aria-label="Workflow tabs">
+      <a class="tab" href="job-setup-documents.html">Job Setup &amp; Documents</a>
       <a class="tab" href="project-overview.html">Project Summary</a>
       <a class="tab active" href="match-results.html">Match Results</a>
       <a class="tab" href="shortlist-review.html">Shortlist Review</a>
@@ -336,110 +445,530 @@
     <section class="summary-bar" aria-label="Match run summary">
       <span>Run: Feb 16, 2026 - 10:42 AM</span>
       <span>Executed By: SYSTEM-MATCHING</span>
-      <span>Candidates: 3</span>
+      <span id="summaryCandidates">Candidates: 5</span>
+      <span id="summaryEngine">Capability Engine: Proposals + Procore scope</span>
       <span>Compliance: MWBE / Veteran / DBE checks enabled</span>
     </section>
 
-    <section class="controls" aria-label="Filter and sort controls">
-      <select class="control">
-        <option>Sort: Match score</option>
-        <option>Sort: Trust snapshot</option>
-        <option>Sort: Certification status</option>
-      </select>
-      <button class="control">MWBE</button>
-      <button class="control">Veteran-Owned</button>
-      <button class="control">DBE</button>
+    <section class="live-panel" aria-label="Live match data controls">
+      <p class="live-label">Optional API Sync</p>
+      <input id="apiBaseInput" class="live-input" type="text" value="http://localhost:3000" />
+      <p class="live-label">Project ID</p>
+      <input id="projectIdInput" class="live-input" type="text" placeholder="Optional for API sync" />
+      <button id="loadLiveBtn" class="btn-outline" type="button">Sync From API (Optional)</button>
+      <p id="liveStatus" class="live-status">Instant mode active: loaded dynamic demo data locally with no backend dependency.</p>
     </section>
 
-    <section class="list" aria-label="Candidate comparison">
-      <article class="candidate">
-        <div>
-          <p class="cand-id">ANON-0001</p>
-          <p class="cand-meta">Identity visibility: anonymous · Trade focus: Mechanical systems · Region: NYC Metro</p>
-        </div>
-        <div>
-          <div class="stats">
-            <div class="stat">
-              <p class="stat-label">Match</p>
-              <p class="stat-value">96</p>
-            </div>
-            <div class="stat">
-              <p class="stat-label">Trust</p>
-              <p class="stat-value">78</p>
-            </div>
-          </div>
-          <div class="badges">
-            <span class="badge">MWBE</span>
-            <span class="badge">Certification: Active</span>
-            <span class="badge">DBE</span>
-          </div>
-          <p class="note"><span class="bonus">+4 diversity bonus</span> · Strong scope alignment and active certification support.</p>
-        </div>
-        <div class="actions">
-          <button class="btn-primary">Add to Shortlist</button>
-          <button class="btn-outline">Compare</button>
-        </div>
-      </article>
+    <section class="scoring-blurb" aria-label="Scoring explanation">
+      <h2>How Match and Trust Scores Are Graded</h2>
+      <p><strong>Match score</strong> (0-100) reflects how well a bidder aligns to the project package and required divisions, including scope overlap, capability fit, and applicable compliance bonuses. <strong>Trust score</strong> (0-100) reflects delivery confidence from profile history, certification posture, and consistency signals from submitted proposal details and supporting records.</p>
+    </section>
 
-      <article class="candidate">
-        <div>
-          <p class="cand-id">ANON-0002</p>
-          <p class="cand-meta">Identity visibility: preview · Trade focus: Retrofit labor + controls · Region: Tri-State</p>
-        </div>
-        <div>
-          <div class="stats">
-            <div class="stat">
-              <p class="stat-label">Match</p>
-              <p class="stat-value">89</p>
-            </div>
-            <div class="stat">
-              <p class="stat-label">Trust</p>
-              <p class="stat-value">65</p>
-            </div>
-          </div>
-          <div class="badges">
-            <span class="badge">Veteran-Owned</span>
-            <span class="badge">Certification: Active</span>
-          </div>
-          <p class="note"><span class="bonus">+5 diversity bonus</span> · Reliable coverage with moderate risk on schedule confidence.</p>
-        </div>
-        <div class="actions">
-          <button class="btn-primary">Add to Shortlist</button>
-          <button class="btn-outline">Compare</button>
-        </div>
-      </article>
+    <section id="scopeNav" class="scope-nav" aria-label="Scope navigation">
+      <a class="scope-link" href="#division-23">Division 23</a>
+      <a class="scope-link" href="#division-26">Division 26</a>
+      <a class="scope-link" href="#division-05">Division 05</a>
+      <a class="scope-link" href="#division-33">Division 33</a>
+    </section>
 
-      <article class="candidate">
-        <div>
-          <p class="cand-id">ANON-0003</p>
-          <p class="cand-meta">Identity visibility: revealed · Trade focus: Boiler specialty · Region: North East</p>
-        </div>
-        <div>
-          <div class="stats">
-            <div class="stat">
-              <p class="stat-label">Match</p>
-              <p class="stat-value">84</p>
-            </div>
-            <div class="stat">
-              <p class="stat-label">Trust</p>
-              <p class="stat-value">78</p>
+    <section id="candidateList" class="list" aria-label="Candidate comparison">
+      <section class="scope-section" id="division-23">
+        <h2 class="scope-title">Division 23 Package</h2>
+        <article class="candidate">
+          <div>
+            <p class="cand-id">Anonymous Bidder 01 - Division 23 Package A</p>
+            <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 21 13 Hydronic Piping · Region: NYC Metro</p>
+            <div class="actions">
+              <button class="btn-primary">Add to Shortlist</button>
+              <button class="btn-outline">Compare</button>
             </div>
           </div>
-          <div class="badges">
-            <span class="badge">MWBE</span>
-            <span class="badge">Certification: Pending</span>
+          <div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-label">Match</p>
+                <p class="stat-value">96</p>
+              </div>
+              <div class="stat">
+                <p class="stat-label">Trust</p>
+                <p class="stat-value">78</p>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge">MWBE</span>
+              <span class="badge">Certification: Active</span>
+              <span class="badge">Bonding: Confirmed</span>
+              <span class="badge">Turnkey: Div 23 + 26</span>
+            </div>
+            <details class="qualifications">
+              <summary>Qualifications</summary>
+              <ul>
+                <li>10 similar boiler retrofit projects delivered in occupied facilities.</li>
+                <li>In-house controls integration team and TAB partner included.</li>
+                <li>EMR and safety incident metrics meet project threshold.</li>
+                <li>Overlap detected against project divisions from proposal text and Procore scope sync.</li>
+              </ul>
+            </details>
+            <p class="note"><span class="bonus">+4 diversity bonus</span> · Strong scope alignment and active certification support.</p>
           </div>
-          <p class="note">Good technical fit, but no active certification bonus is applied.</p>
-        </div>
-        <div class="actions">
-          <button class="btn-outline">Review</button>
-        </div>
-      </article>
+        </article>
+        <article class="candidate">
+          <div>
+            <p class="cand-id">Anonymous Bidder 02 - Division 23 Package B</p>
+            <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 09 00 BAS and Controls · Region: Tri-State</p>
+            <div class="actions">
+              <button class="btn-primary">Add to Shortlist</button>
+              <button class="btn-outline">Compare</button>
+            </div>
+          </div>
+          <div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-label">Match</p>
+                <p class="stat-value">89</p>
+              </div>
+              <div class="stat">
+                <p class="stat-label">Trust</p>
+                <p class="stat-value">65</p>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge">Veteran-Owned</span>
+              <span class="badge">Certification: Active</span>
+              <span class="badge">Single-division fit</span>
+            </div>
+            <details class="qualifications">
+              <summary>Qualifications</summary>
+              <ul>
+                <li>Specialized in phased retrofit sequencing for occupied campuses.</li>
+                <li>Licensed controls subcontractor partner included in proposal.</li>
+                <li>Moderate schedule confidence due to current workload.</li>
+              </ul>
+            </details>
+            <p class="note"><span class="bonus">+5 diversity bonus</span> · Reliable coverage with moderate risk on schedule confidence.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="scope-section" id="division-26">
+        <h2 class="scope-title">Division 26 Package</h2>
+        <article class="candidate">
+          <div>
+            <p class="cand-id">Anonymous Bidder 03 - Division 26 Package A</p>
+            <p class="cand-meta">Identity protected · Assigned division: 26 · Primary section: 26 05 00 Common Work Results for Electrical · Region: NYC Metro</p>
+            <div class="actions">
+              <button class="btn-primary">Add to Shortlist</button>
+              <button class="btn-outline">Compare</button>
+            </div>
+          </div>
+          <div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-label">Match</p>
+                <p class="stat-value">91</p>
+              </div>
+              <div class="stat">
+                <p class="stat-label">Trust</p>
+                <p class="stat-value">74</p>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge">DBE</span>
+              <span class="badge">Certification: Active</span>
+              <span class="badge">Overlap: Div 26 only</span>
+            </div>
+            <details class="qualifications">
+              <summary>Qualifications</summary>
+              <ul>
+                <li>Performed medium-voltage tie-ins for healthcare and campus projects.</li>
+                <li>In-house commissioning staff for panel and controls verification.</li>
+                <li>Maintains required city licensing and testing documentation.</li>
+              </ul>
+            </details>
+            <p class="note">Strong electrical scope fit with high readiness for accelerated procurement.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="scope-section" id="division-05">
+        <h2 class="scope-title">Division 05 Package</h2>
+        <article class="candidate">
+          <div>
+            <p class="cand-id">Anonymous Bidder 04 - Division 05 Package A</p>
+            <p class="cand-meta">Identity protected · Assigned division: 05 · Primary section: 05 12 00 Structural Steel Framing · Region: North East</p>
+            <div class="actions">
+              <button class="btn-outline">Review</button>
+            </div>
+          </div>
+          <div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-label">Match</p>
+                <p class="stat-value">84</p>
+              </div>
+              <div class="stat">
+                <p class="stat-label">Trust</p>
+                <p class="stat-value">78</p>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge">MWBE</span>
+              <span class="badge">Certification: Pending</span>
+              <span class="badge">Overlap: Div 05 only</span>
+            </div>
+            <details class="qualifications">
+              <summary>Qualifications</summary>
+              <ul>
+                <li>Strong structural retrofit portfolio in constrained urban facilities.</li>
+                <li>Shop detailing turnaround is fast, with moderate fabrication lead risk.</li>
+                <li>Pending certification refresh flagged for review before shortlist.</li>
+              </ul>
+            </details>
+            <p class="note">Good technical fit, but active certification proof is still pending.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="scope-section" id="division-33">
+        <h2 class="scope-title">Division 33 Package</h2>
+        <article class="candidate">
+          <div>
+            <p class="cand-id">Anonymous Bidder 05 - Division 33 Package A</p>
+            <p class="cand-meta">Identity protected · Assigned division: 33 · Primary section: 33 11 00 Water Utility Distribution Piping · Region: NYC Metro</p>
+            <div class="actions">
+              <button class="btn-primary">Add to Shortlist</button>
+              <button class="btn-outline">Compare</button>
+            </div>
+          </div>
+          <div>
+            <div class="stats">
+              <div class="stat">
+                <p class="stat-label">Match</p>
+                <p class="stat-value">88</p>
+              </div>
+              <div class="stat">
+                <p class="stat-label">Trust</p>
+                <p class="stat-value">72</p>
+              </div>
+            </div>
+            <div class="badges">
+              <span class="badge">Union Workforce</span>
+              <span class="badge">Insurance: Current</span>
+              <span class="badge">Turnkey: Div 33 + 31</span>
+            </div>
+            <details class="qualifications">
+              <summary>Qualifications</summary>
+              <ul>
+                <li>Utility relocation projects delivered with utility authority coordination.</li>
+                <li>Strong record in phased site logistics and restoration sequencing.</li>
+                <li>Traffic management plan templates available for expedited permitting.</li>
+              </ul>
+            </details>
+            <p class="note">Consistent civil delivery profile with good schedule predictability.</p>
+          </div>
+        </article>
+      </section>
     </section>
 
     <div class="next">
       <a href="shortlist-review.html" class="btn-outline">Continue to Shortlist Review</a>
     </div>
   </main>
+  <script>
+    (function () {
+      var apiBaseInput = document.getElementById("apiBaseInput");
+      var projectIdInput = document.getElementById("projectIdInput");
+      var loadLiveBtn = document.getElementById("loadLiveBtn");
+      var liveStatus = document.getElementById("liveStatus");
+      var scopeNav = document.getElementById("scopeNav");
+      var candidateList = document.getElementById("candidateList");
+      var summaryCandidates = document.getElementById("summaryCandidates");
+      var summaryEngine = document.getElementById("summaryEngine");
+
+      if (!apiBaseInput || !projectIdInput || !loadLiveBtn || !liveStatus || !scopeNav || !candidateList) {
+        return;
+      }
+
+      var params = new URLSearchParams(window.location.search);
+      var prefillProjectId = params.get("projectId") || "";
+      var prefillApiBase = params.get("apiBase") || apiBaseInput.value;
+      apiBaseInput.value = prefillApiBase;
+      projectIdInput.value = prefillProjectId;
+
+      var instantCandidates = [
+        {
+          anonymized_id: "ANON-BID-001",
+          match_score: 96,
+          trust_snapshot: 78,
+          certification_status: "active",
+          capability_assessment: {
+            detected_divisions: ["23", "26"],
+            overlap_with_project_divisions: ["23", "26"],
+            overlap_count: 2,
+            turnkey_capable: true,
+            confidence_score: 0.93
+          }
+        },
+        {
+          anonymized_id: "ANON-BID-002",
+          match_score: 89,
+          trust_snapshot: 65,
+          certification_status: "active",
+          capability_assessment: {
+            detected_divisions: ["23"],
+            overlap_with_project_divisions: ["23"],
+            overlap_count: 1,
+            turnkey_capable: false,
+            confidence_score: 0.82
+          }
+        },
+        {
+          anonymized_id: "ANON-BID-003",
+          match_score: 91,
+          trust_snapshot: 74,
+          certification_status: "active",
+          capability_assessment: {
+            detected_divisions: ["26"],
+            overlap_with_project_divisions: ["26"],
+            overlap_count: 1,
+            turnkey_capable: false,
+            confidence_score: 0.87
+          }
+        },
+        {
+          anonymized_id: "ANON-BID-004",
+          match_score: 84,
+          trust_snapshot: 78,
+          certification_status: "pending",
+          capability_assessment: {
+            detected_divisions: ["05"],
+            overlap_with_project_divisions: ["05"],
+            overlap_count: 1,
+            turnkey_capable: false,
+            confidence_score: 0.8
+          }
+        },
+        {
+          anonymized_id: "ANON-BID-005",
+          match_score: 88,
+          trust_snapshot: 72,
+          certification_status: "active",
+          capability_assessment: {
+            detected_divisions: ["33", "31"],
+            overlap_with_project_divisions: ["33"],
+            overlap_count: 1,
+            turnkey_capable: true,
+            confidence_score: 0.9
+          }
+        }
+      ];
+
+      var escapeHtml = function (value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      };
+
+      var formatDivisionCode = function (code) {
+        var parsed = String(code || "").trim();
+        return parsed ? parsed.padStart(2, "0") : "Unassigned";
+      };
+
+      var getCapability = function (candidate) {
+        if (candidate.capability_assessment) return candidate.capability_assessment;
+        if (
+          candidate.match_components &&
+          candidate.match_components.capability_assessment &&
+          typeof candidate.match_components.capability_assessment === "object"
+        ) {
+          return candidate.match_components.capability_assessment;
+        }
+        return null;
+      };
+
+      var primaryDivision = function (candidate) {
+        var capability = getCapability(candidate);
+        if (capability && Array.isArray(capability.overlap_with_project_divisions) && capability.overlap_with_project_divisions.length) {
+          return formatDivisionCode(capability.overlap_with_project_divisions[0]);
+        }
+        if (capability && Array.isArray(capability.detected_divisions) && capability.detected_divisions.length) {
+          return formatDivisionCode(capability.detected_divisions[0]);
+        }
+        return "Unassigned";
+      };
+
+      var renderNavigation = function (divisionCodes) {
+        if (!divisionCodes.length) {
+          scopeNav.innerHTML = "";
+          return;
+        }
+        scopeNav.innerHTML = divisionCodes
+          .map(function (code) {
+            var divisionCode = formatDivisionCode(code);
+            return (
+              '<a class="scope-link" href="#division-' +
+              escapeHtml(divisionCode) +
+              '">Division ' +
+              escapeHtml(divisionCode) +
+              "</a>"
+            );
+          })
+          .join("");
+      };
+
+      var renderCandidateCard = function (candidate, index, divisionCode) {
+        var capability = getCapability(candidate) || {};
+        var confidence = capability.confidence_score != null ? Math.round(Number(capability.confidence_score) * 100) + "%" : "N/A";
+        var overlapList = Array.isArray(capability.overlap_with_project_divisions) ? capability.overlap_with_project_divisions.map(formatDivisionCode) : [];
+        var detectedList = Array.isArray(capability.detected_divisions) ? capability.detected_divisions.map(formatDivisionCode) : [];
+        var certificationStatus = candidate.certification_status || "unknown";
+        var candidateTitle = "Division " + divisionCode + " Bidder " + String(index + 1).padStart(2, "0");
+        var turnkeyBadge = capability.turnkey_capable ? "Turnkey-capable" : "Single-division fit";
+        var overlapBadge = overlapList.length
+          ? "Overlap: Div " + overlapList.join(", ")
+          : "Overlap: none detected";
+
+        return (
+          '<article class="candidate">' +
+            "<div>" +
+              '<p class="cand-id">' + escapeHtml(candidateTitle) + "</p>" +
+              '<p class="cand-meta">Identity protected · Candidate ref: ' + escapeHtml(candidate.anonymized_id || "N/A") + "</p>" +
+              '<div class="actions">' +
+                '<button class="btn-primary">Add to Shortlist</button>' +
+                '<button class="btn-outline">Compare</button>' +
+              "</div>" +
+            "</div>" +
+            "<div>" +
+              '<div class="stats">' +
+                '<div class="stat"><p class="stat-label">Match</p><p class="stat-value">' + escapeHtml(candidate.match_score != null ? candidate.match_score : "N/A") + "</p></div>" +
+                '<div class="stat"><p class="stat-label">Trust</p><p class="stat-value">' + escapeHtml(candidate.trust_snapshot != null ? candidate.trust_snapshot : "N/A") + "</p></div>" +
+              "</div>" +
+              '<div class="badges">' +
+                '<span class="badge">' + escapeHtml(turnkeyBadge) + "</span>" +
+                '<span class="badge">' + escapeHtml(overlapBadge) + "</span>" +
+                '<span class="badge">Cert: ' + escapeHtml(certificationStatus) + "</span>" +
+              "</div>" +
+              '<details class="qualifications">' +
+                "<summary>Qualifications</summary>" +
+                "<ul>" +
+                  "<li>Detected divisions: " + escapeHtml(detectedList.join(", ") || "none") + "</li>" +
+                  "<li>Project overlap count: " + escapeHtml(String(capability.overlap_count || 0)) + "</li>" +
+                  "<li>Inference confidence: " + escapeHtml(confidence) + "</li>" +
+                "</ul>" +
+              "</details>" +
+              '<p class="note">Capability inference uses proposal/profile signals and project scope imports (including Procore division data when available).</p>' +
+            "</div>" +
+          "</article>"
+        );
+      };
+
+      var renderFromCandidates = function (candidates) {
+        var grouped = {};
+        candidates.forEach(function (candidate) {
+          var division = primaryDivision(candidate);
+          if (!grouped[division]) grouped[division] = [];
+          grouped[division].push(candidate);
+        });
+
+        var divisionCodes = Object.keys(grouped).sort();
+        renderNavigation(divisionCodes);
+
+        if (!divisionCodes.length) {
+          candidateList.innerHTML = '<section class="scope-section"><h2 class="scope-title">No candidates found</h2></section>';
+          return;
+        }
+
+        candidateList.innerHTML = divisionCodes
+          .map(function (divisionCode) {
+            var cards = grouped[divisionCode]
+              .map(function (candidate, index) {
+                return renderCandidateCard(candidate, index, divisionCode);
+              })
+              .join("");
+
+            return (
+              '<section class="scope-section" id="division-' +
+              escapeHtml(divisionCode) +
+              '">' +
+                '<h2 class="scope-title">Division ' + escapeHtml(divisionCode) + " Package</h2>" +
+                cards +
+              "</section>"
+            );
+          })
+          .join("");
+      };
+
+      var updateSummary = function (candidates) {
+        if (!summaryCandidates || !summaryEngine) return;
+        var turnkeyCount = candidates.filter(function (candidate) {
+          var capability = getCapability(candidate) || {};
+          return Boolean(capability.turnkey_capable);
+        }).length;
+        var overlapCount = candidates.filter(function (candidate) {
+          var capability = getCapability(candidate) || {};
+          return Number(capability.overlap_count || 0) > 1;
+        }).length;
+
+        summaryCandidates.textContent = "Candidates: " + candidates.length;
+        summaryEngine.textContent =
+          "Capability Engine: " + turnkeyCount + " turnkey, " + overlapCount + " overlapping";
+      };
+
+      var loadLiveMatches = async function () {
+        var apiBase = apiBaseInput.value.trim().replace(/\/+$/, "");
+        var projectId = projectIdInput.value.trim();
+        if (!apiBase || !projectId) {
+          liveStatus.textContent = "Enter both API base and project ID.";
+          return;
+        }
+
+        liveStatus.textContent = "Loading live match data...";
+
+        try {
+          var candidatesResponse = await fetch(apiBase + "/projects/" + encodeURIComponent(projectId) + "/candidates");
+          if (!candidatesResponse.ok) {
+            throw new Error("Candidates request failed with status " + candidatesResponse.status);
+          }
+          var candidatesData = await candidatesResponse.json();
+          if (!Array.isArray(candidatesData)) {
+            throw new Error("Unexpected candidates response format.");
+          }
+
+          var capabilityResponse = await fetch(
+            apiBase + "/projects/" + encodeURIComponent(projectId) + "/capability-analysis"
+          );
+          if (!capabilityResponse.ok) {
+            throw new Error("Capability analysis request failed with status " + capabilityResponse.status);
+          }
+          var capabilityPayload = await capabilityResponse.json();
+          var capabilityData = capabilityPayload && capabilityPayload.data ? capabilityPayload.data : null;
+
+          renderFromCandidates(candidatesData);
+          updateSummary(candidatesData);
+          if (summaryEngine && capabilityData) {
+            summaryEngine.textContent =
+              "Capability Engine: " +
+              capabilityData.turnkeyCandidateCount +
+              " turnkey, " +
+              capabilityData.overlappingDivisionCandidateCount +
+              " overlapping";
+          }
+          liveStatus.textContent = "Live data loaded for project " + projectId + ".";
+        } catch (err) {
+          liveStatus.textContent = "Live load failed: " + err.message;
+        }
+      };
+
+      renderFromCandidates(instantCandidates);
+      updateSummary(instantCandidates);
+      loadLiveBtn.addEventListener("click", loadLiveMatches);
+      if (prefillProjectId) {
+        loadLiveMatches();
+      }
+    })();
+  </script>
 </body>
 </html>

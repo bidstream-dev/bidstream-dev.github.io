@@ -153,7 +153,7 @@
       font-weight: 700;
     }
 
-    .overview {
+    .contracts-summary {
       border: 1px solid var(--card-line);
       background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
       border-radius: 16px;
@@ -162,25 +162,110 @@
       margin-bottom: 14px;
     }
 
-    .overview p {
+    .contracts-summary p {
       margin: 0;
       color: #58708e;
       font-size: 0.86rem;
       line-height: 1.55;
     }
 
-    .table-shell {
+    .contract-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .contract-item {
       border: 1px solid var(--card-line);
       background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
       border-radius: 16px;
       box-shadow: 0 10px 24px rgba(18, 43, 74, 0.06);
       overflow: hidden;
-      margin-bottom: 14px;
+    }
+
+    .contract-item summary {
+      list-style: none;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+    }
+
+    .contract-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .contract-title {
+      margin: 0;
+      color: #1f3e67;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .contract-sub {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.79rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .contract-meta {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .expand-pill {
+      border: 1px solid #cfe0f8;
+      border-radius: 999px;
+      background: #f6faff;
+      color: #355981;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 9px;
+      white-space: nowrap;
+    }
+
+    .contract-content {
+      border-top: 1px solid #deebf9;
+      padding: 12px 14px 14px;
+    }
+
+    .contract-kv {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mini {
+      border: 1px solid #d6e3f5;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 7px 9px;
+      color: #355981;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .contract-note {
+      margin: 0 0 10px;
+      color: #58708e;
+      font-size: 0.82rem;
+      line-height: 1.45;
     }
 
     .table-scroll {
       width: 100%;
       overflow-x: auto;
+      border: 1px solid #e2ecfa;
+      border-radius: 12px;
+      background: #fff;
     }
 
     table {
@@ -325,6 +410,7 @@
     <p class="sub">Track contract readiness, milestone approval, and payout progress in one operational workspace.</p>
 
     <nav class="tabs" aria-label="Workflow tabs">
+      <a class="tab" href="job-setup-documents.html">Job Setup &amp; Documents</a>
       <a class="tab" href="project-overview.html">Project Summary</a>
       <a class="tab" href="match-results.html">Match Results</a>
       <a class="tab" href="shortlist-review.html">Shortlist Review</a>
@@ -332,53 +418,181 @@
     </nav>
 
     <section class="summary-bar" aria-label="Contract summary">
-      <span>Contract: f8d6d272-5216-4cf4-a718-89863c459902</span>
-      <span>Selected Finalist: ANON-0001</span>
-      <span>Identity Visibility: Revealed</span>
-      <span>Status: Draft</span>
+      <span>Contracts: 3</span>
+      <span>Primary Status: 1 Draft · 1 In Review · 1 Executing</span>
+      <span>Subcontractors: 3 assigned</span>
+      <span>Open Milestones: 5</span>
     </section>
 
-    <section class="overview">
-      <p>Package scope covers boiler replacement, controls integration, and commissioning. Effective date is Feb 20, 2026. Contract amount is $210,000 pending final legal sign-off.</p>
+    <section class="contracts-summary">
+      <p>Choose a contract below to view details. Contract titles are shortened for readability, each contract clearly shows its subcontractor, and click-to-expand reveals milestones, terms, and audit details.</p>
     </section>
 
-    <section class="table-shell" aria-label="Milestones workspace">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Milestone</th>
-              <th>Amount</th>
-              <th>Due</th>
-              <th>Status</th>
-              <th>Approval</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Mobilization</td>
-              <td>$25,000</td>
-              <td>2026-02-20</td>
-              <td><span class="badge">Pending</span></td>
-              <td><span class="badge">Submitted</span></td>
-            </tr>
-            <tr>
-              <td>Rough-In Complete</td>
-              <td>$120,000</td>
-              <td>2026-03-10</td>
-              <td><span class="badge">In Review</span></td>
-              <td><span class="badge">Reviewed</span></td>
-            </tr>
-            <tr>
-              <td>Commissioning &amp; Closeout</td>
-              <td>$65,000</td>
-              <td>2026-03-28</td>
-              <td><span class="badge">Pending</span></td>
-              <td><span class="badge">Not Started</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="contract-list" aria-label="Contract list">
+      <details class="contract-item" open>
+        <summary>
+          <div>
+            <p class="contract-title">C-231 · Division 23 HVAC Retrofit Package</p>
+            <p class="contract-sub">Subcontractor: Division 23 Bidder 01 (identity revealed)</p>
+          </div>
+          <p class="contract-meta">Amount: $210,000 · Status: Draft</p>
+          <span class="expand-pill">Click for details</span>
+        </summary>
+        <div class="contract-content">
+          <div class="contract-kv">
+            <span class="mini">Effective: Feb 20, 2026</span>
+            <span class="mini">Owner ref: HVAC-RFQ-23A</span>
+            <span class="mini">Contract hash: f8d6...5902</span>
+          </div>
+          <p class="contract-note">Scope includes boiler replacement, controls integration, and commissioning deliverables for the Division 23 package.</p>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Milestone</th>
+                  <th>Amount</th>
+                  <th>Due</th>
+                  <th>Status</th>
+                  <th>Approval</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mobilization</td>
+                  <td>$25,000</td>
+                  <td>2026-02-20</td>
+                  <td><span class="badge">Pending</span></td>
+                  <td><span class="badge">Submitted</span></td>
+                </tr>
+                <tr>
+                  <td>Rough-In Complete</td>
+                  <td>$120,000</td>
+                  <td>2026-03-10</td>
+                  <td><span class="badge">In Review</span></td>
+                  <td><span class="badge">Reviewed</span></td>
+                </tr>
+                <tr>
+                  <td>Commissioning &amp; Closeout</td>
+                  <td>$65,000</td>
+                  <td>2026-03-28</td>
+                  <td><span class="badge">Pending</span></td>
+                  <td><span class="badge">Not Started</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      <details class="contract-item">
+        <summary>
+          <div>
+            <p class="contract-title">C-261 · Division 26 Electrical Distribution Package</p>
+            <p class="contract-sub">Subcontractor: Division 26 Bidder 03 (identity revealed)</p>
+          </div>
+          <p class="contract-meta">Amount: $145,000 · Status: In Review</p>
+          <span class="expand-pill">Click for details</span>
+        </summary>
+        <div class="contract-content">
+          <div class="contract-kv">
+            <span class="mini">Effective: Feb 24, 2026</span>
+            <span class="mini">Owner ref: ELEC-RFQ-26B</span>
+            <span class="mini">Contract hash: 9bc1...7a41</span>
+          </div>
+          <p class="contract-note">Scope includes feeder updates, panel upgrades, and commissioning support for Division 26 requirements.</p>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Milestone</th>
+                  <th>Amount</th>
+                  <th>Due</th>
+                  <th>Status</th>
+                  <th>Approval</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Material Submittals</td>
+                  <td>$20,000</td>
+                  <td>2026-02-27</td>
+                  <td><span class="badge">In Review</span></td>
+                  <td><span class="badge">Reviewed</span></td>
+                </tr>
+                <tr>
+                  <td>Feeder Installation</td>
+                  <td>$85,000</td>
+                  <td>2026-03-15</td>
+                  <td><span class="badge">Pending</span></td>
+                  <td><span class="badge">Not Started</span></td>
+                </tr>
+                <tr>
+                  <td>Final Testing</td>
+                  <td>$40,000</td>
+                  <td>2026-03-30</td>
+                  <td><span class="badge">Pending</span></td>
+                  <td><span class="badge">Not Started</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      <details class="contract-item">
+        <summary>
+          <div>
+            <p class="contract-title">C-331 · Division 33 Utility Tie-In Package</p>
+            <p class="contract-sub">Subcontractor: Division 33 Bidder 05 (identity revealed)</p>
+          </div>
+          <p class="contract-meta">Amount: $98,000 · Status: Executing</p>
+          <span class="expand-pill">Click for details</span>
+        </summary>
+        <div class="contract-content">
+          <div class="contract-kv">
+            <span class="mini">Effective: Feb 18, 2026</span>
+            <span class="mini">Owner ref: UTIL-RFQ-33A</span>
+            <span class="mini">Contract hash: 7dc4...e918</span>
+          </div>
+          <p class="contract-note">Scope includes utility routing, tie-ins, and site restoration aligned to civil and utility permits.</p>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Milestone</th>
+                  <th>Amount</th>
+                  <th>Due</th>
+                  <th>Status</th>
+                  <th>Approval</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Utility Coordination</td>
+                  <td>$18,000</td>
+                  <td>2026-02-22</td>
+                  <td><span class="badge">Approved</span></td>
+                  <td><span class="badge">Approved</span></td>
+                </tr>
+                <tr>
+                  <td>Tie-In Execution</td>
+                  <td>$56,000</td>
+                  <td>2026-03-08</td>
+                  <td><span class="badge">In Review</span></td>
+                  <td><span class="badge">Submitted</span></td>
+                </tr>
+                <tr>
+                  <td>Restoration and Closeout</td>
+                  <td>$24,000</td>
+                  <td>2026-03-25</td>
+                  <td><span class="badge">Pending</span></td>
+                  <td><span class="badge">Not Started</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
     </section>
 
     <section class="panels">
