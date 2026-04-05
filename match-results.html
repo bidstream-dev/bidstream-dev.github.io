@@ -61,6 +61,11 @@
       min-height: 44px;
     }
 
+    .brand-home {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .brand-icon {
       width: 42px;
       height: 42px;
@@ -424,15 +429,15 @@
 <body>
   <main class="shell">
     <header class="topbar">
-      <div class="brand-lockup">
+      <a href="index.html" class="brand-lockup brand-home" aria-label="Go to landing page">
         <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
         <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
-      </div>
+      </a>
       <a href="project-overview.html" class="top-link">Project Summary</a>
     </header>
 
     <h1>Match Results</h1>
-    <p class="sub">Review anonymous bidders by CSI division package, compare fit and trust, then expand each profile to inspect qualifications before shortlisting.</p>
+    <p class="sub">Review bidders by division, compare fit and trust, then open each profile for qualifications before shortlisting.</p>
 
     <nav class="tabs" aria-label="Workflow tabs">
       <a class="tab" href="job-setup-documents.html">Job Setup &amp; Documents</a>
@@ -446,7 +451,7 @@
       <span>Run: Feb 16, 2026 - 10:42 AM</span>
       <span>Executed By: SYSTEM-MATCHING</span>
       <span id="summaryCandidates">Candidates: 5</span>
-      <span id="summaryEngine">Capability Engine: Proposals + Procore scope</span>
+      <span id="summaryEngine">Capability Engine: proposal and Procore scope</span>
       <span>Compliance: MWBE / Veteran / DBE checks enabled</span>
     </section>
 
@@ -473,10 +478,10 @@
 
     <section id="candidateList" class="list" aria-label="Candidate comparison">
       <section class="scope-section" id="division-23">
-        <h2 class="scope-title">Division 23 Package</h2>
+        <h2 class="scope-title">Division 23</h2>
         <article class="candidate">
           <div>
-            <p class="cand-id">Anonymous Bidder 01 - Division 23 Package A</p>
+            <p class="cand-id">Division 23 Bidder 01</p>
             <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 21 13 Hydronic Piping · Region: NYC Metro</p>
             <div class="actions">
               <button class="btn-primary">Add to Shortlist</button>
@@ -514,7 +519,7 @@
         </article>
         <article class="candidate">
           <div>
-            <p class="cand-id">Anonymous Bidder 02 - Division 23 Package B</p>
+            <p class="cand-id">Division 23 Bidder 02</p>
             <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 09 00 BAS and Controls · Region: Tri-State</p>
             <div class="actions">
               <button class="btn-primary">Add to Shortlist</button>
@@ -551,10 +556,10 @@
       </section>
 
       <section class="scope-section" id="division-26">
-        <h2 class="scope-title">Division 26 Package</h2>
+        <h2 class="scope-title">Division 26</h2>
         <article class="candidate">
           <div>
-            <p class="cand-id">Anonymous Bidder 03 - Division 26 Package A</p>
+            <p class="cand-id">Division 26 Bidder 01</p>
             <p class="cand-meta">Identity protected · Assigned division: 26 · Primary section: 26 05 00 Common Work Results for Electrical · Region: NYC Metro</p>
             <div class="actions">
               <button class="btn-primary">Add to Shortlist</button>
@@ -591,10 +596,10 @@
       </section>
 
       <section class="scope-section" id="division-05">
-        <h2 class="scope-title">Division 05 Package</h2>
+        <h2 class="scope-title">Division 05</h2>
         <article class="candidate">
           <div>
-            <p class="cand-id">Anonymous Bidder 04 - Division 05 Package A</p>
+            <p class="cand-id">Division 05 Bidder 01</p>
             <p class="cand-meta">Identity protected · Assigned division: 05 · Primary section: 05 12 00 Structural Steel Framing · Region: North East</p>
             <div class="actions">
               <button class="btn-outline">Review</button>
@@ -630,10 +635,10 @@
       </section>
 
       <section class="scope-section" id="division-33">
-        <h2 class="scope-title">Division 33 Package</h2>
+        <h2 class="scope-title">Division 33</h2>
         <article class="candidate">
           <div>
-            <p class="cand-id">Anonymous Bidder 05 - Division 33 Package A</p>
+            <p class="cand-id">Division 33 Bidder 01</p>
             <p class="cand-meta">Identity protected · Assigned division: 33 · Primary section: 33 11 00 Water Utility Distribution Piping · Region: NYC Metro</p>
             <div class="actions">
               <button class="btn-primary">Add to Shortlist</button>
@@ -893,7 +898,7 @@
               '<section class="scope-section" id="division-' +
               escapeHtml(divisionCode) +
               '">' +
-                '<h2 class="scope-title">Division ' + escapeHtml(divisionCode) + " Package</h2>" +
+                '<h2 class="scope-title">Division ' + escapeHtml(divisionCode) + "</h2>" +
                 cards +
               "</section>"
             );

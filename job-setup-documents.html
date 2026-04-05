@@ -60,6 +60,11 @@
       min-height: 44px;
     }
 
+    .brand-home {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .brand-icon {
       width: 42px;
       height: 42px;
@@ -603,15 +608,15 @@
 <body>
   <main class="shell">
     <header class="topbar">
-      <div class="brand-lockup">
+      <a href="index.html" class="brand-lockup brand-home" aria-label="Go to landing page">
         <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
         <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
-      </div>
+      </a>
       <a href="dashboard.html" class="top-link">Projects</a>
     </header>
 
-    <h1>Job Setup &amp; Document Deposit</h1>
-    <p class="sub">Set up the project package and run round-based uploads before matching subcontractors. BidStream ingests the package and produces a brief with coverage, gaps, and next actions.</p>
+    <h1>Job Setup &amp; Document Uploads</h1>
+    <p class="sub">Set up the job and upload core documents. BidStream ingests the files, detects needed divisions, and flags gaps.</p>
 
     <nav class="tabs" aria-label="Workflow tabs">
       <a class="tab active" href="job-setup-documents.html">Job Setup &amp; Documents</a>
@@ -716,28 +721,28 @@
       <div id="uploadList" class="upload-list">
         <div class="upload-item">
           <div>
-            <p class="file-name">Division 01-02 General Requirements Narrative.pdf</p>
+            <p class="file-name">General Requirements Notes.pdf</p>
             <p class="file-meta">Uploaded by GC Admin · 4.3 MB · Feb 15, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
-            <p class="file-name">Architectural Floor Plans + RCP Set.pdf</p>
+            <p class="file-name">Floor Plans - Main.pdf</p>
             <p class="file-meta">Uploaded by Architect Team · 22.4 MB · Feb 15, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
-            <p class="file-name">Civil Utility Tie-In + Site Routing.pdf</p>
+            <p class="file-name">Site Utilities Plan.pdf</p>
             <p class="file-meta">Uploaded by Civil Consultant · 6.1 MB · Feb 16, 2026</p>
           </div>
           <span class="badge">Accepted</span>
         </div>
         <div class="upload-item">
           <div>
-            <p class="file-name">Fire Protection Narrative + Sprinkler Basis.pdf</p>
+            <p class="file-name">Fire Protection Basis.pdf</p>
             <p class="file-meta">Uploaded by FP Engineer · 3.4 MB · Feb 16, 2026</p>
           </div>
           <span class="badge">Accepted</span>
@@ -759,7 +764,7 @@
         <div class="matrix" aria-label="Division coverage by round">
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 01-02 General Requirements</p>
+            <p class="matrix-division">Div 01/02 - General</p>
             <p class="matrix-meta">1 file detected from narrative package · Last revision Feb 15, 2026</p>
           </div>
           <span class="badge">Coverage: Complete</span>
@@ -767,7 +772,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 03-05 Structural Scope</p>
+            <p class="matrix-division">Div 03/05 - Structure</p>
             <p class="matrix-meta">Detected from framing references in uploads · Last revision Feb 15, 2026</p>
           </div>
           <span class="badge">Coverage: Partial</span>
@@ -775,7 +780,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 09 Architectural Finishes</p>
+            <p class="matrix-division">Div 09 - Finishes</p>
             <p class="matrix-meta">Detected from floor and reflected ceiling plans · Last revision Feb 15, 2026</p>
           </div>
           <span class="badge">Coverage: Partial</span>
@@ -783,7 +788,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 21 Fire Suppression</p>
+            <p class="matrix-division">Div 21 - Fire</p>
             <p class="matrix-meta">1 file in current round · Last revision Feb 16, 2026</p>
           </div>
           <span class="badge">Coverage: Partial</span>
@@ -791,7 +796,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 23 Mechanical</p>
+            <p class="matrix-division">Div 23 - Mechanical</p>
             <p class="matrix-meta">1 file in current round · Last revision Feb 16, 2026</p>
           </div>
           <span class="badge">Coverage: Complete</span>
@@ -799,7 +804,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 26 Electrical</p>
+            <p class="matrix-division">Div 26 - Electrical</p>
             <p class="matrix-meta">Detected from one-line references in package notes · Last revision Feb 16, 2026</p>
           </div>
           <span class="badge">Coverage: Partial</span>
@@ -807,7 +812,7 @@
         </div>
         <div class="matrix-row">
           <div>
-            <p class="matrix-division">Division 33 Utilities</p>
+            <p class="matrix-division">Div 33 - Utilities</p>
             <p class="matrix-meta">1 file in current round · Last revision Feb 16, 2026</p>
           </div>
           <span class="badge">Coverage: Complete</span>
@@ -815,7 +820,7 @@
         </div>
         <div class="matrix-row optional">
           <div>
-            <p class="matrix-division">Division 07 Thermal and Moisture Protection</p>
+            <p class="matrix-division">Div 07 - Thermal/Moisture</p>
             <p class="matrix-meta">No upload evidence detected in current round</p>
           </div>
           <span class="badge">Coverage: Not required</span>
@@ -823,7 +828,7 @@
         </div>
         <div class="matrix-row optional">
           <div>
-            <p class="matrix-division">Division 27 Communications</p>
+            <p class="matrix-division">Div 27 - Communications</p>
             <p class="matrix-meta">No upload evidence detected in current round</p>
           </div>
           <span class="badge">Coverage: Not required</span>
@@ -831,7 +836,7 @@
         </div>
         <div class="matrix-row optional">
           <div>
-            <p class="matrix-division">Division 28 Electronic Safety and Security</p>
+            <p class="matrix-division">Div 28 - Safety/Security</p>
             <p class="matrix-meta">No upload evidence detected in current round</p>
           </div>
           <span class="badge">Coverage: Not required</span>
@@ -861,7 +866,7 @@
         <summary>View analysis details and gaps</summary>
         <ul class="brief-list">
           <li><span class="emphasis">Scope extraction complete</span> for all currently detected divisions in the active upload phase.</li>
-          <li><span class="emphasis">Bid package intent identified:</span> boiler retrofit with controls integration and commissioning closeout.</li>
+          <li><span class="emphasis">Job intent identified:</span> boiler retrofit with controls integration and commissioning closeout.</li>
           <li><span class="emphasis">Detected gaps:</span> electrical feeder schedule, structural connection details, and hydraulic calcs are still missing.</li>
           <li><span class="emphasis">Compliance cues found:</span> MWBE and veteran participation goals are recognized from front-end instructions.</li>
           <li><span class="emphasis">Display logic:</span> only detected required divisions are shown; non-applicable divisions are hidden from this page.</li>

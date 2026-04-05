@@ -60,6 +60,11 @@
       min-height: 44px;
     }
 
+    .brand-home {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .brand-icon {
       width: 42px;
       height: 42px;
@@ -399,10 +404,10 @@
 <body>
   <main class="shell">
     <header class="topbar">
-      <div class="brand-lockup">
+      <a href="index.html" class="brand-lockup brand-home" aria-label="Go to landing page">
         <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
         <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
-      </div>
+      </a>
       <a href="shortlist-review.html" class="top-link">Back to Shortlist</a>
     </header>
 
@@ -428,12 +433,12 @@
       <p>Choose a contract below to view details. Contract titles are shortened for readability, each contract clearly shows its subcontractor, and click-to-expand reveals milestones, terms, and audit details.</p>
     </section>
 
-    <section class="contract-list" aria-label="Contract list">
+    <section id="contracts-list" class="contract-list" aria-label="Contract list">
       <details class="contract-item" open>
         <summary>
           <div>
-            <p class="contract-title">C-231 · Division 23 HVAC Retrofit Package</p>
-            <p class="contract-sub">Subcontractor: Division 23 Bidder 01 (identity revealed)</p>
+            <p class="contract-title">C-231 | Division 23 Work</p>
+            <p class="contract-sub">Assigned sub: Division 23 Bidder 01</p>
           </div>
           <p class="contract-meta">Amount: $210,000 · Status: Draft</p>
           <span class="expand-pill">Click for details</span>
@@ -444,7 +449,7 @@
             <span class="mini">Owner ref: HVAC-RFQ-23A</span>
             <span class="mini">Contract hash: f8d6...5902</span>
           </div>
-          <p class="contract-note">Scope includes boiler replacement, controls integration, and commissioning deliverables for the Division 23 package.</p>
+          <p class="contract-note">Includes boiler replacement, controls integration, and commissioning deliverables.</p>
           <div class="table-scroll">
             <table>
               <thead>
@@ -487,8 +492,8 @@
       <details class="contract-item">
         <summary>
           <div>
-            <p class="contract-title">C-261 · Division 26 Electrical Distribution Package</p>
-            <p class="contract-sub">Subcontractor: Division 26 Bidder 03 (identity revealed)</p>
+            <p class="contract-title">C-261 | Division 26 Work</p>
+            <p class="contract-sub">Assigned sub: Division 26 Bidder 03</p>
           </div>
           <p class="contract-meta">Amount: $145,000 · Status: In Review</p>
           <span class="expand-pill">Click for details</span>
@@ -499,7 +504,7 @@
             <span class="mini">Owner ref: ELEC-RFQ-26B</span>
             <span class="mini">Contract hash: 9bc1...7a41</span>
           </div>
-          <p class="contract-note">Scope includes feeder updates, panel upgrades, and commissioning support for Division 26 requirements.</p>
+          <p class="contract-note">Includes feeder updates, panel upgrades, and commissioning support.</p>
           <div class="table-scroll">
             <table>
               <thead>
@@ -542,8 +547,8 @@
       <details class="contract-item">
         <summary>
           <div>
-            <p class="contract-title">C-331 · Division 33 Utility Tie-In Package</p>
-            <p class="contract-sub">Subcontractor: Division 33 Bidder 05 (identity revealed)</p>
+            <p class="contract-title">C-331 | Division 33 Work</p>
+            <p class="contract-sub">Assigned sub: Division 33 Bidder 05</p>
           </div>
           <p class="contract-meta">Amount: $98,000 · Status: Executing</p>
           <span class="expand-pill">Click for details</span>
@@ -554,7 +559,7 @@
             <span class="mini">Owner ref: UTIL-RFQ-33A</span>
             <span class="mini">Contract hash: 7dc4...e918</span>
           </div>
-          <p class="contract-note">Scope includes utility routing, tie-ins, and site restoration aligned to civil and utility permits.</p>
+          <p class="contract-note">Includes utility routing, tie-ins, and site restoration.</p>
           <div class="table-scroll">
             <table>
               <thead>
