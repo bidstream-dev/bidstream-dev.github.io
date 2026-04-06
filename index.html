@@ -102,6 +102,11 @@
       min-height: 44px;
     }
 
+    .brand-home {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .brand-icon {
       width: 42px;
       height: 42px;
@@ -125,25 +130,6 @@
 
     .brand-word .blue {
       color: #26467a;
-    }
-
-    .top-link {
-      text-decoration: none;
-      color: #2d4f80;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      padding: 7px 12px;
-      border: 1px solid rgba(45, 79, 128, 0.14);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(3px);
-    }
-
-    .top-link:hover {
-      color: #173966;
-      border-color: rgba(23, 57, 102, 0.3);
-      background: rgba(255, 255, 255, 0.75);
     }
 
     .hero-grid {
@@ -350,18 +336,17 @@
 <body>
   <main class="page">
     <header class="topbar">
-      <div class="brand-lockup">
+      <a href="index.html" class="brand-lockup brand-home" aria-label="Go to landing page">
         <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
         <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
-      </div>
-      <a href="dashboard.html" class="top-link">Open Demo</a>
+      </a>
     </header>
 
     <section class="hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">Construction Procurement Platform</p>
         <h1>Confident contract selection, from scope to contract.</h1>
-        <p>BidStream gives construction teams a clear, guided workspace to compare candidates, choose finalists, and move into contract and milestone delivery without friction.</p>
+        <p>Automatic discovery, vetting, and leveling. Lowering risk and saving time for construction teams.</p>
         <div class="actions">
           <a href="dashboard.html" class="btn-enter">Enter Demo</a>
           <a href="dashboard.html" class="sub-link">Browse Projects</a>
@@ -370,7 +355,7 @@
 
       <aside class="hero-side" aria-label="Demo snapshot">
         <p class="side-title">Live Demo Path</p>
-        <p class="side-copy">From project kickoff to shortlist confirmation and milestone execution in one guided flow.</p>
+        <p class="side-copy">Project kickoff to closeout in one guided flow.</p>
         <p class="side-accent">Match quality + trust + workflow clarity</p>
       </aside>
     </section>
