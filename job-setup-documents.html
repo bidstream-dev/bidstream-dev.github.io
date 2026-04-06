@@ -121,6 +121,26 @@
       padding-bottom: 12px;
     }
 
+    .section-header {
+      margin: 0 0 10px;
+    }
+
+    .section-eyebrow {
+      margin: 0 0 3px;
+      color: #5c7696;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .section-title {
+      margin: 0;
+      color: #1f3e67;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
     .tab {
       text-decoration: none;
       color: #2d4f80;
@@ -698,6 +718,10 @@
       <a class="tab" href="contract-milestones.html">Contract &amp; Milestones</a>
     </nav>
 
+    <div class="section-header">
+      <p class="section-eyebrow">Stage 1</p>
+      <p class="section-title">Upload Intake</p>
+    </div>
     <section class="layout">
       <article class="card">
         <h2>Upload Workspace</h2>
@@ -747,6 +771,10 @@
       </article>
     </section>
 
+    <div class="section-header">
+      <p class="section-eyebrow">Stage 2</p>
+      <p class="section-title">Uploaded File Register</p>
+    </div>
     <section class="card">
       <div class="upload-toolbar" aria-label="Upload controls">
         <p class="label">Document uploads</p>
@@ -887,6 +915,10 @@
       </details>
     </section>
 
+    <div class="section-header">
+      <p class="section-eyebrow">Stage 3</p>
+      <p class="section-title">Ingestion Output</p>
+    </div>
     <section id="ingestion-brief" class="card">
       <h2>Ingestion Brief</h2>
       <div class="panel-grid">
@@ -909,21 +941,20 @@
           <li><span class="emphasis">Scope extraction complete</span> for all currently detected divisions in the active upload phase.</li>
           <li><span class="emphasis">Job intent identified:</span> boiler retrofit with controls integration and commissioning closeout.</li>
           <li><span class="emphasis">Detected gaps:</span> electrical feeder schedule, structural connection details, and hydraulic calcs are still missing.</li>
-          <li><span class="emphasis">Supplier diversity cues found:</span> participation goals are recognized from uploaded instructions.</li>
+          <li><span class="emphasis">Compliance cues found:</span> participation goals are recognized from uploaded instructions.</li>
           <li><span class="emphasis">Display logic:</span> only detected required divisions are shown; non-applicable divisions are hidden from this page.</li>
           <li><span class="emphasis">Suggested next upload:</span> post missing division files, then lock phase and generate bidder-facing brief.</li>
         </ul>
       </details>
       <div class="actions" aria-label="Brief actions">
         <button class="btn-outline">Download Brief PDF</button>
-        <button class="btn-outline">Share Brief with Team</button>
-        <button class="btn-primary">Lock Phase &amp; Proceed</button>
+        <a href="match-results.html" class="btn-primary">Lock and Score</a>
       </div>
     </section>
 
     <div class="next">
-      <p class="next-note">Next step: review project summary and launch match analysis with this package.</p>
-      <a href="project-overview.html" class="btn-outline">Continue to Project Summary</a>
+      <p class="next-note">Next step: lock this upload set and go straight to scored match results.</p>
+      <a href="match-results.html" class="btn-outline">Go to Match Results</a>
     </div>
   </main>
   <script>
