@@ -182,6 +182,88 @@
       box-shadow: 0 10px 24px rgba(39, 68, 114, 0.2);
     }
 
+    .new-project {
+      border: 1px solid var(--card-line);
+      background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(18, 43, 74, 0.06);
+      margin-bottom: 18px;
+    }
+
+    .new-project h2 {
+      margin: 0 0 6px;
+      color: #1d3558;
+      font-size: 1.02rem;
+    }
+
+    .new-project p {
+      margin: 0 0 10px;
+      color: #58708e;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .project-form {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .project-input {
+      border: 1px solid #d0def1;
+      border-radius: 9px;
+      background: #fff;
+      color: #274472;
+      font-size: 0.79rem;
+      font-weight: 600;
+      padding: 8px 9px;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-outline {
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+      color: #274472;
+      border: 1px solid #c8d9ef;
+      background: #fff;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 9px 12px;
+    }
+
+    .new-project-status {
+      margin: 0;
+      color: #5b7391;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .project-list .item {
+      border: 1px solid #d6e3f5;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 9px 10px;
+      color: #2c4c75;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
     .progression {
       display: flex;
       flex-wrap: wrap;
@@ -198,6 +280,7 @@
 
     @media (max-width: 980px) {
       .shell { padding: 20px 16px 42px; }
+      .project-form { grid-template-columns: 1fr; }
       .hero-project {
         grid-template-columns: 1fr;
         align-items: flex-start;
@@ -217,6 +300,24 @@
 
     <h1>Projects</h1>
     <p class="sub">Open the featured project to step through job setup, document deposit, sourcing, shortlist selection, and contract execution in one clean demo flow.</p>
+
+    <section class="new-project" aria-label="Create new project">
+      <h2>Create New Project</h2>
+      <p>Add a new job with basic information to start the workflow.</p>
+      <div class="project-form">
+        <input id="npName" class="project-input" type="text" placeholder="Project name" />
+        <input id="npLocation" class="project-input" type="text" placeholder="Location" />
+        <input id="npPackage" class="project-input" type="text" placeholder="Package (general)" />
+        <input id="npValue" class="project-input" type="text" placeholder="Estimated value ($)" />
+        <input id="npOwner" class="project-input" type="text" placeholder="Owner / GC" />
+      </div>
+      <div class="project-actions">
+        <button id="createProjectBtn" class="btn-open" type="button">Create Project</button>
+        <a href="job-setup-documents.html" class="btn-outline">Open Job Setup</a>
+        <p id="newProjectStatus" class="new-project-status">No project created yet.</p>
+      </div>
+      <div id="newProjectList" class="project-list" aria-label="Created projects"></div>
+    </section>
 
     <section class="hero-project" aria-label="Featured project">
       <div>
@@ -239,5 +340,46 @@
       <span>Contract &amp; Milestones</span>
     </div>
   </main>
+  <script>
+    (function () {
+      var createBtn = document.getElementById("createProjectBtn");
+      var status = document.getElementById("newProjectStatus");
+      var list = document.getElementById("newProjectList");
+      var fields = {
+        name: document.getElementById("npName"),
+        location: document.getElementById("npLocation"),
+        pkg: document.getElementById("npPackage"),
+        value: document.getElementById("npValue"),
+        owner: document.getElementById("npOwner")
+      };
+
+      if (!createBtn || !status || !list) return;
+
+      createBtn.addEventListener("click", function () {
+        var name = fields.name && fields.name.value.trim();
+        var location = fields.location && fields.location.value.trim();
+        var pkg = fields.pkg && fields.pkg.value.trim();
+
+        if (!name || !location || !pkg) {
+          status.textContent = "Enter at least project name, location, and package.";
+          return;
+        }
+
+        var value = fields.value && fields.value.value.trim() ? fields.value.value.trim() : "TBD";
+        var owner = fields.owner && fields.owner.value.trim() ? fields.owner.value.trim() : "TBD";
+
+        var item = document.createElement("div");
+        item.className = "item";
+        item.textContent =
+          name + " · " + location + " · " + pkg + " · $" + value + " · " + owner;
+        list.insertBefore(item, list.firstChild);
+        status.textContent = "Project created. Open Job Setup to continue.";
+
+        Object.keys(fields).forEach(function (key) {
+          if (fields[key]) fields[key].value = "";
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
