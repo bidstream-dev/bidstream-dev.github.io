@@ -298,6 +298,29 @@
       white-space: nowrap;
     }
 
+    .term-note {
+      margin-top: 8px;
+    }
+
+    .term-note summary {
+      cursor: pointer;
+      color: #355981;
+      font-size: 0.74rem;
+      font-weight: 700;
+      list-style: none;
+    }
+
+    .term-note summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .term-note p {
+      margin: 8px 0 0;
+      color: #66809d;
+      font-size: 0.73rem;
+      line-height: 1.45;
+    }
+
     .next {
       display: flex;
       align-items: center;
@@ -379,13 +402,17 @@
           </div>
         </div>
         <div class="compliance-summary">
-          <p class="compliance-head">Compliance quick view</p>
+          <p class="compliance-head">Supplier diversity quick view</p>
           <div class="compliance-chips">
-            <span class="compliance-chip">MWBE 25% target</span>
-            <span class="compliance-chip">Veteran goal enabled</span>
+            <span class="compliance-chip">Diversity target 25%</span>
+            <span class="compliance-chip">Veteran inclusion on</span>
             <span class="compliance-chip">Insurance current</span>
             <span class="compliance-chip">Round attestations required</span>
           </div>
+          <details class="term-note">
+            <summary>What this includes</summary>
+            <p>DBE means Disadvantaged Business Enterprise. This view groups MWBE, veteran-owned, and DBE checks under Compliance Requirements.</p>
+          </details>
         </div>
       </article>
       <article>
@@ -402,7 +429,7 @@
           <div class="check-item">
             <div>
               <p class="check-title">Compliance selected</p>
-              <p class="check-meta">MWBE / Veteran / DBE rules attached</p>
+              <p class="check-meta">Supplier diversity rules attached</p>
             </div>
             <span class="check-badge">Complete</span>
           </div>
