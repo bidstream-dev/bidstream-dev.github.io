@@ -171,6 +171,29 @@
       margin-bottom: 14px;
     }
 
+    .contract-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .contract-link {
+      text-decoration: none;
+      border: 1px solid #d0def1;
+      border-radius: 10px;
+      background: #fff;
+      color: #345983;
+      font-size: 0.81rem;
+      font-weight: 600;
+      padding: 8px 10px;
+    }
+
+    .contract-link:hover {
+      background: #f5f9ff;
+      border-color: #c1d3eb;
+    }
+
     .contract-item {
       border: 1px solid var(--card-line);
       background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
@@ -420,11 +443,17 @@
     </section>
 
     <section class="contracts-summary">
-      <p>Choose a contract below to view details. Contract titles are shortened for readability, each contract clearly shows its subcontractor, and click-to-expand reveals milestones, terms, and audit details.</p>
+      <p>Choose a contract to view milestones, payment steps, and notes.</p>
+    </section>
+
+    <section class="contract-nav" aria-label="Contract navigation">
+      <a class="contract-link" href="#contract-23">Division 23</a>
+      <a class="contract-link" href="#contract-26">Division 26</a>
+      <a class="contract-link" href="#contract-33">Division 33</a>
     </section>
 
     <section id="contracts-list" class="contract-list" aria-label="Contract list">
-      <details class="contract-item" open>
+      <details id="contract-23" class="contract-item" open>
         <summary>
           <div>
             <p class="contract-title">C-231 | Division 23 Work</p>
@@ -479,7 +508,7 @@
         </div>
       </details>
 
-      <details class="contract-item">
+      <details id="contract-26" class="contract-item">
         <summary>
           <div>
             <p class="contract-title">C-261 | Division 26 Work</p>
@@ -534,7 +563,7 @@
         </div>
       </details>
 
-      <details class="contract-item">
+      <details id="contract-33" class="contract-item">
         <summary>
           <div>
             <p class="contract-title">C-331 | Division 33 Work</p>
@@ -600,8 +629,8 @@
         <p>Field review complete for Milestone 1. Financial review in progress for Milestone 2.</p>
       </article>
       <article class="panel">
-        <h2>Audit Snapshot</h2>
-        <p>Contract hash and milestone updates are logged for downstream ledger review.</p>
+        <h2>Activity Log</h2>
+        <p>Key contract and milestone updates are tracked here for team review.</p>
       </article>
     </section>
 
@@ -613,7 +642,7 @@
     </section>
 
     <section class="ledger">
-      <h2>Ledger Events</h2>
+      <h2>Recent Updates</h2>
       <ul>
         <li>MILESTONE_APPROVED · Rough-In Complete · Feb 16, 2026 09:41</li>
         <li>CONTRACT_CREATED · ANON-0001 selection handoff · Feb 16, 2026 09:22</li>

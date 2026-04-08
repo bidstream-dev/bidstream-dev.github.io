@@ -150,6 +150,58 @@
       font-weight: 700;
     }
 
+    .compliance-menu summary {
+      cursor: pointer;
+      list-style: none;
+      border: 1px solid #cfe0f8;
+      border-radius: 10px;
+      background: #fff;
+      color: #355981;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 10px;
+    }
+
+    .compliance-menu summary::-webkit-details-marker { display: none; }
+
+    .compliance-menu[open] summary {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .compliance-menu ul {
+      margin: 0;
+      padding: 8px 12px 10px 18px;
+      border: 1px solid #cfe0f8;
+      border-top: 0;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      background: #fff;
+      color: #58708e;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .selection-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+
+    .selection-note {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
     .scope-nav {
       display: flex;
       gap: 8px;
@@ -194,6 +246,15 @@
       font-weight: 700;
     }
 
+    .scope-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
     .candidate {
       border: 1px solid var(--card-line);
       background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
@@ -212,6 +273,21 @@
       font-size: 1.03rem;
       font-weight: 700;
       letter-spacing: 0.01em;
+    }
+
+    .candidate-top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .candidate-check {
+      width: 16px;
+      height: 16px;
+      accent-color: #2f5788;
+      cursor: pointer;
     }
 
     .cand-meta {
@@ -326,6 +402,17 @@
       text-align: center;
     }
 
+    .btn-small {
+      border-radius: 9px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 7px 10px;
+      border: 1px solid #c8d9ef;
+      background: #fff;
+      color: #274472;
+      cursor: pointer;
+    }
+
     .btn-primary {
       background: var(--blue);
       color: #fff;
@@ -342,44 +429,6 @@
     .next {
       display: flex;
       justify-content: flex-end;
-    }
-
-    .live-panel {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #f8fbff;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .live-label {
-      color: #3a5a84;
-      font-size: 0.78rem;
-      font-weight: 700;
-      margin: 0;
-    }
-
-    .live-input {
-      border: 1px solid #d0def1;
-      border-radius: 8px;
-      background: #fff;
-      color: #274472;
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 7px 9px;
-      min-width: 180px;
-    }
-
-    .live-status {
-      margin: 0;
-      color: #58708e;
-      font-size: 0.76rem;
-      font-weight: 600;
-      width: 100%;
     }
 
     .scoring-blurb {
@@ -409,6 +458,96 @@
       color: #66809d;
       font-size: 0.74rem;
       font-weight: 600;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 35, 63, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      padding: 16px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(900px, 100%);
+      max-height: 86vh;
+      overflow: auto;
+      border-radius: 14px;
+      border: 1px solid #d6e3f5;
+      background: #fff;
+      padding: 14px;
+      box-shadow: 0 20px 40px rgba(16, 35, 63, 0.22);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      margin: 0;
+      color: #1f3e67;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .proposal-block {
+      border: 1px solid #d6e3f5;
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .proposal-block p {
+      margin: 0;
+      color: #58708e;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #e2ecfa;
+      border-radius: 12px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #607794;
+      background: #f8fbff;
+      border-bottom: 1px solid #deebf9;
+      padding: 11px 12px;
+      text-align: left;
+    }
+
+    tbody td {
+      border-bottom: 1px solid #e7eef8;
+      padding: 12px;
+      color: #214066;
+      font-size: 0.82rem;
     }
 
     @media (max-width: 980px) {
@@ -445,26 +584,27 @@
     </nav>
 
     <section class="summary-bar" aria-label="Match run summary">
-      <span>Run: Feb 16, 2026 - 10:42 AM</span>
-      <span>Executed By: SYSTEM-MATCHING</span>
+      <span id="summaryUpdated">Updated: 10:42 AM</span>
       <span id="summaryCandidates">Candidates: 5</span>
-      <span id="summaryEngine">Capability Engine: proposal and Procore scope</span>
-      <span>Compliance Requirements: checks enabled</span>
+      <details class="compliance-menu">
+        <summary>Compliance Requirements</summary>
+        <ul>
+          <li>MWBE goal: 25%</li>
+          <li>Veteran-owned participation: Required</li>
+          <li>DBE documentation: Required</li>
+          <li>Insurance: Current</li>
+        </ul>
+      </details>
     </section>
 
-    <section class="live-panel" aria-label="Live match data controls">
-      <p class="live-label">Optional API Sync</p>
-      <input id="apiBaseInput" class="live-input" type="text" value="http://localhost:3000" />
-      <p class="live-label">Project ID</p>
-      <input id="projectIdInput" class="live-input" type="text" placeholder="Optional for API sync" />
-      <button id="loadLiveBtn" class="btn-outline" type="button">Sync From API (Optional)</button>
-      <p id="liveStatus" class="live-status">Instant mode active: loaded dynamic demo data locally with no backend dependency.</p>
+    <section class="selection-bar" aria-label="Shortlist selection controls">
+      <p id="selectionCount" class="selection-note">0 selected for shortlist.</p>
+      <button id="addSelectedBtn" class="btn-primary" type="button">Add Selected to Shortlist</button>
     </section>
 
     <section class="scoring-blurb" aria-label="Scoring explanation">
       <h2>How Match and Trust Scores Are Graded</h2>
       <p><strong>Match score</strong> (0-100) reflects how well a bidder aligns to the project package and required divisions, including scope overlap, capability fit, and applicable compliance bonuses. <strong>Trust score</strong> (0-100) reflects delivery confidence from profile history, certification posture, and consistency signals from submitted proposal details and supporting records.</p>
-      <p class="mini-note">DBE = Disadvantaged Business Enterprise. This screen groups MWBE, veteran-owned, and DBE criteria under Compliance Requirements.</p>
     </section>
 
     <section id="scopeNav" class="scope-nav" aria-label="Scope navigation">
@@ -474,204 +614,7 @@
       <a class="scope-link" href="#division-33">Division 33</a>
     </section>
 
-    <section id="candidateList" class="list" aria-label="Candidate comparison">
-      <section class="scope-section" id="division-23">
-        <h2 class="scope-title">Division 23</h2>
-        <article class="candidate">
-          <div>
-            <p class="cand-id">Division 23 Bidder 01</p>
-            <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 21 13 Hydronic Piping · Region: NYC Metro</p>
-            <div class="actions">
-              <button class="btn-primary">Add to Shortlist</button>
-              <button class="btn-outline">Compare</button>
-            </div>
-          </div>
-          <div>
-            <div class="stats">
-              <div class="stat">
-                <p class="stat-label">Match</p>
-                <p class="stat-value">96</p>
-              </div>
-              <div class="stat">
-                <p class="stat-label">Trust</p>
-                <p class="stat-value">78</p>
-              </div>
-            </div>
-            <div class="badges">
-              <span class="badge">MWBE</span>
-              <span class="badge">Certification: Active</span>
-              <span class="badge">Bonding: Confirmed</span>
-              <span class="badge">Turnkey: Div 23 + 26</span>
-            </div>
-            <details class="qualifications">
-              <summary>Qualifications</summary>
-              <ul>
-                <li>10 similar boiler retrofit projects delivered in occupied facilities.</li>
-                <li>In-house controls integration team and TAB partner included.</li>
-                <li>EMR and safety incident metrics meet project threshold.</li>
-                <li>Overlap detected against project divisions from proposal text and Procore scope sync.</li>
-              </ul>
-            </details>
-            <p class="note"><span class="bonus">+4 diversity bonus</span> · Strong scope alignment and active certification support.</p>
-          </div>
-        </article>
-        <article class="candidate">
-          <div>
-            <p class="cand-id">Division 23 Bidder 02</p>
-            <p class="cand-meta">Identity protected · Assigned division: 23 · Primary section: 23 09 00 BAS and Controls · Region: Tri-State</p>
-            <div class="actions">
-              <button class="btn-primary">Add to Shortlist</button>
-              <button class="btn-outline">Compare</button>
-            </div>
-          </div>
-          <div>
-            <div class="stats">
-              <div class="stat">
-                <p class="stat-label">Match</p>
-                <p class="stat-value">89</p>
-              </div>
-              <div class="stat">
-                <p class="stat-label">Trust</p>
-                <p class="stat-value">65</p>
-              </div>
-            </div>
-            <div class="badges">
-              <span class="badge">Veteran-Owned</span>
-              <span class="badge">Certification: Active</span>
-              <span class="badge">Single-division fit</span>
-            </div>
-            <details class="qualifications">
-              <summary>Qualifications</summary>
-              <ul>
-                <li>Specialized in phased retrofit sequencing for occupied campuses.</li>
-                <li>Licensed controls subcontractor partner included in proposal.</li>
-                <li>Moderate schedule confidence due to current workload.</li>
-              </ul>
-            </details>
-            <p class="note"><span class="bonus">+5 diversity bonus</span> · Reliable coverage with moderate risk on schedule confidence.</p>
-          </div>
-        </article>
-      </section>
-
-      <section class="scope-section" id="division-26">
-        <h2 class="scope-title">Division 26</h2>
-        <article class="candidate">
-          <div>
-            <p class="cand-id">Division 26 Bidder 01</p>
-            <p class="cand-meta">Identity protected · Assigned division: 26 · Primary section: 26 05 00 Common Work Results for Electrical · Region: NYC Metro</p>
-            <div class="actions">
-              <button class="btn-primary">Add to Shortlist</button>
-              <button class="btn-outline">Compare</button>
-            </div>
-          </div>
-          <div>
-            <div class="stats">
-              <div class="stat">
-                <p class="stat-label">Match</p>
-                <p class="stat-value">91</p>
-              </div>
-              <div class="stat">
-                <p class="stat-label">Trust</p>
-                <p class="stat-value">74</p>
-              </div>
-            </div>
-            <div class="badges">
-              <span class="badge">DBE</span>
-              <span class="badge">Certification: Active</span>
-              <span class="badge">Overlap: Div 26 only</span>
-            </div>
-            <details class="qualifications">
-              <summary>Qualifications</summary>
-              <ul>
-                <li>Performed medium-voltage tie-ins for healthcare and campus projects.</li>
-                <li>In-house commissioning staff for panel and controls verification.</li>
-                <li>Maintains required city licensing and testing documentation.</li>
-              </ul>
-            </details>
-            <p class="note">Strong electrical scope fit with high readiness for accelerated procurement.</p>
-          </div>
-        </article>
-      </section>
-
-      <section class="scope-section" id="division-05">
-        <h2 class="scope-title">Division 05</h2>
-        <article class="candidate">
-          <div>
-            <p class="cand-id">Division 05 Bidder 01</p>
-            <p class="cand-meta">Identity protected · Assigned division: 05 · Primary section: 05 12 00 Structural Steel Framing · Region: North East</p>
-            <div class="actions">
-              <button class="btn-outline">Review</button>
-            </div>
-          </div>
-          <div>
-            <div class="stats">
-              <div class="stat">
-                <p class="stat-label">Match</p>
-                <p class="stat-value">84</p>
-              </div>
-              <div class="stat">
-                <p class="stat-label">Trust</p>
-                <p class="stat-value">78</p>
-              </div>
-            </div>
-            <div class="badges">
-              <span class="badge">MWBE</span>
-              <span class="badge">Certification: Pending</span>
-              <span class="badge">Overlap: Div 05 only</span>
-            </div>
-            <details class="qualifications">
-              <summary>Qualifications</summary>
-              <ul>
-                <li>Strong structural retrofit portfolio in constrained urban facilities.</li>
-                <li>Shop detailing turnaround is fast, with moderate fabrication lead risk.</li>
-                <li>Pending certification refresh flagged for review before shortlist.</li>
-              </ul>
-            </details>
-            <p class="note">Good technical fit, but active certification proof is still pending.</p>
-          </div>
-        </article>
-      </section>
-
-      <section class="scope-section" id="division-33">
-        <h2 class="scope-title">Division 33</h2>
-        <article class="candidate">
-          <div>
-            <p class="cand-id">Division 33 Bidder 01</p>
-            <p class="cand-meta">Identity protected · Assigned division: 33 · Primary section: 33 11 00 Water Utility Distribution Piping · Region: NYC Metro</p>
-            <div class="actions">
-              <button class="btn-primary">Add to Shortlist</button>
-              <button class="btn-outline">Compare</button>
-            </div>
-          </div>
-          <div>
-            <div class="stats">
-              <div class="stat">
-                <p class="stat-label">Match</p>
-                <p class="stat-value">88</p>
-              </div>
-              <div class="stat">
-                <p class="stat-label">Trust</p>
-                <p class="stat-value">72</p>
-              </div>
-            </div>
-            <div class="badges">
-              <span class="badge">Union Workforce</span>
-              <span class="badge">Insurance: Current</span>
-              <span class="badge">Turnkey: Div 33 + 31</span>
-            </div>
-            <details class="qualifications">
-              <summary>Qualifications</summary>
-              <ul>
-                <li>Utility relocation projects delivered with utility authority coordination.</li>
-                <li>Strong record in phased site logistics and restoration sequencing.</li>
-                <li>Traffic management plan templates available for expedited permitting.</li>
-              </ul>
-            </details>
-            <p class="note">Consistent civil delivery profile with good schedule predictability.</p>
-          </div>
-        </article>
-      </section>
-    </section>
+    <section id="candidateList" class="list" aria-label="Candidate comparison"></section>
 
     <div class="next">
       <a href="shortlist-review.html" class="btn-outline">Continue to Shortlist Review</a>
@@ -679,28 +622,34 @@
   </main>
   <script>
     (function () {
-      var apiBaseInput = document.getElementById("apiBaseInput");
-      var projectIdInput = document.getElementById("projectIdInput");
-      var loadLiveBtn = document.getElementById("loadLiveBtn");
-      var liveStatus = document.getElementById("liveStatus");
       var scopeNav = document.getElementById("scopeNav");
       var candidateList = document.getElementById("candidateList");
       var summaryCandidates = document.getElementById("summaryCandidates");
-      var summaryEngine = document.getElementById("summaryEngine");
+      var summaryUpdated = document.getElementById("summaryUpdated");
+      var selectionCount = document.getElementById("selectionCount");
+      var addSelectedBtn = document.getElementById("addSelectedBtn");
+      var candidateModal = document.getElementById("candidateModal");
+      var candidateModalTitle = document.getElementById("candidateModalTitle");
+      var candidateModalBody = document.getElementById("candidateModalBody");
+      var candidateModalClose = document.getElementById("candidateModalClose");
+      var levelingModal = document.getElementById("levelingModal");
+      var levelingModalTitle = document.getElementById("levelingModalTitle");
+      var levelingModalBody = document.getElementById("levelingModalBody");
+      var levelingModalClose = document.getElementById("levelingModalClose");
+      var SHORTLIST_STORAGE_KEY = "bidstream_shortlist_v1";
 
-      if (!apiBaseInput || !projectIdInput || !loadLiveBtn || !liveStatus || !scopeNav || !candidateList) {
+      if (!scopeNav || !candidateList || !selectionCount || !addSelectedBtn) {
         return;
       }
-
-      var params = new URLSearchParams(window.location.search);
-      var prefillProjectId = params.get("projectId") || "";
-      var prefillApiBase = params.get("apiBase") || apiBaseInput.value;
-      apiBaseInput.value = prefillApiBase;
-      projectIdInput.value = prefillProjectId;
 
       var instantCandidates = [
         {
           anonymized_id: "ANON-BID-001",
+          revealed_name: "Northline Mechanical Services",
+          primary_trade: "Mechanical",
+          proposal_total: 211500,
+          certifications: ["MWBE", "DBE"],
+          proposal_summary: "Complete mechanical retrofit proposal with controls, startup, and closeout included.",
           match_score: 96,
           trust_snapshot: 78,
           certification_status: "active",
@@ -714,6 +663,11 @@
         },
         {
           anonymized_id: "ANON-BID-002",
+          revealed_name: "Atlas Controls Group",
+          primary_trade: "Mechanical Controls",
+          proposal_total: 224900,
+          certifications: ["Veteran-Owned"],
+          proposal_summary: "Phased controls retrofit proposal with BAS sequencing and live occupancy support.",
           match_score: 89,
           trust_snapshot: 65,
           certification_status: "active",
@@ -727,6 +681,11 @@
         },
         {
           anonymized_id: "ANON-BID-003",
+          revealed_name: "BrightGrid Electric",
+          primary_trade: "Electrical",
+          proposal_total: 147300,
+          certifications: ["DBE"],
+          proposal_summary: "Electrical feeder and panel scope with commissioning and city closeout coordination.",
           match_score: 91,
           trust_snapshot: 74,
           certification_status: "active",
@@ -740,6 +699,11 @@
         },
         {
           anonymized_id: "ANON-BID-004",
+          revealed_name: "IronCore Structural",
+          primary_trade: "Structural Steel",
+          proposal_total: 172400,
+          certifications: ["MWBE"],
+          proposal_summary: "Structural reinforcement and framing package with accelerated detailing turnaround.",
           match_score: 84,
           trust_snapshot: 78,
           certification_status: "pending",
@@ -753,6 +717,11 @@
         },
         {
           anonymized_id: "ANON-BID-005",
+          revealed_name: "CityLine Utilities",
+          primary_trade: "Utilities",
+          proposal_total: 101800,
+          certifications: ["Union Workforce"],
+          proposal_summary: "Utility tie-in proposal with restoration sequence and permit coordination.",
           match_score: 88,
           trust_snapshot: 72,
           certification_status: "active",
@@ -792,6 +761,10 @@
         return null;
       };
 
+      var selectedIds = {};
+      var renderedCandidates = [];
+      var groupedByDivision = {};
+
       var primaryDivision = function (candidate) {
         var capability = getCapability(candidate);
         if (capability && Array.isArray(capability.overlap_with_project_divisions) && capability.overlap_with_project_divisions.length) {
@@ -822,12 +795,125 @@
           .join("");
       };
 
+      var formatCurrency = function (value) {
+        if (typeof value !== "number" || !isFinite(value)) return "N/A";
+        return "$" + value.toLocaleString();
+      };
+
+      var getCandidateById = function (candidateId) {
+        for (var i = 0; i < renderedCandidates.length; i += 1) {
+          if (String(renderedCandidates[i].anonymized_id) === String(candidateId)) {
+            return renderedCandidates[i];
+          }
+        }
+        return null;
+      };
+
+      var syncSelectionLabel = function () {
+        var count = Object.keys(selectedIds).length;
+        selectionCount.textContent = count + " selected for shortlist.";
+      };
+
+      var saveToShortlist = function (candidatesToAdd) {
+        var existing = [];
+        try {
+          var raw = window.localStorage.getItem(SHORTLIST_STORAGE_KEY);
+          if (raw) existing = JSON.parse(raw);
+          if (!Array.isArray(existing)) existing = [];
+        } catch (error) {
+          existing = [];
+        }
+        var byId = {};
+        existing.forEach(function (item) {
+          byId[item.anonymized_id] = item;
+        });
+        candidatesToAdd.forEach(function (item) {
+          byId[item.anonymized_id] = item;
+        });
+        var merged = Object.keys(byId).map(function (key) { return byId[key]; });
+        window.localStorage.setItem(SHORTLIST_STORAGE_KEY, JSON.stringify(merged));
+        return merged.length;
+      };
+
+      var openModal = function (el) {
+        el.classList.add("open");
+        el.setAttribute("aria-hidden", "false");
+      };
+
+      var closeModal = function (el) {
+        el.classList.remove("open");
+        el.setAttribute("aria-hidden", "true");
+      };
+
+      var openCandidateModal = function (candidateId) {
+        var candidate = getCandidateById(candidateId);
+        if (!candidate || !candidateModal || !candidateModalBody || !candidateModalTitle) return;
+        var capability = getCapability(candidate) || {};
+        var overlap = Array.isArray(capability.overlap_with_project_divisions) ? capability.overlap_with_project_divisions.map(formatDivisionCode) : [];
+        var certs = Array.isArray(candidate.certifications) ? candidate.certifications.join(", ") : "N/A";
+        candidateModalTitle.textContent = candidate.revealed_name || candidate.anonymized_id;
+        candidateModalBody.innerHTML =
+          '<p class="line"><strong>Trade:</strong> ' + escapeHtml(candidate.primary_trade || "N/A") + "</p>" +
+          '<p class="line"><strong>Division:</strong> ' + escapeHtml(primaryDivision(candidate)) + "</p>" +
+          '<p class="line"><strong>Proposal total:</strong> ' + escapeHtml(formatCurrency(candidate.proposal_total)) + "</p>" +
+          '<p class="line"><strong>Match / Trust:</strong> ' + escapeHtml(String(candidate.match_score)) + " / " + escapeHtml(String(candidate.trust_snapshot)) + "</p>" +
+          '<p class="line"><strong>Certifications:</strong> ' + escapeHtml(certs) + "</p>" +
+          '<p class="line"><strong>Overlap divisions:</strong> ' + escapeHtml(overlap.join(", ") || "None") + "</p>" +
+          '<div class="proposal-block"><p><strong>Proposal summary:</strong> ' + escapeHtml(candidate.proposal_summary || "No proposal summary provided.") + "</p></div>";
+        openModal(candidateModal);
+      };
+
+      var openLevelingModal = function (divisionCode) {
+        var list = groupedByDivision[divisionCode] || [];
+        if (!levelingModal || !levelingModalBody || !levelingModalTitle) return;
+        levelingModalTitle.textContent = "Division " + divisionCode + " Bid Leveling Sheet";
+
+        var ranked = list.slice().sort(function (a, b) {
+          var av = typeof a.proposal_total === "number" ? a.proposal_total : Number.MAX_SAFE_INTEGER;
+          var bv = typeof b.proposal_total === "number" ? b.proposal_total : Number.MAX_SAFE_INTEGER;
+          return av - bv;
+        });
+
+        var rows = ranked.map(function (candidate, index) {
+          var score = Math.round((Number(candidate.match_score || 0) * 0.6) + (Number(candidate.trust_snapshot || 0) * 0.4));
+          return (
+            "<tr>" +
+              "<td>" + (index + 1) + "</td>" +
+              "<td>" + escapeHtml(candidate.revealed_name || candidate.anonymized_id) + "</td>" +
+              "<td>" + escapeHtml(formatCurrency(candidate.proposal_total)) + "</td>" +
+              "<td>" + escapeHtml(String(score)) + "</td>" +
+            "</tr>"
+          );
+        }).join("");
+
+        var proposalBlocks = ranked.map(function (candidate) {
+          return (
+            '<div class="proposal-block">' +
+              "<p><strong>" + escapeHtml(candidate.revealed_name || candidate.anonymized_id) + ":</strong> " +
+              escapeHtml(candidate.proposal_summary || "No proposal summary provided.") +
+              "</p>" +
+            "</div>"
+          );
+        }).join("");
+
+        levelingModalBody.innerHTML =
+          '<div class="table-scroll">' +
+            "<table>" +
+              "<thead><tr><th>Rank</th><th>Contractor</th><th>Bid Total</th><th>Best Value Score</th></tr></thead>" +
+              "<tbody>" + rows + "</tbody>" +
+            "</table>" +
+          "</div>" +
+          proposalBlocks;
+
+        openModal(levelingModal);
+      };
+
       var renderCandidateCard = function (candidate, index, divisionCode) {
         var capability = getCapability(candidate) || {};
         var confidence = capability.confidence_score != null ? Math.round(Number(capability.confidence_score) * 100) + "%" : "N/A";
         var overlapList = Array.isArray(capability.overlap_with_project_divisions) ? capability.overlap_with_project_divisions.map(formatDivisionCode) : [];
         var detectedList = Array.isArray(capability.detected_divisions) ? capability.detected_divisions.map(formatDivisionCode) : [];
-        var certificationStatus = candidate.certification_status || "unknown";
+        var certs = Array.isArray(candidate.certifications) ? candidate.certifications.join(", ") : "Compliance verified";
         var candidateTitle = "Division " + divisionCode + " Bidder " + String(index + 1).padStart(2, "0");
         var turnkeyBadge = capability.turnkey_capable ? "Turnkey-capable" : "Single-division fit";
         var overlapBadge = overlapList.length
@@ -837,22 +923,26 @@
         return (
           '<article class="candidate">' +
             "<div>" +
-              '<p class="cand-id">' + escapeHtml(candidateTitle) + "</p>" +
+              '<div class="candidate-top">' +
+                '<input class="candidate-check" type="checkbox" data-candidate-id="' + escapeHtml(candidate.anonymized_id || "") + '">' +
+                '<p class="cand-id">' + escapeHtml(candidateTitle) + "</p>" +
+              "</div>" +
               '<p class="cand-meta">Identity protected · Candidate ref: ' + escapeHtml(candidate.anonymized_id || "N/A") + "</p>" +
               '<div class="actions">' +
-                '<button class="btn-primary">Add to Shortlist</button>' +
-                '<button class="btn-outline">Compare</button>' +
+                '<button class="btn-primary add-single-btn" data-candidate-id="' + escapeHtml(candidate.anonymized_id || "") + '">Add to Shortlist</button>' +
+                '<button class="btn-outline view-candidate-btn" data-candidate-id="' + escapeHtml(candidate.anonymized_id || "") + '">View Info</button>' +
               "</div>" +
             "</div>" +
             "<div>" +
               '<div class="stats">' +
                 '<div class="stat"><p class="stat-label">Match</p><p class="stat-value">' + escapeHtml(candidate.match_score != null ? candidate.match_score : "N/A") + "</p></div>" +
                 '<div class="stat"><p class="stat-label">Trust</p><p class="stat-value">' + escapeHtml(candidate.trust_snapshot != null ? candidate.trust_snapshot : "N/A") + "</p></div>" +
+                '<div class="stat"><p class="stat-label">Bid Total</p><p class="stat-value">' + escapeHtml(formatCurrency(candidate.proposal_total)) + "</p></div>" +
               "</div>" +
               '<div class="badges">' +
                 '<span class="badge">' + escapeHtml(turnkeyBadge) + "</span>" +
                 '<span class="badge">' + escapeHtml(overlapBadge) + "</span>" +
-                '<span class="badge">Cert: ' + escapeHtml(certificationStatus) + "</span>" +
+                '<span class="badge">' + escapeHtml(certs) + "</span>" +
               "</div>" +
               '<details class="qualifications">' +
                 "<summary>Qualifications</summary>" +
@@ -862,7 +952,7 @@
                   "<li>Inference confidence: " + escapeHtml(confidence) + "</li>" +
                 "</ul>" +
               "</details>" +
-              '<p class="note">Capability inference uses proposal/profile signals and project scope imports (including Procore division data when available).</p>' +
+              '<p class="note">Capability details are shown here at the bidder card level.</p>' +
             "</div>" +
           "</article>"
         );
@@ -884,6 +974,11 @@
           return;
         }
 
+        groupedByDivision = {};
+        divisionCodes.forEach(function (code) {
+          groupedByDivision[code] = grouped[code];
+        });
+
         candidateList.innerHTML = divisionCodes
           .map(function (divisionCode) {
             var cards = grouped[divisionCode]
@@ -896,7 +991,10 @@
               '<section class="scope-section" id="division-' +
               escapeHtml(divisionCode) +
               '">' +
-                '<h2 class="scope-title">Division ' + escapeHtml(divisionCode) + "</h2>" +
+                '<div class="scope-head">' +
+                  '<h2 class="scope-title">Division ' + escapeHtml(divisionCode) + "</h2>" +
+                  '<button class="btn-small open-leveling-btn" type="button" data-division="' + escapeHtml(divisionCode) + '">Open Bid Leveling Sheet</button>' +
+                "</div>" +
                 cards +
               "</section>"
             );
@@ -905,73 +1003,125 @@
       };
 
       var updateSummary = function (candidates) {
-        if (!summaryCandidates || !summaryEngine) return;
-        var turnkeyCount = candidates.filter(function (candidate) {
-          var capability = getCapability(candidate) || {};
-          return Boolean(capability.turnkey_capable);
-        }).length;
-        var overlapCount = candidates.filter(function (candidate) {
-          var capability = getCapability(candidate) || {};
-          return Number(capability.overlap_count || 0) > 1;
-        }).length;
-
+        if (!summaryCandidates) return;
         summaryCandidates.textContent = "Candidates: " + candidates.length;
-        summaryEngine.textContent =
-          "Capability Engine: " + turnkeyCount + " turnkey, " + overlapCount + " overlapping";
+        if (summaryUpdated) {
+          var now = new Date();
+          summaryUpdated.textContent = "Updated: " + now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        }
       };
 
-      var loadLiveMatches = async function () {
-        var apiBase = apiBaseInput.value.trim().replace(/\/+$/, "");
-        var projectId = projectIdInput.value.trim();
-        if (!apiBase || !projectId) {
-          liveStatus.textContent = "Enter both API base and project ID.";
+      var buildShortlistRecord = function (candidate) {
+        return {
+          anonymized_id: candidate.anonymized_id,
+          revealed_name: candidate.revealed_name || "Pending Reveal",
+          primary_trade: candidate.primary_trade || "General",
+          division_code: primaryDivision(candidate),
+          proposal_total: candidate.proposal_total,
+          certifications: candidate.certifications || [],
+          proposal_summary: candidate.proposal_summary || "",
+          match_score: candidate.match_score,
+          trust_snapshot: candidate.trust_snapshot
+        };
+      };
+
+      var addSelectedToShortlist = function (candidateIds) {
+        var records = candidateIds
+          .map(function (id) { return getCandidateById(id); })
+          .filter(Boolean)
+          .map(buildShortlistRecord);
+        if (!records.length) return;
+        var total = saveToShortlist(records);
+        selectionCount.textContent = records.length + " added. Shortlist now has " + total + ".";
+      };
+
+      candidateList.addEventListener("change", function (event) {
+        var target = event.target;
+        if (!target.classList.contains("candidate-check")) return;
+        var candidateId = target.getAttribute("data-candidate-id");
+        if (!candidateId) return;
+        if (target.checked) {
+          selectedIds[candidateId] = true;
+        } else {
+          delete selectedIds[candidateId];
+        }
+        syncSelectionLabel();
+      });
+
+      candidateList.addEventListener("click", function (event) {
+        var addBtn = event.target.closest(".add-single-btn");
+        if (addBtn) {
+          var addId = addBtn.getAttribute("data-candidate-id");
+          if (addId) {
+            addSelectedToShortlist([addId]);
+          }
           return;
         }
-
-        liveStatus.textContent = "Loading live match data...";
-
-        try {
-          var candidatesResponse = await fetch(apiBase + "/projects/" + encodeURIComponent(projectId) + "/candidates");
-          if (!candidatesResponse.ok) {
-            throw new Error("Candidates request failed with status " + candidatesResponse.status);
-          }
-          var candidatesData = await candidatesResponse.json();
-          if (!Array.isArray(candidatesData)) {
-            throw new Error("Unexpected candidates response format.");
-          }
-
-          var capabilityResponse = await fetch(
-            apiBase + "/projects/" + encodeURIComponent(projectId) + "/capability-analysis"
-          );
-          if (!capabilityResponse.ok) {
-            throw new Error("Capability analysis request failed with status " + capabilityResponse.status);
-          }
-          var capabilityPayload = await capabilityResponse.json();
-          var capabilityData = capabilityPayload && capabilityPayload.data ? capabilityPayload.data : null;
-
-          renderFromCandidates(candidatesData);
-          updateSummary(candidatesData);
-          if (summaryEngine && capabilityData) {
-            summaryEngine.textContent =
-              "Capability Engine: " +
-              capabilityData.turnkeyCandidateCount +
-              " turnkey, " +
-              capabilityData.overlappingDivisionCandidateCount +
-              " overlapping";
-          }
-          liveStatus.textContent = "Live data loaded for project " + projectId + ".";
-        } catch (err) {
-          liveStatus.textContent = "Live load failed: " + err.message;
+        var viewBtn = event.target.closest(".view-candidate-btn");
+        if (viewBtn) {
+          var viewId = viewBtn.getAttribute("data-candidate-id");
+          if (viewId) openCandidateModal(viewId);
+          return;
         }
-      };
+        var levelBtn = event.target.closest(".open-leveling-btn");
+        if (levelBtn) {
+          var division = levelBtn.getAttribute("data-division");
+          if (division) openLevelingModal(division);
+        }
+      });
+
+      addSelectedBtn.addEventListener("click", function () {
+        var ids = Object.keys(selectedIds);
+        if (!ids.length) {
+          selectionCount.textContent = "Select at least one contractor first.";
+          return;
+        }
+        addSelectedToShortlist(ids);
+        selectedIds = {};
+        var checks = candidateList.querySelectorAll(".candidate-check");
+        checks.forEach(function (check) { check.checked = false; });
+        syncSelectionLabel();
+      });
+
+      if (candidateModalClose && candidateModal) {
+        candidateModalClose.addEventListener("click", function () { closeModal(candidateModal); });
+        candidateModal.addEventListener("click", function (event) {
+          if (event.target === candidateModal) closeModal(candidateModal);
+        });
+      }
+
+      if (levelingModalClose && levelingModal) {
+        levelingModalClose.addEventListener("click", function () { closeModal(levelingModal); });
+        levelingModal.addEventListener("click", function (event) {
+          if (event.target === levelingModal) closeModal(levelingModal);
+        });
+      }
 
       renderFromCandidates(instantCandidates);
+      renderedCandidates = instantCandidates.slice();
       updateSummary(instantCandidates);
-      loadLiveBtn.addEventListener("click", loadLiveMatches);
-      if (prefillProjectId) {
-        loadLiveMatches();
-      }
+      syncSelectionLabel();
     })();
   </script>
+
+  <div id="candidateModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <p id="candidateModalTitle" class="modal-title">Contractor Details</p>
+        <button id="candidateModalClose" class="btn-small" type="button">Close</button>
+      </div>
+      <div id="candidateModalBody"></div>
+    </div>
+  </div>
+
+  <div id="levelingModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <p id="levelingModalTitle" class="modal-title">Bid Leveling Sheet</p>
+        <button id="levelingModalClose" class="btn-small" type="button">Close</button>
+      </div>
+      <div id="levelingModalBody"></div>
+    </div>
+  </div>
 </body>
 </html>

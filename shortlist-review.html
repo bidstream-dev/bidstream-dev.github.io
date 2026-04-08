@@ -149,9 +149,53 @@
       font-weight: 700;
     }
 
+    .scope-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .scope-link {
+      text-decoration: none;
+      border: 1px solid #d0def1;
+      border-radius: 10px;
+      background: #fff;
+      color: #345983;
+      font-size: 0.81rem;
+      font-weight: 600;
+      padding: 8px 10px;
+    }
+
+    .scope-link:hover {
+      background: #f5f9ff;
+      border-color: #c1d3eb;
+    }
+
+    .scope-section {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f9fcff;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .scope-title {
+      margin: 0 0 10px;
+      color: #1f3e67;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .shortlist-list {
+      display: grid;
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -162,6 +206,7 @@
       border-radius: 16px;
       padding: 16px;
       box-shadow: 0 10px 24px rgba(18, 43, 74, 0.06);
+      margin-bottom: 10px;
     }
 
     .candidate.primary {
@@ -258,6 +303,16 @@
       line-height: 1.5;
     }
 
+    .empty {
+      border: 1px dashed #cfe0f8;
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+      color: #58708e;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
     @media (max-width: 980px) {
       .shell { padding: 20px 16px 42px; }
       .grid { grid-template-columns: 1fr; }
@@ -285,33 +340,16 @@
     </nav>
 
     <section class="summary-bar" aria-label="Shortlist summary">
-      <span>Shortlist: 2bc7c813-ec7b-4ac6-a6cc-c14e8eab32f4</span>
-      <span>Updated: Feb 16, 2026</span>
-      <span>Finalists: 2</span>
-      <span>Compliance: All required checks captured</span>
+      <span>Shortlist ready</span>
+      <span id="shortlistUpdated">Updated: Feb 16, 2026</span>
+      <span id="shortlistCount">Finalists: 0</span>
+      <span>Compliance complete</span>
     </section>
 
-    <section class="grid" aria-label="Finalist comparison">
-      <article class="candidate primary">
-        <p class="cand-id">ANON-0001</p>
-        <p class="line">Match 96 · Trust 78 · Visibility: preview</p>
-        <div class="badges">
-          <span class="badge">MWBE</span>
-          <span class="badge">DBE</span>
-          <span class="badge">Certification: Active</span>
-        </div>
-        <p class="final-note">Best overall fit with active certification support and strongest readiness.</p>
-      </article>
+    <section id="shortlistNav" class="scope-nav" aria-label="Shortlist by division"></section>
 
-      <article class="candidate">
-        <p class="cand-id">ANON-0002</p>
-        <p class="line">Match 89 · Trust 65 · Visibility: anonymous</p>
-        <div class="badges">
-          <span class="badge">Veteran-Owned</span>
-          <span class="badge">Certification: Active</span>
-        </div>
-        <p class="final-note">Reliable backup with good scope coverage and moderate delivery confidence.</p>
-      </article>
+    <section id="shortlistList" class="shortlist-list" aria-label="Finalist comparison">
+      <div class="empty">No shortlisted contractors yet. Add contractors from Match Results.</div>
     </section>
 
     <section class="actions" aria-label="Selection actions">
@@ -323,13 +361,102 @@
 
     <section class="panel">
       <h2>Reveal / Handoff Readiness</h2>
-      <p>Selected finalist is ready for identity reveal and contract creation after final team confirmation.</p>
+      <p>Selected contractors are now identity-revealed for final team review and contract creation.</p>
     </section>
 
     <section class="panel">
       <h2>Decision Notes</h2>
-      <p>ANON-0001 is prioritized based on composite score leadership, higher trust signal consistency, and active diversity certification alignment.</p>
+      <p>Use shortlist cards to compare score, price, and proposal notes before confirming the final award.</p>
     </section>
   </main>
+  <script>
+    (function () {
+      var SHORTLIST_STORAGE_KEY = "bidstream_shortlist_v1";
+      var shortlistNav = document.getElementById("shortlistNav");
+      var shortlistList = document.getElementById("shortlistList");
+      var shortlistCount = document.getElementById("shortlistCount");
+      var shortlistUpdated = document.getElementById("shortlistUpdated");
+
+      if (!shortlistNav || !shortlistList || !shortlistCount || !shortlistUpdated) {
+        return;
+      }
+
+      var escapeHtml = function (value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      };
+
+      var formatDivisionCode = function (code) {
+        var parsed = String(code || "").trim();
+        return parsed ? parsed.padStart(2, "0") : "Unassigned";
+      };
+
+      var formatCurrency = function (value) {
+        if (typeof value !== "number" || !isFinite(value)) return "N/A";
+        return "$" + value.toLocaleString();
+      };
+
+      var shortlist = [];
+      try {
+        var raw = window.localStorage.getItem(SHORTLIST_STORAGE_KEY);
+        if (raw) shortlist = JSON.parse(raw);
+        if (!Array.isArray(shortlist)) shortlist = [];
+      } catch (error) {
+        shortlist = [];
+      }
+
+      shortlistCount.textContent = "Finalists: " + shortlist.length;
+      shortlistUpdated.textContent = "Updated: " + new Date().toLocaleDateString();
+
+      if (!shortlist.length) {
+        shortlistNav.innerHTML = "";
+        shortlistList.innerHTML = '<div class="empty">No shortlisted contractors yet. Add contractors from Match Results.</div>';
+        return;
+      }
+
+      var grouped = {};
+      shortlist.forEach(function (candidate) {
+        var division = formatDivisionCode(candidate.division_code);
+        if (!grouped[division]) grouped[division] = [];
+        grouped[division].push(candidate);
+      });
+      var divisions = Object.keys(grouped).sort();
+
+      shortlistNav.innerHTML = divisions.map(function (division) {
+        return '<a class="scope-link" href="#shortlist-division-' + escapeHtml(division) + '">Division ' + escapeHtml(division) + "</a>";
+      }).join("");
+
+      shortlistList.innerHTML = divisions.map(function (division) {
+        var cards = grouped[division].map(function (candidate, index) {
+          var certs = Array.isArray(candidate.certifications) && candidate.certifications.length
+            ? candidate.certifications.join(" · ")
+            : "Compliance verified";
+          return (
+            '<article class="candidate' + (index === 0 ? " primary" : "") + '">' +
+              '<p class="cand-id">' + escapeHtml(candidate.revealed_name || "Revealed contractor") + "</p>" +
+              '<p class="line">Division ' + escapeHtml(division) + " · Match " + escapeHtml(String(candidate.match_score || "N/A")) + " · Trust " + escapeHtml(String(candidate.trust_snapshot || "N/A")) + " · Status: ready</p>" +
+              '<div class="badges">' +
+                '<span class="badge">Trade: ' + escapeHtml(candidate.primary_trade || "General") + "</span>" +
+                '<span class="badge">Bid: ' + escapeHtml(formatCurrency(candidate.proposal_total)) + "</span>" +
+                '<span class="badge">' + escapeHtml(certs) + "</span>" +
+              "</div>" +
+              '<p class="final-note">' + escapeHtml(candidate.proposal_summary || "Proposal summary available in match details.") + "</p>" +
+            "</article>"
+          );
+        }).join("");
+
+        return (
+          '<section class="scope-section" id="shortlist-division-' + escapeHtml(division) + '">' +
+            '<h2 class="scope-title">Division ' + escapeHtml(division) + "</h2>" +
+            cards +
+          "</section>"
+        );
+      }).join("");
+    })();
+  </script>
 </body>
 </html>
