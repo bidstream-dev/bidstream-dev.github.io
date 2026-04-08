@@ -617,6 +617,7 @@
     <section id="candidateList" class="list" aria-label="Candidate comparison"></section>
 
     <div class="next">
+      <button id="addSelectedBottomBtn" class="btn-primary" type="button">Add Selected to Shortlist</button>
       <a href="shortlist-review.html" class="btn-outline">Continue to Shortlist Review</a>
     </div>
   </main>
@@ -628,6 +629,7 @@
       var summaryUpdated = document.getElementById("summaryUpdated");
       var selectionCount = document.getElementById("selectionCount");
       var addSelectedBtn = document.getElementById("addSelectedBtn");
+      var addSelectedBottomBtn = document.getElementById("addSelectedBottomBtn");
       var candidateModal = document.getElementById("candidateModal");
       var candidateModalTitle = document.getElementById("candidateModalTitle");
       var candidateModalBody = document.getElementById("candidateModalBody");
@@ -638,7 +640,7 @@
       var levelingModalClose = document.getElementById("levelingModalClose");
       var SHORTLIST_STORAGE_KEY = "bidstream_shortlist_v1";
 
-      if (!scopeNav || !candidateList || !selectionCount || !addSelectedBtn) {
+      if (!scopeNav || !candidateList || !selectionCount || !addSelectedBtn || !addSelectedBottomBtn) {
         return;
       }
 
@@ -1081,6 +1083,10 @@
         var checks = candidateList.querySelectorAll(".candidate-check");
         checks.forEach(function (check) { check.checked = false; });
         syncSelectionLabel();
+      });
+
+      addSelectedBottomBtn.addEventListener("click", function () {
+        addSelectedBtn.click();
       });
 
       if (candidateModalClose && candidateModal) {

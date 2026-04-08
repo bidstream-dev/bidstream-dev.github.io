@@ -316,6 +316,13 @@
       margin-top: 12px;
     }
 
+    .action-status {
+      margin: 8px 0 0;
+      color: #355981;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
     .upload-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -768,7 +775,7 @@
     <section class="card">
       <div class="upload-toolbar" aria-label="Upload controls">
         <p class="label">Document uploads</p>
-        <select class="phase-select" aria-label="Current upload phase">
+        <select id="phaseSelect" class="phase-select" aria-label="Current upload phase">
           <option selected>60% Design Development</option>
           <option>30% Concept</option>
           <option>90% Pre-Issue</option>
@@ -808,11 +815,12 @@
         </div>
       </div>
       <div class="actions" aria-label="Document actions">
-        <button class="btn-outline">Upload files</button>
-        <button class="btn-outline">Replace version</button>
-        <button class="btn-outline">Create next phase</button>
-        <button class="btn-primary">Generate ingestion brief</button>
+        <button id="uploadFilesBtn" class="btn-outline" type="button">Upload files</button>
+        <button id="replaceVersionBtn" class="btn-outline" type="button">Replace version</button>
+        <button id="createNextPhaseBtn" class="btn-outline" type="button">Create next phase</button>
+        <button id="generateBriefBtn" class="btn-primary" type="button">Generate ingestion brief</button>
       </div>
+      <p id="documentActionStatus" class="action-status" aria-live="polite"></p>
       <details class="coverage-details">
         <summary>View detected scope coverage</summary>
         <div class="view-toggle" role="group" aria-label="Division display mode">
@@ -937,9 +945,10 @@
         </ul>
       </details>
       <div class="actions" aria-label="Brief actions">
-        <button class="btn-outline">Download Brief PDF</button>
+        <button id="downloadBriefBtn" class="btn-outline" type="button">Download Brief PDF</button>
         <a href="match-results.html" class="btn-primary">Lock and Score</a>
       </div>
+      <p id="briefActionStatus" class="action-status" aria-live="polite"></p>
     </section>
 
     <div class="next">
@@ -956,6 +965,15 @@
       var browseFilesBtn = document.getElementById("browseFilesBtn");
       var uploadFileInput = document.getElementById("uploadFileInput");
       var uploadList = document.getElementById("uploadList");
+      var phaseSelect = document.getElementById("phaseSelect");
+      var uploadFilesBtn = document.getElementById("uploadFilesBtn");
+      var replaceVersionBtn = document.getElementById("replaceVersionBtn");
+      var createNextPhaseBtn = document.getElementById("createNextPhaseBtn");
+      var generateBriefBtn = document.getElementById("generateBriefBtn");
+      var downloadBriefBtn = document.getElementById("downloadBriefBtn");
+      var documentActionStatus = document.getElementById("documentActionStatus");
+      var briefActionStatus = document.getElementById("briefActionStatus");
+      var ingestionBrief = document.getElementById("ingestion-brief");
 
       var formatFileSize = function (size) {
         if (size == null || Number.isNaN(Number(size))) {
@@ -1042,10 +1060,78 @@
         });
       }
 
+      if (uploadFilesBtn && uploadFileInput) {
+        uploadFilesBtn.addEventListener("click", function () {
+          uploadFileInput.click();
+          if (documentActionStatus) {
+            documentActionStatus.textContent = "Select one or more files to upload.";
+          }
+        });
+      }
+
+      if (replaceVersionBtn && uploadFileInput) {
+        replaceVersionBtn.addEventListener("click", function () {
+          uploadFileInput.click();
+          if (documentActionStatus) {
+            documentActionStatus.textContent = "Choose the updated file version to replace.";
+          }
+        });
+      }
+
       if (uploadFileInput) {
         uploadFileInput.addEventListener("change", function () {
           addFilesToList(uploadFileInput.files);
+          if (documentActionStatus && uploadFileInput.files && uploadFileInput.files.length) {
+            documentActionStatus.textContent = uploadFileInput.files.length + " file(s) added to the register.";
+          }
           uploadFileInput.value = "";
+        });
+      }
+
+      if (createNextPhaseBtn && phaseSelect) {
+        createNextPhaseBtn.addEventListener("click", function () {
+          var currentIndex = phaseSelect.selectedIndex;
+          if (currentIndex < phaseSelect.options.length - 1) {
+            phaseSelect.selectedIndex = currentIndex + 1;
+            if (documentActionStatus) {
+              documentActionStatus.textContent = "Moved to " + phaseSelect.options[phaseSelect.selectedIndex].text + ".";
+            }
+          } else if (documentActionStatus) {
+            documentActionStatus.textContent = "You are already on the final upload phase.";
+          }
+        });
+      }
+
+      if (generateBriefBtn && ingestionBrief) {
+        generateBriefBtn.addEventListener("click", function () {
+          ingestionBrief.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (documentActionStatus) {
+            documentActionStatus.textContent = "Upload summary ready below.";
+          }
+        });
+      }
+
+      if (downloadBriefBtn) {
+        downloadBriefBtn.addEventListener("click", function () {
+          var briefText = [
+            "BidStream Upload Summary",
+            "Project: Boiler Retrofit - Midtown Campus",
+            "Files ingested: 18",
+            "Divisions detected: 7",
+            "Parsing confidence: 91%",
+            "Open gaps: electrical feeder schedule, structural connection details, hydraulic calcs."
+          ].join("\n");
+          var blob = new Blob([briefText], { type: "text/plain;charset=utf-8" });
+          var link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "bidstream-upload-summary.txt";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          if (briefActionStatus) {
+            briefActionStatus.textContent = "Summary downloaded.";
+          }
         });
       }
 
