@@ -212,6 +212,55 @@
       padding: 8px 9px;
     }
 
+    .project-select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #4e6787 50%),
+        linear-gradient(135deg, #4e6787 50%, transparent 50%);
+      background-position:
+        calc(100% - 16px) calc(50% - 3px),
+        calc(100% - 11px) calc(50% - 3px);
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 30px;
+    }
+
+    .role-group {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      border: 1px solid #d0def1;
+      border-radius: 9px;
+      background: #fff;
+      padding: 8px 10px;
+    }
+
+    .role-label {
+      margin: 0;
+      color: #4f637d;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .role-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #274472;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .role-option input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: #274472;
+    }
+
     .project-actions {
       display: flex;
       gap: 8px;
@@ -299,12 +348,28 @@
         <input id="npLocation" class="project-input" type="text" placeholder="Location" />
         <input id="npPackage" class="project-input" type="text" placeholder="Package (general)" />
         <input id="npValue" class="project-input" type="text" placeholder="Estimated value ($)" />
-        <input id="npOwner" class="project-input" type="text" placeholder="Owner / GC" />
+        <select id="npIndustrySector" class="project-input project-select" aria-label="Industry Sector">
+          <option value="" selected>Industry Sector</option>
+        </select>
+        <select id="npSubsector" class="project-input project-select" aria-label="Subsector" disabled>
+          <option value="" selected>Subsector</option>
+        </select>
+        <div class="role-group" aria-label="Project role selection">
+          <p class="role-label">Project Role</p>
+          <label class="role-option">
+            <input id="npRoleOwner" type="checkbox" />
+            Owner
+          </label>
+          <label class="role-option">
+            <input id="npRoleContractor" type="checkbox" />
+            General Contractor
+          </label>
+        </div>
       </div>
       <div class="project-actions">
         <button id="createProjectBtn" class="btn-open" type="button">Create Project</button>
         <a href="job-setup-documents.html" class="btn-outline">Open Job Setup</a>
-        <p id="newProjectStatus" class="new-project-status">No project created yet.</p>
+        <p id="newProjectStatus" class="new-project-status"></p>
       </div>
       <div id="newProjectList" class="project-list" aria-label="Created projects"></div>
     </section>
@@ -335,39 +400,154 @@
       var createBtn = document.getElementById("createProjectBtn");
       var status = document.getElementById("newProjectStatus");
       var list = document.getElementById("newProjectList");
+      var sectorSelect = document.getElementById("npIndustrySector");
+      var subsectorSelect = document.getElementById("npSubsector");
+      var roleOwner = document.getElementById("npRoleOwner");
+      var roleContractor = document.getElementById("npRoleContractor");
+      var industryTaxonomy = [
+        {
+          key: "building-construction",
+          label: "Building Construction",
+          subsectors: [
+            "Residential",
+            "Commercial",
+            "Institutional",
+            "Hospitality",
+            "Sports and Entertainment",
+            "Interior Fit-Out / Tenant Improvements"
+          ]
+        },
+        {
+          key: "infrastructure-civil",
+          label: "Infrastructure and Civil",
+          subsectors: [
+            "Heavy Civil",
+            "Transportation",
+            "Marine",
+            "Environmental",
+            "Utilities"
+          ]
+        },
+        {
+          key: "industrial-technical",
+          label: "Industrial and Technical Facilities",
+          subsectors: [
+            "Industrial",
+            "Energy / Power",
+            "Data Centers",
+            "Telecommunications",
+            "Agricultural"
+          ]
+        },
+        {
+          key: "specialty-delivery",
+          label: "Specialty and Delivery Methods",
+          subsectors: [
+            "Specialty Trades",
+            "Renovation / Remodeling",
+            "Modular / Prefabrication",
+            "Design-Build / EPC"
+          ]
+        }
+      ];
       var fields = {
         name: document.getElementById("npName"),
         location: document.getElementById("npLocation"),
         pkg: document.getElementById("npPackage"),
-        value: document.getElementById("npValue"),
-        owner: document.getElementById("npOwner")
+        value: document.getElementById("npValue")
       };
 
-      if (!createBtn || !status || !list) return;
+      if (!createBtn || !status || !list || !sectorSelect || !subsectorSelect || !roleOwner || !roleContractor) return;
+
+      industryTaxonomy.forEach(function (sector) {
+        var option = document.createElement("option");
+        option.value = sector.key;
+        option.textContent = sector.label;
+        sectorSelect.appendChild(option);
+      });
+
+      var loadSubsectors = function (sectorKey) {
+        while (subsectorSelect.options.length > 1) {
+          subsectorSelect.remove(1);
+        }
+
+        var selectedSector = industryTaxonomy.find(function (sector) {
+          return sector.key === sectorKey;
+        });
+
+        if (!selectedSector) {
+          subsectorSelect.disabled = true;
+          subsectorSelect.value = "";
+          return;
+        }
+
+        selectedSector.subsectors.forEach(function (subsector) {
+          var option = document.createElement("option");
+          option.value = subsector;
+          option.textContent = subsector;
+          subsectorSelect.appendChild(option);
+        });
+
+        subsectorSelect.disabled = false;
+      };
+
+      sectorSelect.addEventListener("change", function () {
+        loadSubsectors(sectorSelect.value);
+      });
 
       createBtn.addEventListener("click", function () {
         var name = fields.name && fields.name.value.trim();
         var location = fields.location && fields.location.value.trim();
         var pkg = fields.pkg && fields.pkg.value.trim();
+        var sector = sectorSelect.value.trim();
+        var subsector = subsectorSelect.value.trim();
+        var selectedRoles = [];
 
-        if (!name || !location || !pkg) {
-          status.textContent = "Enter at least project name, location, and package.";
+        if (roleOwner.checked) selectedRoles.push("Owner");
+        if (roleContractor.checked) selectedRoles.push("General Contractor");
+
+        if (!name || !location || !pkg || !sector || !subsector) {
+          status.textContent = "Enter project name, location, package, sector, and subsector.";
+          return;
+        }
+
+        if (!selectedRoles.length) {
+          status.textContent = "Select at least one project role.";
           return;
         }
 
         var value = fields.value && fields.value.value.trim() ? fields.value.value.trim() : "TBD";
-        var owner = fields.owner && fields.owner.value.trim() ? fields.owner.value.trim() : "TBD";
+        var selectedSector = industryTaxonomy.find(function (item) {
+          return item.key === sector;
+        });
+        var sectorLabel = selectedSector ? selectedSector.label : "Unknown sector";
 
         var item = document.createElement("div");
         item.className = "item";
         item.textContent =
-          name + " · " + location + " · " + pkg + " · $" + value + " · " + owner;
+          name +
+          " · " +
+          location +
+          " · " +
+          pkg +
+          " · $" +
+          value +
+          " · " +
+          sectorLabel +
+          " / " +
+          subsector +
+          " · " +
+          selectedRoles.join(" + ");
         list.insertBefore(item, list.firstChild);
         status.textContent = "Project created. Open Job Setup to continue.";
 
         Object.keys(fields).forEach(function (key) {
           if (fields[key]) fields[key].value = "";
         });
+        sectorSelect.value = "";
+        loadSubsectors("");
+        roleOwner.checked = false;
+        roleContractor.checked = false;
       });
     })();
   </script>
