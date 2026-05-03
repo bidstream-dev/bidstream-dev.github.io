@@ -202,6 +202,37 @@
       margin-bottom: 10px;
     }
 
+    .role-switch {
+      display: inline-flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .role-tab {
+      border: 1px solid #c8d9ef;
+      background: #fff;
+      color: #274472;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .role-tab.active {
+      background: #22456f;
+      border-color: #22456f;
+      color: #fff;
+    }
+
+    .form-panel {
+      display: none;
+    }
+
+    .form-panel.active {
+      display: block;
+    }
+
     .project-input {
       border: 1px solid #d0def1;
       border-radius: 9px;
@@ -266,6 +297,13 @@
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
+    }
+
+    .form-help {
+      margin: 0 0 10px;
+      color: #66809d;
+      font-size: 0.75rem;
+      font-weight: 600;
     }
 
     .btn-outline {
@@ -342,34 +380,66 @@
 
     <section class="new-project" aria-label="Create new project">
       <h2>Create New Project</h2>
-      <p>Add a new job with basic information to start the workflow.</p>
-      <div class="project-form">
-        <input id="npName" class="project-input" type="text" placeholder="Project name" />
-        <input id="npLocation" class="project-input" type="text" placeholder="Location" />
-        <input id="npPackage" class="project-input" type="text" placeholder="Package (general)" />
-        <input id="npValue" class="project-input" type="text" placeholder="Estimated value ($)" />
-        <select id="npIndustrySector" class="project-input project-select" aria-label="Industry Sector">
-          <option value="" selected>Industry Sector</option>
-        </select>
-        <select id="npSubsector" class="project-input project-select" aria-label="Subsector" disabled>
-          <option value="" selected>Subsector</option>
-        </select>
-        <div class="role-group" aria-label="Project role selection">
-          <p class="role-label">Project Role</p>
-          <label class="role-option">
-            <input id="npRoleOwner" type="checkbox" />
-            Owner
-          </label>
-          <label class="role-option">
-            <input id="npRoleContractor" type="checkbox" />
-            General Contractor
-          </label>
+      <p>Choose your role to start with the right workflow.</p>
+      <div class="role-switch" aria-label="Workspace role">
+        <button id="gcRoleTab" class="role-tab active" type="button">General Contractor</button>
+        <button id="subRoleTab" class="role-tab" type="button">Sub / Supplier</button>
+      </div>
+      <div id="gcFormPanel" class="form-panel active">
+        <div class="project-form">
+          <input id="gcName" name="projectName" class="project-input" type="text" placeholder="Project name" autocomplete="organization" />
+          <input id="gcLocation" name="projectLocation" class="project-input" type="text" placeholder="Location" autocomplete="address-level2" list="locationSuggestions" />
+          <datalist id="locationSuggestions">
+            <option value="New York, NY"></option>
+            <option value="Boston, MA"></option>
+            <option value="Chicago, IL"></option>
+            <option value="Dallas, TX"></option>
+            <option value="Los Angeles, CA"></option>
+          </datalist>
+          <input id="gcValue" name="projectEstimatedValue" class="project-input" type="text" inputmode="numeric" placeholder="Estimated value (optional)" />
+          <select id="gcIndustrySector" class="project-input project-select" aria-label="Industry Sector">
+            <option value="" selected>Industry Sector</option>
+          </select>
+          <select id="gcSubsector" class="project-input project-select" aria-label="Subsector" disabled>
+            <option value="" selected>Subsector</option>
+          </select>
+          <div class="role-group" aria-label="Project role selection">
+            <p class="role-label">Project Role</p>
+            <label class="role-option">
+              <input id="gcRoleOwner" type="checkbox" />
+              Owner
+            </label>
+            <label class="role-option">
+              <input id="gcRoleContractor" type="checkbox" />
+              General Contractor
+            </label>
+          </div>
+        </div>
+        <div class="project-actions">
+          <button id="createGcProjectBtn" class="btn-open" type="button">Create Project</button>
+          <a href="job-setup-documents.html" class="btn-outline">Open Job Setup</a>
+          <p id="newProjectStatus" class="new-project-status"></p>
         </div>
       </div>
-      <div class="project-actions">
-        <button id="createProjectBtn" class="btn-open" type="button">Create Project</button>
-        <a href="job-setup-documents.html" class="btn-outline">Open Job Setup</a>
-        <p id="newProjectStatus" class="new-project-status"></p>
+      <div id="subFormPanel" class="form-panel">
+        <div class="project-form">
+          <input id="subOrgName" class="project-input" type="text" placeholder="Organization name" autocomplete="organization" />
+          <input id="subLocation" class="project-input" type="text" placeholder="Service region" autocomplete="address-level2" list="locationSuggestions" />
+          <input id="subPrimaryWork" class="project-input" type="text" placeholder="Primary work type (e.g., HVAC)" />
+          <input id="subSecondaryWork" class="project-input" type="text" placeholder="Secondary work types (optional)" />
+          <select id="subIndustrySector" class="project-input project-select" aria-label="Industry Sector">
+            <option value="" selected>Industry Sector</option>
+          </select>
+          <select id="subSubsector" class="project-input project-select" aria-label="Subsector" disabled>
+            <option value="" selected>Subsector</option>
+          </select>
+        </div>
+        <p class="form-help">Compliance certificates and insurance documents are handled in Company Profile setup, not here.</p>
+        <div class="project-actions">
+          <button id="createSupplierWorkspaceBtn" class="btn-open" type="button">Create Supplier Workspace</button>
+          <button id="openProfileSetupBtn" class="btn-outline" type="button">Complete Company Profile</button>
+          <p id="supplierStatus" class="new-project-status"></p>
+        </div>
       </div>
       <div id="newProjectList" class="project-list" aria-label="Created projects"></div>
     </section>
@@ -397,11 +467,23 @@
   </main>
   <script>
     (function () {
-      var createBtn = document.getElementById("createProjectBtn");
-      var status = document.getElementById("newProjectStatus");
+      var gcRoleTab = document.getElementById("gcRoleTab");
+      var subRoleTab = document.getElementById("subRoleTab");
+      var gcFormPanel = document.getElementById("gcFormPanel");
+      var subFormPanel = document.getElementById("subFormPanel");
+      var createGcProjectBtn = document.getElementById("createGcProjectBtn");
+      var createSupplierWorkspaceBtn = document.getElementById("createSupplierWorkspaceBtn");
+      var openProfileSetupBtn = document.getElementById("openProfileSetupBtn");
+      var gcStatus = document.getElementById("newProjectStatus");
+      var supplierStatus = document.getElementById("supplierStatus");
       var list = document.getElementById("newProjectList");
       var featuredStage = document.getElementById("featuredStage");
-      var sectorSelect = document.getElementById("npIndustrySector");
+      var gcIndustrySector = document.getElementById("gcIndustrySector");
+      var gcSubsector = document.getElementById("gcSubsector");
+      var subIndustrySector = document.getElementById("subIndustrySector");
+      var subSubsector = document.getElementById("subSubsector");
+      var gcRoleOwner = document.getElementById("gcRoleOwner");
+      var gcRoleContractor = document.getElementById("gcRoleContractor");
       var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
       var stageLabels = {
         job_setup: "Job Setup",
@@ -435,9 +517,6 @@
         featuredStage.textContent = "Current Stage: " + label;
       };
 
-      var subsectorSelect = document.getElementById("npSubsector");
-      var roleOwner = document.getElementById("npRoleOwner");
-      var roleContractor = document.getElementById("npRoleContractor");
       var industryTaxonomy = [
         {
           key: "building-construction",
@@ -484,27 +563,65 @@
           ]
         }
       ];
-      var fields = {
-        name: document.getElementById("npName"),
-        location: document.getElementById("npLocation"),
-        pkg: document.getElementById("npPackage"),
-        value: document.getElementById("npValue")
+
+      var gcFields = {
+        name: document.getElementById("gcName"),
+        location: document.getElementById("gcLocation"),
+        value: document.getElementById("gcValue")
+      };
+      var subFields = {
+        orgName: document.getElementById("subOrgName"),
+        location: document.getElementById("subLocation"),
+        primaryWork: document.getElementById("subPrimaryWork"),
+        secondaryWork: document.getElementById("subSecondaryWork")
       };
 
-      if (!createBtn || !status || !list || !sectorSelect || !subsectorSelect || !roleOwner || !roleContractor) return;
+      if (
+        !gcRoleTab ||
+        !subRoleTab ||
+        !gcFormPanel ||
+        !subFormPanel ||
+        !createGcProjectBtn ||
+        !createSupplierWorkspaceBtn ||
+        !openProfileSetupBtn ||
+        !gcStatus ||
+        !supplierStatus ||
+        !list ||
+        !gcIndustrySector ||
+        !gcSubsector ||
+        !subIndustrySector ||
+        !subSubsector ||
+        !gcRoleOwner ||
+        !gcRoleContractor
+      ) return;
 
-      industryTaxonomy.forEach(function (sector) {
-        var option = document.createElement("option");
-        option.value = sector.key;
-        option.textContent = sector.label;
-        sectorSelect.appendChild(option);
-      });
+      var setRoleView = function (role) {
+        var gcActive = role === "gc";
+        gcRoleTab.classList.toggle("active", gcActive);
+        subRoleTab.classList.toggle("active", !gcActive);
+        gcFormPanel.classList.toggle("active", gcActive);
+        subFormPanel.classList.toggle("active", !gcActive);
+      };
 
-      var loadSubsectors = function (sectorKey) {
+      gcRoleTab.addEventListener("click", function () { setRoleView("gc"); });
+      subRoleTab.addEventListener("click", function () { setRoleView("sub"); });
+
+      var populateSectorOptions = function (sectorSelect) {
+        while (sectorSelect.options.length > 1) {
+          sectorSelect.remove(1);
+        }
+        industryTaxonomy.forEach(function (sector) {
+          var option = document.createElement("option");
+          option.value = sector.key;
+          option.textContent = sector.label;
+          sectorSelect.appendChild(option);
+        });
+      };
+
+      var loadSubsectors = function (sectorKey, subsectorSelect) {
         while (subsectorSelect.options.length > 1) {
           subsectorSelect.remove(1);
         }
-
         var selectedSector = industryTaxonomy.find(function (sector) {
           return sector.key === sectorKey;
         });
@@ -525,32 +642,48 @@
         subsectorSelect.disabled = false;
       };
 
-      sectorSelect.addEventListener("change", function () {
-        loadSubsectors(sectorSelect.value);
+      populateSectorOptions(gcIndustrySector);
+      populateSectorOptions(subIndustrySector);
+      gcIndustrySector.addEventListener("change", function () {
+        loadSubsectors(gcIndustrySector.value, gcSubsector);
+      });
+      subIndustrySector.addEventListener("change", function () {
+        loadSubsectors(subIndustrySector.value, subSubsector);
       });
 
-      createBtn.addEventListener("click", function () {
-        var name = fields.name && fields.name.value.trim();
-        var location = fields.location && fields.location.value.trim();
-        var pkg = fields.pkg && fields.pkg.value.trim();
-        var sector = sectorSelect.value.trim();
-        var subsector = subsectorSelect.value.trim();
+      var formatCurrencyInput = function (rawValue) {
+        var digits = String(rawValue || "").replace(/\D/g, "");
+        if (!digits) return "";
+        return "$" + Number(digits).toLocaleString("en-US");
+      };
+
+      if (gcFields.value) {
+        gcFields.value.addEventListener("input", function () {
+          gcFields.value.value = formatCurrencyInput(gcFields.value.value);
+        });
+      }
+
+      createGcProjectBtn.addEventListener("click", function () {
+        var name = gcFields.name && gcFields.name.value.trim();
+        var location = gcFields.location && gcFields.location.value.trim();
+        var sector = gcIndustrySector.value.trim();
+        var subsector = gcSubsector.value.trim();
         var selectedRoles = [];
 
-        if (roleOwner.checked) selectedRoles.push("Owner");
-        if (roleContractor.checked) selectedRoles.push("General Contractor");
+        if (gcRoleOwner.checked) selectedRoles.push("Owner");
+        if (gcRoleContractor.checked) selectedRoles.push("General Contractor");
 
-        if (!name || !location || !pkg || !sector || !subsector) {
-          status.textContent = "Enter project name, location, package, sector, and subsector.";
+        if (!name || !location || !sector || !subsector) {
+          gcStatus.textContent = "Enter project name, location, sector, and subsector.";
           return;
         }
 
         if (!selectedRoles.length) {
-          status.textContent = "Select at least one project role.";
+          gcStatus.textContent = "Select at least one project role.";
           return;
         }
 
-        var value = fields.value && fields.value.value.trim() ? fields.value.value.trim() : "TBD";
+        var value = gcFields.value && gcFields.value.value.trim() ? gcFields.value.value.trim() : "TBD";
         var selectedSector = industryTaxonomy.find(function (item) {
           return item.key === sector;
         });
@@ -563,8 +696,6 @@
           " · " +
           location +
           " · " +
-          pkg +
-          " · $" +
           value +
           " · " +
           sectorLabel +
@@ -573,7 +704,7 @@
           " · " +
           selectedRoles.join(" + ");
         list.insertBefore(item, list.firstChild);
-        status.textContent = "Project created. Open Job Setup to continue.";
+        gcStatus.textContent = "GC project created. Open Job Setup to continue.";
         saveWorkflowState({
           stage: "job_setup",
           procurementRun: false,
@@ -583,15 +714,62 @@
         window.localStorage.setItem("bidstream_shortlist_v1", JSON.stringify([]));
         syncFeaturedStage();
 
-        Object.keys(fields).forEach(function (key) {
-          if (fields[key]) fields[key].value = "";
+        Object.keys(gcFields).forEach(function (key) {
+          if (gcFields[key]) gcFields[key].value = "";
         });
-        sectorSelect.value = "";
-        loadSubsectors("");
-        roleOwner.checked = false;
-        roleContractor.checked = false;
+        gcIndustrySector.value = "";
+        loadSubsectors("", gcSubsector);
+        gcRoleOwner.checked = false;
+        gcRoleContractor.checked = false;
       });
 
+      createSupplierWorkspaceBtn.addEventListener("click", function () {
+        var orgName = subFields.orgName && subFields.orgName.value.trim();
+        var location = subFields.location && subFields.location.value.trim();
+        var primaryWork = subFields.primaryWork && subFields.primaryWork.value.trim();
+        var secondaryWork = subFields.secondaryWork && subFields.secondaryWork.value.trim();
+        var sector = subIndustrySector.value.trim();
+        var subsector = subSubsector.value.trim();
+
+        if (!orgName || !location || !primaryWork || !sector || !subsector) {
+          supplierStatus.textContent = "Enter organization, service region, primary work type, sector, and subsector.";
+          return;
+        }
+
+        var selectedSector = industryTaxonomy.find(function (item) {
+          return item.key === sector;
+        });
+        var sectorLabel = selectedSector ? selectedSector.label : "Unknown sector";
+
+        var item = document.createElement("div");
+        item.className = "item";
+        item.textContent =
+          "Supplier Workspace · " +
+          orgName +
+          " · " +
+          location +
+          " · " +
+          primaryWork +
+          (secondaryWork ? " (secondary: " + secondaryWork + ")" : "") +
+          " · " +
+          sectorLabel +
+          " / " +
+          subsector;
+        list.insertBefore(item, list.firstChild);
+        supplierStatus.textContent = "Supplier workspace created. Complete Company Profile next.";
+
+        Object.keys(subFields).forEach(function (key) {
+          if (subFields[key]) subFields[key].value = "";
+        });
+        subIndustrySector.value = "";
+        loadSubsectors("", subSubsector);
+      });
+
+      openProfileSetupBtn.addEventListener("click", function () {
+        supplierStatus.textContent = "Company Profile setup is the next step for certificates and insurance.";
+      });
+
+      setRoleView("gc");
       syncFeaturedStage();
     })();
   </script>
