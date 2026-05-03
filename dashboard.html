@@ -203,9 +203,11 @@
     }
 
     .role-switch {
-      display: inline-flex;
+      display: flex;
       gap: 8px;
       margin-bottom: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .role-tab {
@@ -390,12 +392,10 @@
     <section class="new-project" aria-label="Create new project">
       <h2>Create New Project</h2>
       <p>Choose your role to start with the right workflow.</p>
-      <p class="profile-entry">
-        <a href="company-profile.html" class="btn-outline">Go to Company Profile Setup</a>
-      </p>
       <div class="role-switch" aria-label="Workspace role">
         <button id="gcRoleTab" class="role-tab active" type="button">General Contractor</button>
         <button id="subRoleTab" class="role-tab" type="button">Sub / Supplier</button>
+        <a id="openProfileSetupBtn" href="company-profile.html" class="btn-outline">Company Profile Setup</a>
       </div>
       <div id="gcFormPanel" class="form-panel active">
         <div class="project-form">
@@ -447,7 +447,6 @@
         </div>
         <p id="supplierProfileStatus" class="form-help">Step 1 (required): Complete Company Profile before creating supplier workspace.</p>
         <div class="project-actions">
-          <a id="openProfileSetupBtn" href="company-profile.html" class="btn-open">Complete Company Profile</a>
           <button id="createSupplierWorkspaceBtn" class="btn-outline btn-disabled" type="button">Create Supplier Workspace</button>
           <p id="supplierStatus" class="new-project-status"></p>
         </div>
