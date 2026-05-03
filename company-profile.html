@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>BidStream Company Profile</title>
+  <link rel="icon" type="image/png" href="assets/brand/bidstream-icon.png" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <style>
+    :root {
+      --ink: #10233f;
+      --muted: #4f637d;
+      --line: #cfe0f8;
+      --card-line: #d8e5f7;
+      --blue: #274472;
+      --red: #cf3636;
+      --bg: #f7fbff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        linear-gradient(180deg, #eaf2ff 0, #eaf2ff 146px, #f4f8ff 146px, var(--bg) 100%);
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 26px 22px 58px;
+    }
+
+    .topbar {
+      position: relative;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 8px 0 18px;
+      margin-bottom: 28px;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, #b6caea 0%, #c9daf2 54%, #b6caea 100%);
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 44px;
+    }
+
+    .brand-home {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(16, 35, 63, 0.13));
+    }
+
+    .brand-word {
+      margin: 0;
+      font-size: clamp(1.5rem, 2.2vw, 1.84rem);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .brand-word .red { color: var(--red); }
+    .brand-word .blue { color: #26467a; }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 3vw, 2.35rem);
+      line-height: 1.1;
+      color: #1f3a60;
+    }
+
+    .sub {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .card {
+      border: 1px solid var(--card-line);
+      background: linear-gradient(130deg, #fff 0%, #fbfdff 100%);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(18, 43, 74, 0.06);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .input {
+      border: 1px solid #d0def1;
+      border-radius: 9px;
+      background: #fff;
+      color: #274472;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 9px 10px;
+    }
+
+    .checks {
+      border: 1px solid #d0def1;
+      border-radius: 9px;
+      background: #fff;
+      padding: 9px 10px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .checks p {
+      margin: 0;
+      color: #4f637d;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #274472;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-open,
+    .btn-outline {
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 9px 12px;
+      border: 1px solid transparent;
+    }
+
+    .btn-open {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .btn-outline {
+      color: #274472;
+      border-color: #c8d9ef;
+      background: #fff;
+    }
+
+    .status {
+      margin: 0;
+      color: #5b7391;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 880px) {
+      .shell { padding: 20px 16px 42px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a href="index.html" class="brand-lockup brand-home" aria-label="Go to landing page">
+        <img src="assets/brand/bidstream-icon.png" alt="BidStream icon" class="brand-icon" />
+        <p class="brand-word"><span class="red">Bid</span><span class="blue">Stream</span></p>
+      </a>
+    </header>
+
+    <h1>Company Profile Setup</h1>
+    <p class="sub">Complete this first. Supplier workspace and bid participation require a profile.</p>
+
+    <section class="card" aria-label="Company profile form">
+      <div class="grid">
+        <input id="cpOrgName" class="input" type="text" placeholder="Organization name" />
+        <input id="cpPrimaryTrade" class="input" type="text" placeholder="Primary trade / work type" />
+      </div>
+      <div class="checks">
+        <p>Certifications</p>
+        <label class="check"><input id="cpMwbe" type="checkbox" /> MWBE</label>
+        <label class="check"><input id="cpDbe" type="checkbox" /> DBE</label>
+        <label class="check"><input id="cpVeteran" type="checkbox" /> Veteran-Owned</label>
+      </div>
+      <div class="grid">
+        <input id="cpInsurance" class="input" type="text" placeholder="Insurance certificate reference (optional)" />
+        <input id="cpBonding" class="input" type="text" placeholder="Bonding capacity note (optional)" />
+      </div>
+      <div class="actions">
+        <button id="saveProfileBtn" class="btn-open" type="button">Save Company Profile</button>
+        <a href="dashboard.html" class="btn-outline">Back to Projects</a>
+        <p id="profileStatus" class="status"></p>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var SUPPLIER_PROFILE_KEY = "bidstream_supplier_profile_v1";
+      var saveProfileBtn = document.getElementById("saveProfileBtn");
+      var profileStatus = document.getElementById("profileStatus");
+      var cpOrgName = document.getElementById("cpOrgName");
+      var cpPrimaryTrade = document.getElementById("cpPrimaryTrade");
+      var cpMwbe = document.getElementById("cpMwbe");
+      var cpDbe = document.getElementById("cpDbe");
+      var cpVeteran = document.getElementById("cpVeteran");
+      var cpInsurance = document.getElementById("cpInsurance");
+      var cpBonding = document.getElementById("cpBonding");
+
+      if (!saveProfileBtn || !profileStatus || !cpOrgName || !cpPrimaryTrade) return;
+
+      saveProfileBtn.addEventListener("click", function () {
+        var orgName = cpOrgName.value.trim();
+        var primaryTrade = cpPrimaryTrade.value.trim();
+        if (!orgName || !primaryTrade) {
+          profileStatus.textContent = "Enter organization name and primary trade.";
+          return;
+        }
+
+        var payload = {
+          complete: true,
+          org_name: orgName,
+          primary_trade: primaryTrade,
+          certifications: {
+            mwbe: Boolean(cpMwbe && cpMwbe.checked),
+            dbe: Boolean(cpDbe && cpDbe.checked),
+            veteran_owned: Boolean(cpVeteran && cpVeteran.checked)
+          },
+          insurance_ref: cpInsurance ? cpInsurance.value.trim() : "",
+          bonding_note: cpBonding ? cpBonding.value.trim() : "",
+          updated_at: new Date().toISOString()
+        };
+
+        window.localStorage.setItem(SUPPLIER_PROFILE_KEY, JSON.stringify(payload));
+        profileStatus.textContent = "Profile saved. Redirecting to Projects...";
+        window.setTimeout(function () {
+          window.location.href = "dashboard.html?v=20260414c";
+        }, 450);
+      });
+    })();
+  </script>
+</body>
+</html>

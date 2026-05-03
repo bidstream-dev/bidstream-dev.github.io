@@ -372,5 +372,23 @@
 
     <p class="trust">Faster contract matching · Controlled anonymous sourcing · Auditable workflow</p>
   </main>
+  <script>
+    (function () {
+      var version = "20260414c";
+      var links = document.querySelectorAll('a[href]');
+      links.forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (!href) return;
+        if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
+        if (!/\.html(?:$|[?#])/i.test(href)) return;
+        if (/[?&]v=/.test(href)) return;
+        var hashIndex = href.indexOf("#");
+        var hash = hashIndex >= 0 ? href.slice(hashIndex) : "";
+        var base = hashIndex >= 0 ? href.slice(0, hashIndex) : href;
+        var joiner = base.indexOf("?") >= 0 ? "&" : "?";
+        link.setAttribute("href", base + joiner + "v=" + version + hash);
+      });
+    })();
+  </script>
 </body>
 </html>

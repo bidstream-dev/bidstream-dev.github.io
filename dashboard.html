@@ -233,6 +233,11 @@
       display: block;
     }
 
+    .btn-disabled {
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
     .project-input {
       border: 1px solid #d0def1;
       border-radius: 9px;
@@ -426,7 +431,6 @@
           <input id="subOrgName" class="project-input" type="text" placeholder="Organization name" autocomplete="organization" />
           <input id="subLocation" class="project-input" type="text" placeholder="Service region" autocomplete="address-level2" list="locationSuggestions" />
           <input id="subPrimaryWork" class="project-input" type="text" placeholder="Primary work type (e.g., HVAC)" />
-          <input id="subSecondaryWork" class="project-input" type="text" placeholder="Secondary work types (optional)" />
           <select id="subIndustrySector" class="project-input project-select" aria-label="Industry Sector">
             <option value="" selected>Industry Sector</option>
           </select>
@@ -434,10 +438,10 @@
             <option value="" selected>Subsector</option>
           </select>
         </div>
-        <p class="form-help">Compliance certificates and insurance documents are handled in Company Profile setup, not here.</p>
+        <p id="supplierProfileStatus" class="form-help">Step 1 (required): Complete Company Profile before creating supplier workspace.</p>
         <div class="project-actions">
-          <button id="createSupplierWorkspaceBtn" class="btn-open" type="button">Create Supplier Workspace</button>
-          <button id="openProfileSetupBtn" class="btn-outline" type="button">Complete Company Profile</button>
+          <a id="openProfileSetupBtn" href="company-profile.html" class="btn-open">Complete Company Profile</a>
+          <button id="createSupplierWorkspaceBtn" class="btn-outline btn-disabled" type="button">Create Supplier Workspace</button>
           <p id="supplierStatus" class="new-project-status"></p>
         </div>
       </div>
@@ -467,6 +471,24 @@
   </main>
   <script>
     (function () {
+      var version = "20260414c";
+      var links = document.querySelectorAll('a[href]');
+      links.forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (!href) return;
+        if (/^(https?:|mailto:|tel:|#)/i.test(href)) return;
+        if (!/\.html(?:$|[?#])/i.test(href)) return;
+        if (/[?&]v=/.test(href)) return;
+        var hashIndex = href.indexOf("#");
+        var hash = hashIndex >= 0 ? href.slice(hashIndex) : "";
+        var base = hashIndex >= 0 ? href.slice(0, hashIndex) : href;
+        var joiner = base.indexOf("?") >= 0 ? "&" : "?";
+        link.setAttribute("href", base + joiner + "v=" + version + hash);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
       var gcRoleTab = document.getElementById("gcRoleTab");
       var subRoleTab = document.getElementById("subRoleTab");
       var gcFormPanel = document.getElementById("gcFormPanel");
@@ -476,6 +498,7 @@
       var openProfileSetupBtn = document.getElementById("openProfileSetupBtn");
       var gcStatus = document.getElementById("newProjectStatus");
       var supplierStatus = document.getElementById("supplierStatus");
+      var supplierProfileStatus = document.getElementById("supplierProfileStatus");
       var list = document.getElementById("newProjectList");
       var featuredStage = document.getElementById("featuredStage");
       var gcIndustrySector = document.getElementById("gcIndustrySector");
@@ -485,6 +508,7 @@
       var gcRoleOwner = document.getElementById("gcRoleOwner");
       var gcRoleContractor = document.getElementById("gcRoleContractor");
       var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
+      var SUPPLIER_PROFILE_KEY = "bidstream_supplier_profile_v1";
       var stageLabels = {
         job_setup: "Job Setup",
         sourcing: "Auto-Procurement",
@@ -572,8 +596,7 @@
       var subFields = {
         orgName: document.getElementById("subOrgName"),
         location: document.getElementById("subLocation"),
-        primaryWork: document.getElementById("subPrimaryWork"),
-        secondaryWork: document.getElementById("subSecondaryWork")
+        primaryWork: document.getElementById("subPrimaryWork")
       };
 
       if (
@@ -586,6 +609,7 @@
         !openProfileSetupBtn ||
         !gcStatus ||
         !supplierStatus ||
+        !supplierProfileStatus ||
         !list ||
         !gcIndustrySector ||
         !gcSubsector ||
@@ -594,6 +618,30 @@
         !gcRoleOwner ||
         !gcRoleContractor
       ) return;
+
+      var loadSupplierProfile = function () {
+        try {
+          var raw = window.localStorage.getItem(SUPPLIER_PROFILE_KEY);
+          if (!raw) return { complete: false };
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return { complete: false };
+          return parsed;
+        } catch (error) {
+          return { complete: false };
+        }
+      };
+
+      var syncSupplierActions = function () {
+        var profile = loadSupplierProfile();
+        var complete = Boolean(profile.complete);
+        createSupplierWorkspaceBtn.classList.toggle("btn-disabled", !complete);
+        createSupplierWorkspaceBtn.disabled = !complete;
+        if (complete) {
+          supplierProfileStatus.textContent = "Company Profile complete. You can now create supplier workspace.";
+        } else {
+          supplierProfileStatus.textContent = "Step 1 (required): Complete Company Profile before creating supplier workspace.";
+        }
+      };
 
       var setRoleView = function (role) {
         var gcActive = role === "gc";
@@ -724,10 +772,13 @@
       });
 
       createSupplierWorkspaceBtn.addEventListener("click", function () {
+        if (createSupplierWorkspaceBtn.disabled) {
+          supplierStatus.textContent = "Complete Company Profile first.";
+          return;
+        }
         var orgName = subFields.orgName && subFields.orgName.value.trim();
         var location = subFields.location && subFields.location.value.trim();
         var primaryWork = subFields.primaryWork && subFields.primaryWork.value.trim();
-        var secondaryWork = subFields.secondaryWork && subFields.secondaryWork.value.trim();
         var sector = subIndustrySector.value.trim();
         var subsector = subSubsector.value.trim();
 
@@ -750,13 +801,12 @@
           location +
           " · " +
           primaryWork +
-          (secondaryWork ? " (secondary: " + secondaryWork + ")" : "") +
           " · " +
           sectorLabel +
           " / " +
           subsector;
         list.insertBefore(item, list.firstChild);
-        supplierStatus.textContent = "Supplier workspace created. Complete Company Profile next.";
+        supplierStatus.textContent = "Supplier workspace created.";
 
         Object.keys(subFields).forEach(function (key) {
           if (subFields[key]) subFields[key].value = "";
@@ -765,11 +815,8 @@
         loadSubsectors("", subSubsector);
       });
 
-      openProfileSetupBtn.addEventListener("click", function () {
-        supplierStatus.textContent = "Company Profile setup is the next step for certificates and insurance.";
-      });
-
       setRoleView("gc");
+      syncSupplierActions();
       syncFeaturedStage();
     })();
   </script>
