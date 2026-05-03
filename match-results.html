@@ -195,6 +195,27 @@
       margin-bottom: 12px;
     }
 
+    .workflow-gate {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 11px 12px;
+      margin-bottom: 12px;
+    }
+
+    .workflow-stage-note {
+      margin: 0 0 8px;
+      color: #355981;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .workflow-gate-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .selection-note {
       margin: 0;
       color: #58708e;
@@ -597,7 +618,15 @@
       </details>
     </section>
 
-    <section class="selection-bar" aria-label="Shortlist selection controls">
+    <section class="workflow-gate" aria-label="Procurement sequence controls">
+      <p id="workflowStageNote" class="workflow-stage-note">Step 1: run auto-procurement to generate candidate pool.</p>
+      <div class="workflow-gate-actions">
+        <button id="runProcurementBtn" class="btn-outline" type="button">Run Auto-Procurement</button>
+        <button id="runLevelingBtn" class="btn-outline" type="button">Run Bid Leveling</button>
+      </div>
+    </section>
+
+    <section id="selectionBar" class="selection-bar" aria-label="Shortlist selection controls">
       <p id="selectionCount" class="selection-note">0 selected for shortlist.</p>
       <button id="addSelectedBtn" class="btn-primary" type="button">Add Selected to Shortlist</button>
     </section>
@@ -616,7 +645,7 @@
 
     <section id="candidateList" class="list" aria-label="Candidate comparison"></section>
 
-    <div class="next">
+    <div id="nextActions" class="next">
       <button id="addSelectedBottomBtn" class="btn-primary" type="button">Add Selected to Shortlist</button>
       <a href="shortlist-review.html" class="btn-outline">Continue to Shortlist Review</a>
     </div>
@@ -630,6 +659,11 @@
       var selectionCount = document.getElementById("selectionCount");
       var addSelectedBtn = document.getElementById("addSelectedBtn");
       var addSelectedBottomBtn = document.getElementById("addSelectedBottomBtn");
+      var selectionBar = document.getElementById("selectionBar");
+      var nextActions = document.getElementById("nextActions");
+      var workflowStageNote = document.getElementById("workflowStageNote");
+      var runProcurementBtn = document.getElementById("runProcurementBtn");
+      var runLevelingBtn = document.getElementById("runLevelingBtn");
       var candidateModal = document.getElementById("candidateModal");
       var candidateModalTitle = document.getElementById("candidateModalTitle");
       var candidateModalBody = document.getElementById("candidateModalBody");
@@ -639,10 +673,27 @@
       var levelingModalBody = document.getElementById("levelingModalBody");
       var levelingModalClose = document.getElementById("levelingModalClose");
       var SHORTLIST_STORAGE_KEY = "bidstream_shortlist_v1";
+      var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
 
-      if (!scopeNav || !candidateList || !selectionCount || !addSelectedBtn || !addSelectedBottomBtn) {
+      if (!scopeNav || !candidateList || !selectionCount || !addSelectedBtn || !addSelectedBottomBtn || !selectionBar || !nextActions || !workflowStageNote || !runProcurementBtn || !runLevelingBtn) {
         return;
       }
+
+      var loadWorkflowState = function () {
+        try {
+          var raw = window.localStorage.getItem(WORKFLOW_STATE_KEY);
+          if (!raw) return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          return parsed;
+        } catch (error) {
+          return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+        }
+      };
+
+      var saveWorkflowState = function (state) {
+        window.localStorage.setItem(WORKFLOW_STATE_KEY, JSON.stringify(state));
+      };
 
       var instantCandidates = [
         {
@@ -766,6 +817,7 @@
       var selectedIds = {};
       var renderedCandidates = [];
       var groupedByDivision = {};
+      var workflowState = loadWorkflowState();
 
       var primaryDivision = function (candidate) {
         var capability = getCapability(candidate);
@@ -1013,6 +1065,35 @@
         }
       };
 
+      var syncWorkflowUI = function () {
+        if (!workflowState.procurementRun) {
+          workflowStageNote.textContent = "Step 1: run auto-procurement to generate candidate pool.";
+          runProcurementBtn.disabled = false;
+          runLevelingBtn.disabled = true;
+          candidateList.style.display = "none";
+          selectionBar.style.display = "none";
+          nextActions.style.display = "none";
+          return;
+        }
+
+        if (!workflowState.levelingRun) {
+          workflowStageNote.textContent = "Step 2: candidate pool generated. Run bid leveling to compare bids.";
+          runProcurementBtn.disabled = false;
+          runLevelingBtn.disabled = false;
+          candidateList.style.display = "none";
+          selectionBar.style.display = "none";
+          nextActions.style.display = "none";
+          return;
+        }
+
+        workflowStageNote.textContent = "Bid leveling complete. Select contractors and move to shortlist.";
+        runProcurementBtn.disabled = true;
+        runLevelingBtn.disabled = true;
+        candidateList.style.display = "";
+        selectionBar.style.display = "";
+        nextActions.style.display = "";
+      };
+
       var buildShortlistRecord = function (candidate) {
         return {
           anonymized_id: candidate.anonymized_id,
@@ -1056,6 +1137,8 @@
           var addId = addBtn.getAttribute("data-candidate-id");
           if (addId) {
             addSelectedToShortlist([addId]);
+            workflowState.stage = "shortlist";
+            saveWorkflowState(workflowState);
           }
           return;
         }
@@ -1079,6 +1162,8 @@
           return;
         }
         addSelectedToShortlist(ids);
+        workflowState.stage = "shortlist";
+        saveWorkflowState(workflowState);
         selectedIds = {};
         var checks = candidateList.querySelectorAll(".candidate-check");
         checks.forEach(function (check) { check.checked = false; });
@@ -1087,6 +1172,29 @@
 
       addSelectedBottomBtn.addEventListener("click", function () {
         addSelectedBtn.click();
+      });
+
+      runProcurementBtn.addEventListener("click", function () {
+        workflowState.procurementRun = true;
+        workflowState.levelingRun = false;
+        workflowState.stage = "sourcing";
+        workflowState.awarded = false;
+        saveWorkflowState(workflowState);
+        syncWorkflowUI();
+      });
+
+      runLevelingBtn.addEventListener("click", function () {
+        if (!workflowState.procurementRun) {
+          workflowStageNote.textContent = "Run auto-procurement first.";
+          return;
+        }
+        workflowState.levelingRun = true;
+        workflowState.stage = "leveling";
+        saveWorkflowState(workflowState);
+        renderFromCandidates(instantCandidates);
+        renderedCandidates = instantCandidates.slice();
+        updateSummary(instantCandidates);
+        syncWorkflowUI();
       });
 
       if (candidateModalClose && candidateModal) {
@@ -1103,10 +1211,16 @@
         });
       }
 
-      renderFromCandidates(instantCandidates);
-      renderedCandidates = instantCandidates.slice();
-      updateSummary(instantCandidates);
+      if (workflowState.levelingRun) {
+        renderFromCandidates(instantCandidates);
+        renderedCandidates = instantCandidates.slice();
+        updateSummary(instantCandidates);
+      } else {
+        candidateList.innerHTML = "";
+        summaryCandidates.textContent = "Candidates: 0";
+      }
       syncSelectionLabel();
+      syncWorkflowUI();
     })();
   </script>
 

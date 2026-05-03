@@ -158,6 +158,21 @@
       margin-bottom: 14px;
     }
 
+    .locked-state {
+      border: 1px dashed #cfe0f8;
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .locked-state p {
+      margin: 0 0 10px;
+      color: #58708e;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
     .contracts-summary p {
       margin: 0;
       color: #58708e;
@@ -435,18 +450,23 @@
       <a class="tab active" href="contract-milestones.html">Contract &amp; Milestones</a>
     </nav>
 
-    <section class="summary-bar" aria-label="Contract summary">
+    <section id="contractsSummaryBar" class="summary-bar" aria-label="Contract summary">
       <span>Contracts: 3</span>
       <span>Primary Status: 1 Draft · 1 In Review · 1 Executing</span>
       <span>Subcontractors: 3 assigned</span>
       <span>Open Milestones: 5</span>
     </section>
 
-    <section class="contracts-summary">
+    <section id="contractsLockedState" class="locked-state" style="display:none;">
+      <p>Contracts are generated after final award. Confirm final selection in Shortlist Review to unlock this page.</p>
+      <a href="shortlist-review.html" class="btn-outline">Go to Shortlist Review</a>
+    </section>
+
+    <section id="contractsSummary" class="contracts-summary">
       <p>Choose a contract to view milestones, payment steps, and notes.</p>
     </section>
 
-    <section class="contract-nav" aria-label="Contract navigation">
+    <section id="contractsNav" class="contract-nav" aria-label="Contract navigation">
       <a class="contract-link" href="#contract-23">Division 23</a>
       <a class="contract-link" href="#contract-26">Division 26</a>
       <a class="contract-link" href="#contract-33">Division 33</a>
@@ -619,7 +639,7 @@
       </details>
     </section>
 
-    <section class="panels">
+    <section id="contractsPanels" class="panels">
       <article class="panel">
         <h2>Evidence</h2>
         <p>Submittal packet uploaded · Daily report validated · QA checklist pending.</p>
@@ -634,14 +654,14 @@
       </article>
     </section>
 
-    <section class="steps" aria-label="Approval steps">
+    <section id="contractsSteps" class="steps" aria-label="Approval steps">
       <span class="step">Submitted</span>
       <span class="step">Reviewed</span>
       <span class="step active">Approved</span>
       <span class="step">Payout Ready</span>
     </section>
 
-    <section class="ledger">
+    <section id="contractsLedger" class="ledger">
       <h2>Recent Updates</h2>
       <ul>
         <li>MILESTONE_APPROVED · Rough-In Complete · Feb 16, 2026 09:41</li>
@@ -652,5 +672,41 @@
 
     <a href="dashboard.html" class="back-link">Back to Projects</a>
   </main>
+  <script>
+    (function () {
+      var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
+      var contractsLockedState = document.getElementById("contractsLockedState");
+      var contractsSummaryBar = document.getElementById("contractsSummaryBar");
+      var contractsSummary = document.getElementById("contractsSummary");
+      var contractsNav = document.getElementById("contractsNav");
+      var contractsList = document.getElementById("contracts-list");
+      var contractsPanels = document.getElementById("contractsPanels");
+      var contractsSteps = document.getElementById("contractsSteps");
+      var contractsLedger = document.getElementById("contractsLedger");
+
+      if (!contractsLockedState || !contractsSummaryBar || !contractsSummary || !contractsNav || !contractsList || !contractsPanels || !contractsSteps || !contractsLedger) {
+        return;
+      }
+
+      var workflowState;
+      try {
+        var raw = window.localStorage.getItem(WORKFLOW_STATE_KEY);
+        workflowState = raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        workflowState = {};
+      }
+
+      var unlocked = Boolean(workflowState && workflowState.awarded);
+
+      contractsSummaryBar.style.display = unlocked ? "" : "none";
+      contractsLockedState.style.display = unlocked ? "none" : "";
+      contractsSummary.style.display = unlocked ? "" : "none";
+      contractsNav.style.display = unlocked ? "" : "none";
+      contractsList.style.display = unlocked ? "" : "none";
+      contractsPanels.style.display = unlocked ? "" : "none";
+      contractsSteps.style.display = unlocked ? "" : "none";
+      contractsLedger.style.display = unlocked ? "" : "none";
+    })();
+  </script>
 </body>
 </html>

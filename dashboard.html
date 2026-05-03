@@ -381,7 +381,7 @@
         <p class="meta">New York, NY · MEP Package · Estimated value: $1.8M</p>
       </div>
       <div>
-        <span class="stage">Current Stage: Job Setup</span>
+        <span id="featuredStage" class="stage">Current Stage: Job Setup</span>
         <p class="status-note">GC kickoff details and construction documents are ready for workflow setup.</p>
       </div>
       <a href="job-setup-documents.html" class="btn-open">Open Project</a>
@@ -400,7 +400,41 @@
       var createBtn = document.getElementById("createProjectBtn");
       var status = document.getElementById("newProjectStatus");
       var list = document.getElementById("newProjectList");
+      var featuredStage = document.getElementById("featuredStage");
       var sectorSelect = document.getElementById("npIndustrySector");
+      var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
+      var stageLabels = {
+        job_setup: "Job Setup",
+        sourcing: "Auto-Procurement",
+        leveling: "Bid Leveling",
+        shortlist: "Shortlist Review",
+        awarded: "Awarded",
+        contracting: "Contracting"
+      };
+
+      var loadWorkflowState = function () {
+        try {
+          var raw = window.localStorage.getItem(WORKFLOW_STATE_KEY);
+          if (!raw) return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          return parsed;
+        } catch (error) {
+          return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+        }
+      };
+
+      var saveWorkflowState = function (state) {
+        window.localStorage.setItem(WORKFLOW_STATE_KEY, JSON.stringify(state));
+      };
+
+      var syncFeaturedStage = function () {
+        if (!featuredStage) return;
+        var state = loadWorkflowState();
+        var label = stageLabels[state.stage] || "Job Setup";
+        featuredStage.textContent = "Current Stage: " + label;
+      };
+
       var subsectorSelect = document.getElementById("npSubsector");
       var roleOwner = document.getElementById("npRoleOwner");
       var roleContractor = document.getElementById("npRoleContractor");
@@ -540,6 +574,14 @@
           selectedRoles.join(" + ");
         list.insertBefore(item, list.firstChild);
         status.textContent = "Project created. Open Job Setup to continue.";
+        saveWorkflowState({
+          stage: "job_setup",
+          procurementRun: false,
+          levelingRun: false,
+          awarded: false
+        });
+        window.localStorage.setItem("bidstream_shortlist_v1", JSON.stringify([]));
+        syncFeaturedStage();
 
         Object.keys(fields).forEach(function (key) {
           if (fields[key]) fields[key].value = "";
@@ -549,6 +591,8 @@
         roleOwner.checked = false;
         roleContractor.checked = false;
       });
+
+      syncFeaturedStage();
     })();
   </script>
 </body>

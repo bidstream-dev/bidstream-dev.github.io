@@ -310,6 +310,11 @@
       font-weight: 700;
     }
 
+    .btn-disabled {
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
     .empty {
       border: 1px dashed #cfe0f8;
       border-radius: 12px;
@@ -363,7 +368,7 @@
       <button id="confirmSelectionBtn" class="btn-primary" type="button">Confirm Final Selection</button>
       <button id="placeOnHoldBtn" class="btn-outline" type="button">Place on Hold</button>
       <button id="removeShortlistBtn" class="btn-outline" type="button">Remove from Shortlist</button>
-      <a href="contract-milestones.html" class="btn-outline">Continue to Contract</a>
+      <a id="continueContractLink" href="contract-milestones.html" class="btn-outline btn-disabled">Continue to Contract</a>
     </section>
     <p id="shortlistStatus" class="status-note" aria-live="polite"></p>
 
@@ -388,10 +393,38 @@
       var placeOnHoldBtn = document.getElementById("placeOnHoldBtn");
       var removeShortlistBtn = document.getElementById("removeShortlistBtn");
       var shortlistStatus = document.getElementById("shortlistStatus");
+      var continueContractLink = document.getElementById("continueContractLink");
+      var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
 
-      if (!shortlistNav || !shortlistList || !shortlistCount || !shortlistUpdated || !confirmSelectionBtn || !placeOnHoldBtn || !removeShortlistBtn || !shortlistStatus) {
+      if (!shortlistNav || !shortlistList || !shortlistCount || !shortlistUpdated || !confirmSelectionBtn || !placeOnHoldBtn || !removeShortlistBtn || !shortlistStatus || !continueContractLink) {
         return;
       }
+
+      var loadWorkflowState = function () {
+        try {
+          var raw = window.localStorage.getItem(WORKFLOW_STATE_KEY);
+          if (!raw) return { stage: "shortlist", procurementRun: true, levelingRun: true, awarded: false };
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return { stage: "shortlist", procurementRun: true, levelingRun: true, awarded: false };
+          return parsed;
+        } catch (error) {
+          return { stage: "shortlist", procurementRun: true, levelingRun: true, awarded: false };
+        }
+      };
+
+      var saveWorkflowState = function (state) {
+        window.localStorage.setItem(WORKFLOW_STATE_KEY, JSON.stringify(state));
+      };
+
+      var workflowState = loadWorkflowState();
+
+      var syncContractLink = function () {
+        if (workflowState.awarded) {
+          continueContractLink.classList.remove("btn-disabled");
+          return;
+        }
+        continueContractLink.classList.add("btn-disabled");
+      };
 
       var escapeHtml = function (value) {
         return String(value)
@@ -504,6 +537,10 @@
           var bScore = Number(b.match_score || 0) + Number(b.trust_snapshot || 0);
           return bScore - aScore;
         })[0];
+        workflowState.awarded = true;
+        workflowState.stage = "awarded";
+        saveWorkflowState(workflowState);
+        syncContractLink();
         setStatus("Final selection confirmed: " + (winner.revealed_name || winner.anonymized_id) + ".");
       });
 
@@ -512,17 +549,26 @@
           setStatus("Shortlist is empty.");
           return;
         }
+        workflowState.awarded = false;
+        workflowState.stage = "shortlist";
+        saveWorkflowState(workflowState);
+        syncContractLink();
         setStatus("Shortlist placed on hold. You can continue review any time.");
       });
 
       removeShortlistBtn.addEventListener("click", function () {
         shortlist = [];
         window.localStorage.setItem(SHORTLIST_STORAGE_KEY, JSON.stringify(shortlist));
+        workflowState.awarded = false;
+        workflowState.stage = "shortlist";
+        saveWorkflowState(workflowState);
         renderShortlist();
+        syncContractLink();
         setStatus("Shortlist cleared.");
       });
 
       renderShortlist();
+      syncContractLink();
     })();
   </script>
 </body>

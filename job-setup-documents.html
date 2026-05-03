@@ -469,6 +469,13 @@
       font-weight: 700;
     }
 
+    .money-meta {
+      margin: 4px 0 0;
+      color: #66809d;
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
     .rounds {
       display: flex;
       gap: 7px;
@@ -757,7 +764,8 @@
             </div>
             <div class="money-card">
               <p class="money-label">Contracts Generated</p>
-              <p class="money-value">$453,000</p>
+              <p id="contractsGeneratedValue" class="money-value">—</p>
+              <p id="contractsGeneratedMeta" class="money-meta">Available after final award.</p>
             </div>
             <div class="money-card">
               <p class="money-label">Pending Approval</p>
@@ -946,7 +954,7 @@
       </details>
       <div class="actions" aria-label="Brief actions">
         <button id="downloadBriefBtn" class="btn-outline" type="button">Download Brief PDF</button>
-        <a href="match-results.html" class="btn-primary">Lock and Score</a>
+        <a id="lockAndScoreLink" href="match-results.html" class="btn-primary">Lock and Score</a>
       </div>
       <p id="briefActionStatus" class="action-status" aria-live="polite"></p>
     </section>
@@ -974,6 +982,42 @@
       var documentActionStatus = document.getElementById("documentActionStatus");
       var briefActionStatus = document.getElementById("briefActionStatus");
       var ingestionBrief = document.getElementById("ingestion-brief");
+      var contractsGeneratedValue = document.getElementById("contractsGeneratedValue");
+      var contractsGeneratedMeta = document.getElementById("contractsGeneratedMeta");
+      var lockAndScoreLink = document.getElementById("lockAndScoreLink");
+      var WORKFLOW_STATE_KEY = "bidstream_workflow_state_v1";
+
+      var loadWorkflowState = function () {
+        try {
+          var raw = window.localStorage.getItem(WORKFLOW_STATE_KEY);
+          if (!raw) return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+          return parsed;
+        } catch (error) {
+          return { stage: "job_setup", procurementRun: false, levelingRun: false, awarded: false };
+        }
+      };
+
+      var saveWorkflowState = function (state) {
+        window.localStorage.setItem(WORKFLOW_STATE_KEY, JSON.stringify(state));
+      };
+
+      var syncContractsValue = function () {
+        if (!contractsGeneratedValue) return;
+        var state = loadWorkflowState();
+        if (state.awarded) {
+          contractsGeneratedValue.textContent = "$453,000";
+          if (contractsGeneratedMeta) {
+            contractsGeneratedMeta.textContent = "Generated from awarded subcontract package.";
+          }
+          return;
+        }
+        contractsGeneratedValue.textContent = "—";
+        if (contractsGeneratedMeta) {
+          contractsGeneratedMeta.textContent = "Available after final award.";
+        }
+      };
 
       var formatFileSize = function (size) {
         if (size == null || Number.isNaN(Number(size))) {
@@ -1135,6 +1179,18 @@
         });
       }
 
+      if (lockAndScoreLink) {
+        lockAndScoreLink.addEventListener("click", function () {
+          saveWorkflowState({
+            stage: "sourcing",
+            procurementRun: false,
+            levelingRun: false,
+            awarded: false
+          });
+          window.localStorage.setItem("bidstream_shortlist_v1", JSON.stringify([]));
+        });
+      }
+
       if (matrix && requiredOnlyBtn && showAllBtn) {
         var allRows = matrix.querySelectorAll(".matrix-row");
         var optionalRows = matrix.querySelectorAll(".matrix-row.optional");
@@ -1156,6 +1212,8 @@
           requiredOnlyBtn.classList.remove("active");
         });
       }
+
+      syncContractsValue();
     })();
   </script>
 </body>
